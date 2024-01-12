@@ -1,0 +1,12 @@
+{
+    "name": "notepost",
+    "version": "0.0.0",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+        "frontend": "cd notepost && npm run dev",
+        "backend": " cd server && nodemon server.js"
+    },
+    "author": "Anna Jegorova",
+    "license": "ISC"
+}
