@@ -1,8 +1,8 @@
 import './Login.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Login = ({ mode, setUserEmail }) => {
+const Login = ({ mode, setUserEmail, setUserId }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -23,14 +23,15 @@ const Login = ({ mode, setUserEmail }) => {
                 }),
                 credentials: 'include'
             })
-            const data = response.ok? await response.json() : console.log('not ok');
-            console.log(data)
-            if (response.ok) {
-                console.log('User logged in successfully')
-                setUserEmail(email)
+            const data = response.ok ? await response.json() : console.log('not ok');
 
+            if (response.ok) {
+                setUserEmail(email);
+                const saveId = data.id;
+                setUserId(saveId);
                 navigate('/')
             } else {
+
                 console.log('Login failed')
             }
 
@@ -38,6 +39,7 @@ const Login = ({ mode, setUserEmail }) => {
             console.error(error)
         }
     }
+
 
     //Register
     const handleRegister = async (e) => {
@@ -52,16 +54,16 @@ const Login = ({ mode, setUserEmail }) => {
                     email,
                     password
                 })
-            }) 
-            const data = response.ok? await response.json() : console.log('not ok');
-            console.log(response)
+            })
+            const data = response.ok ? await response.json() : console.log('not ok');
+
             if (response.ok) {
                 navigate('/')
                 console.log('User created successfully!');
             } else {
                 console.log('User creation failed')
             }
-            
+
 
         } catch (error) {
             console.error('Authentication error ', error)
