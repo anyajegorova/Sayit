@@ -1,8 +1,9 @@
 import './Login.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
-const Login = ({ mode, setUserEmail, setUserId }) => {
+const Login = ({ mode, setUserId, setLoggedIn }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -23,15 +24,20 @@ const Login = ({ mode, setUserEmail, setUserId }) => {
                 }),
                 credentials: 'include'
             })
-            const data = response.ok ? await response.json() : console.log('not ok');
 
             if (response.ok) {
-                setUserEmail(email);
-                const saveId = data.id;
-                setUserId(saveId);
-                navigate('/')
-            } else {
+                const data = await response.json();
 
+                console.log(data)
+                setLoggedIn(true)
+                Cookies.set('token', data.token, { expires: 7 });
+                console.log('Login successful');
+                const saveId = data.id;
+                console.log('Login ', saveId)
+                setUserId(saveId);
+                navigate('/all_noteposts')
+
+            } else {
                 console.log('Login failed')
             }
 
@@ -58,7 +64,7 @@ const Login = ({ mode, setUserEmail, setUserId }) => {
             const data = response.ok ? await response.json() : console.log('not ok');
 
             if (response.ok) {
-                navigate('/')
+                navigate('/login')
                 console.log('User created successfully!');
             } else {
                 console.log('User creation failed')

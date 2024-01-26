@@ -1,5 +1,6 @@
 import './CreateNotepost.css';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 const CreateNotepost = ({ showModal, setShowModal, newNotepost, setNewNotepost, userId }) => {
 
@@ -34,33 +35,30 @@ const CreateNotepost = ({ showModal, setShowModal, newNotepost, setNewNotepost, 
             ...prev,
             userId: userId
         }))
-        console.log('useEffect', userId)
-    }, [userId]);
+    }, [setNewNotepost, userId]);
 
     //Create new notepost
 
     const addNewNotepost = async (e) => {
         e.preventDefault()
         setShowModal(false);
-        console.log(newNotepost)
-        console.log('create new notepost')
-        console.log('New notepost', userId)
-        console.log(newNotepost)
 
         try {
+            console.log(userId)
+            const token = Cookies.get('token');
             const options = {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(newNotepost)
             }
             const response = await fetch('http://localhost:8000/noteposts', options);
-            console.log(response)
+            
             if (response.ok) {
                 const data = await response.json();
                 console.log('Success', data);
-                console.log('New notepost: ', newNotepost)
             } else {
                 console.log('Error', response.status)
             }

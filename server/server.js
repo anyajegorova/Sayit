@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const routes = require('./routes');
+const cookieParser = require('cookie-parser');
 
 dotenv.config();
 const app = express();
@@ -16,15 +17,19 @@ const allowedOrigins = [
     'http://localhost:5173/register',
     'http://localhost:5173/login',
     'http://localhost:5173/noteposts',
+    'http://localhost:5173/all_noteposts',
 ]
 const corsOptions = {
     origin: allowedOrigins,
-    credentials: true
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
-app.use('/', routes)
+app.use(cookieParser());
+app.use('/', routes);
 
 
 mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true });

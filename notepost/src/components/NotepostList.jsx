@@ -2,45 +2,66 @@ import './NotepostList.css';
 import Notepost from './Notepost';
 import CreateNotepost from './CreateNotepost';
 import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+
 const NotepostList = ({ userId }) => {
   const [showModal, setShowModal] = useState(false)
   const [newNotepost, setNewNotepost] = useState({
     userId: '',
     name: '',
-    date: '',
+    date: Date.now(),
     content: ''
 
   })
   const [noteposts, setNoteposts] = useState([])
-
-  //Get all noteposts
   useEffect(() => {
-    getNoteposts();
-  }, [userId, noteposts])
+    if (userId) {
+      getNoteposts();
+      console.log('useEffect getNoteposts ', userId)
+    } else {
+      console.log('useEffect NO FOUND getNoteposts ', userId)
+    }
+
+  }, [userId])
 
   //Get all noteposts
   const getNoteposts = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/noteposts', {
-        'method': 'GET',
-        'headers': {
-          'Content-Type': 'application/json'
-        },
-        'credentials': 'include'
-      })
+    console.log('Getting noteposts')
+    const token = Cookies.get('token');
+    console.log(token)
 
-      const data = await response.json();
-      const dataArray = await data.noteposts;
-      const filteredData = dataArray.filter((notepost) => notepost.owner === userId);
-
-      setNoteposts(filteredData);
-
-    } catch (error) {
-      console.log('Error getting noteposts ', error)
+    if (!userId) {
+      console.log('No userId found')
+      return
     }
+    console.log('userId found')
+    if (token) {
+      try {
+        const response = await fetch('http://localhost:8000/all_noteposts', {
+          'method': 'POST',
+          'headers': {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          'body': JSON.stringify({ userId }),
+          'credentials': 'include'
+        })
+        const data = await response.json();
+        console.log(response)
+        console.log(data)
+        const dataArray = await data.noteposts;
+
+        setNoteposts(dataArray);
+
+      } catch (error) {
+        console.log('Error getting noteposts ', error)
+      }
+    } else {
+      console.log('No token found')
+
+    }
+
   }
-
-
 
   const openModal = () => {
     setShowModal(true)

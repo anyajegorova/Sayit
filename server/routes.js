@@ -3,11 +3,12 @@ const Notepost = require('./models/Notepost');
 const express = require('express')
 const bcrypt = require('bcrypt')
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 
 //Login
 
 router.post('/login', async (req, res) => {
-
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
@@ -22,7 +23,9 @@ router.post('/login', async (req, res) => {
         if (!passwordMatch) {
             return res.status(401).json({ message: 'Invalid email or password' });
         } else {
-            res.status(200).json({ message: 'Login successful', email: user.email, id: user._id });
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+            res.status(200).json({ message: 'Login successful', email: user.email, id: user._id, token });
+            console.log('Login here', user._id, user.email, token)
         }
 
 
@@ -101,12 +104,19 @@ router.post('/noteposts', async (req, res) => {
 
 // Get all noteposts
 
-router.get('/noteposts', async (req, res) => {
+router.post('/all_noteposts', async (req, res) => {
+    console.log('all noteposts')
     try {
-        const noteposts = await Notepost.find();
-        res.status(200).json({ noteposts });
+        const { userId } = await req.body;
+        console.log('Request body', req.body)
+        const noteposts = await Notepost.find({ owner: userId });
+
+        console.log(userId);
+        console.log(noteposts)
+        res.status(200).json(noteposts);
     } catch (error) {
         console.error(error)
+
     }
 }
 )
