@@ -4,7 +4,7 @@ import CreateNotepost from './CreateNotepost';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
-const NotepostList = ({ userId }) => {
+const NotepostList = ({ userId, loggedIn }) => {
   const [showModal, setShowModal] = useState(false)
   const [newNotepost, setNewNotepost] = useState({
     userId: '',
@@ -47,11 +47,9 @@ const NotepostList = ({ userId }) => {
           'credentials': 'include'
         })
         const data = await response.json();
-        console.log(response)
+        console.log('Here', response)
         console.log(data)
-        const dataArray = await data.noteposts;
-
-        setNoteposts(dataArray);
+        setNoteposts(data);
 
       } catch (error) {
         console.log('Error getting noteposts ', error)
@@ -71,16 +69,15 @@ const NotepostList = ({ userId }) => {
   return (
     <div className='main_container'>
       <section id='notepost_section'>
-        <button onClick={openModal}>
-          New Notepost +
-        </button>
         <CreateNotepost showModal={showModal} setShowModal={setShowModal} newNotepost={newNotepost} setNewNotepost={setNewNotepost} userId={userId} />
         <div className='noteposts'>
           {noteposts?.map((notepost) => (<Notepost key={notepost.name} name={notepost.name} date={notepost.date} content={notepost.content} />))}
         </div>
       </section>
+      <button onClick={openModal}>
+        New Notepost +
+      </button>
     </div>
-  );
+  )
 }
-
 export default NotepostList;

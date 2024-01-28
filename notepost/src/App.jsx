@@ -9,11 +9,28 @@ import Cookies from 'js-cookie';
 function App() {
   const [userId, setUserId] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
+  const [tokenState, setTokenState] = useState('');
 
   useEffect(() => {
     const token = Cookies.get('token');
-    token ? setLoggedIn(true) : setLoggedIn(false);
+    setTokenState(token);
+    console.log('Token in App.jsx:', token);
   }, [])
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+    const storedUserId = localStorage.getItem('userId');
+    console.log('Token in App.jsx:', token);
+    if (token) {
+      setLoggedIn(true);
+      setUserId(storedUserId);
+
+    } else {
+      setLoggedIn(false);
+      setUserId('');
+    }
+
+  }, [tokenState])
 
 
   useEffect(() => {
@@ -45,21 +62,7 @@ function App() {
             </li>}
         </ul>
       </nav>
-      <MainRoutes setUserId={setUserId} setLoggedIn={setLoggedIn}/>
-      {loggedIn ? (<>
-        <ul>
-          <li>
-            <Link to='/all_noteposts'>
-              <NotepostList userId={userId} />
-              All My Noteposts
-              {console.log('UserId in App.jsx:', userId)}
-
-            </Link>
-          </li>
-        </ul>
-
-      </>
-      ) : null}
+      <MainRoutes userId={userId} setUserId={setUserId} setLoggedIn={setLoggedIn} loggedIn={loggedIn} />
     </div>
 
 

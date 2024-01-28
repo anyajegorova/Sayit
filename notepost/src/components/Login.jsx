@@ -31,6 +31,8 @@ const Login = ({ mode, setUserId, setLoggedIn }) => {
                 console.log(data)
                 setLoggedIn(true)
                 Cookies.set('token', data.token, { expires: 7 });
+                localStorage.setItem('userId', data.id);
+                
                 console.log('Login successful');
                 const saveId = data.id;
                 console.log('Login ', saveId)
