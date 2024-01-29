@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import NotepostList from './components/NotepostList';
 
 import { Link } from 'react-router-dom';
 import MainRoutes from './components/MainRoutes';
