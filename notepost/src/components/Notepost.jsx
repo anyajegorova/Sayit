@@ -1,6 +1,5 @@
 import './Notepost.css';
 const Notepost = ({ name, date, content }) => {
-
     return (
         <div className='notepost'>
             <div id='close'>✖</div>

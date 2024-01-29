@@ -31,7 +31,6 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use('/', routes);
 
-
 mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true });
 db.on('error', console.error.bind(console, 'Database connection error:'));
 

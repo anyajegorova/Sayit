@@ -56,7 +56,6 @@ const NotepostList = ({ userId, loggedIn }) => {
       }
     } else {
       console.log('No token found')
-
     }
 
   }

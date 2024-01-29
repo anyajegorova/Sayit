@@ -1,5 +1,6 @@
 import './Profile.css'
 const Profile = () => {
+
     // const [user, setUser] = useState({})
     // const [loading, setLoading] = useState(true)
     // const [error, setError] = useState(null)
@@ -20,7 +21,6 @@ const Profile = () => {
 
     // if (loading) return <p>Loading...</p>
     // if (error) return <p>{error.message}</p>
-
     return (
         <div className='profile_page'>
             <h1>Profile</h1>

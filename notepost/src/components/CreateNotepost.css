@@ -15,19 +15,18 @@
     top: 50%;
     left: 50%;
     position: absolute;
+    width: 600px;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
     background-color: #919191;
     transform: translate(-50%, -50%);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 12px;
-    width: 600px;
-    height: 700px;
-    padding: 38px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     border: 0.5px solid #868686;
-
+    padding: 38px;
 }
 
 .modal_body {

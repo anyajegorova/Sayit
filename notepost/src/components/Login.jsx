@@ -8,8 +8,6 @@ const Login = ({ mode, setUserId, setLoggedIn }) => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-
-    //Login 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {

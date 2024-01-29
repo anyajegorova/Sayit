@@ -31,7 +31,6 @@ function App() {
 
   }, [tokenState])
 
-
   useEffect(() => {
     console.log('UserId in App.jsx:', userId);
     console.log('LoggedIn in App.jsx:', loggedIn);
@@ -63,8 +62,6 @@ function App() {
       </nav>
       <MainRoutes userId={userId} setUserId={setUserId} setLoggedIn={setLoggedIn} loggedIn={loggedIn} />
     </div>
-
-
   )
 }
 

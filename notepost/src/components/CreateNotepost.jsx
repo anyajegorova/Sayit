@@ -37,8 +37,6 @@ const CreateNotepost = ({ showModal, setShowModal, newNotepost, setNewNotepost, 
         }))
     }, [setNewNotepost, userId]);
 
-    //Create new notepost
-
     const addNewNotepost = async (e) => {
         e.preventDefault()
         setShowModal(false);
