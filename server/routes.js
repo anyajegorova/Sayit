@@ -122,4 +122,19 @@ router.post('/all_noteposts', async (req, res) => {
 }
 )
 
+// Delete notepost
+
+router.post('/delete_notepost', async (req, res) => {
+    try {
+        const { userId, name } = await req.body;
+        const deletedNotepost = await Notepost.deleteOne({ owner: userId, name: name });
+        console.log('Deleted notepost', deletedNotepost)
+        res.status(200).json({ message: 'Notepost deleted successfully' });
+
+    } catch (error) {
+        console.error('HerE', error)
+    }
+}
+);
+
 module.exports = router;

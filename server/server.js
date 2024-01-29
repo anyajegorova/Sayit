@@ -18,6 +18,7 @@ const allowedOrigins = [
     'http://localhost:5173/login',
     'http://localhost:5173/noteposts',
     'http://localhost:5173/all_noteposts',
+    'http://localhost:5173/noteposts/delete_notepost',
 ]
 const corsOptions = {
     origin: allowedOrigins,

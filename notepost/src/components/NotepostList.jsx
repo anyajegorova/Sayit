@@ -22,7 +22,7 @@ const NotepostList = ({ userId, loggedIn }) => {
       console.log('useEffect NO FOUND getNoteposts ', userId)
     }
 
-  }, [userId])
+  }, [userId, showModal])
 
   //Get all noteposts
   const getNoteposts = async () => {
@@ -60,6 +60,40 @@ const NotepostList = ({ userId, loggedIn }) => {
 
   }
 
+  // Delete notepost
+
+  const deleteNotepost = async (name) => {
+    console.log('Deleting notepost ', name)
+    const token = Cookies.get('token');
+
+    if (!userId) {
+      console.log('No userId found')
+      return
+    }
+    console.log('userId found')
+    if (token) {
+      try {
+        const response = await fetch('http://localhost:8000/delete_notepost', {
+          'method': 'POST',
+          'headers': {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          'body': JSON.stringify({ userId, name }),
+          'credentials': 'include'
+        })
+        console.log(response, 'Here' )
+        getNoteposts();
+
+      } catch (error) {
+        console.log('Error deleting notepost ', error)
+        console.log(name, userId, token)
+      }
+    } else {
+      console.log('No token found')
+    }
+  }
+
   const openModal = () => {
     setShowModal(true)
     console.log("Model opened by:", userId)
@@ -70,7 +104,7 @@ const NotepostList = ({ userId, loggedIn }) => {
       <section id='notepost_section'>
         <CreateNotepost showModal={showModal} setShowModal={setShowModal} newNotepost={newNotepost} setNewNotepost={setNewNotepost} userId={userId} />
         <div className='noteposts'>
-          {noteposts?.map((notepost) => (<Notepost key={notepost.name} name={notepost.name} date={notepost.date} content={notepost.content} />))}
+          {noteposts?.map((notepost) => (<Notepost key={notepost.name} name={notepost.name} date={notepost.date} content={notepost.content} deleteNotepost={() => deleteNotepost(notepost.name)} />))}
         </div>
       </section>
       <button onClick={openModal}>
