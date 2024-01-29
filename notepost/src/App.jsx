@@ -48,7 +48,7 @@ function App() {
       <nav>
         <h1>Noteposts</h1>
         <ul>
-          <li><Link to='/' id='link'> Home</Link></li>
+          <li><Link to='/all_noteposts' id='link'> Home</Link></li>
           {loggedIn ? (
             <>
               <li><Link to='/profile' id='link'>Profile</Link></li>
