@@ -109,11 +109,7 @@ router.post('/all_noteposts', async (req, res) => {
     console.log('all noteposts')
     try {
         const { userId } = await req.body;
-        console.log('Request body', req.body)
         const noteposts = await Notepost.find({ owner: userId });
-
-        console.log(userId);
-        console.log(noteposts)
         res.status(200).json(noteposts);
     } catch (error) {
         console.error(error)
@@ -126,13 +122,15 @@ router.post('/all_noteposts', async (req, res) => {
 
 router.post('/delete_notepost', async (req, res) => {
     try {
-        const { userId, name } = await req.body;
+        const { userId, name } = req.body;
+
         const deletedNotepost = await Notepost.deleteOne({ owner: userId, name: name });
         console.log('Deleted notepost', deletedNotepost)
         res.status(200).json({ message: 'Notepost deleted successfully' });
 
     } catch (error) {
-        console.error('HerE', error)
+        console.error(error)
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 );

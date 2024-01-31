@@ -1,11 +1,13 @@
 import './NotepostList.css';
 import Notepost from './Notepost';
 import CreateNotepost from './CreateNotepost';
+import AlertModal from './AlertModal';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
 const NotepostList = ({ userId, loggedIn }) => {
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [newNotepost, setNewNotepost] = useState({
     userId: '',
     name: '',
@@ -14,6 +16,7 @@ const NotepostList = ({ userId, loggedIn }) => {
 
   })
   const [noteposts, setNoteposts] = useState([])
+  const [currentNotepostName, setCurrentNotepostName] = useState('')
   useEffect(() => {
     if (userId) {
       getNoteposts();
@@ -61,7 +64,6 @@ const NotepostList = ({ userId, loggedIn }) => {
   }
 
   // Delete notepost
-
   const deleteNotepost = async (name) => {
     console.log('Deleting notepost ', name)
     const token = Cookies.get('token');
@@ -71,6 +73,8 @@ const NotepostList = ({ userId, loggedIn }) => {
       return
     }
     console.log('userId found')
+    console.log('POST NAME:', name)
+    console.log(userId)
     if (token) {
       try {
         const response = await fetch('http://localhost:8000/delete_notepost', {
@@ -79,10 +83,11 @@ const NotepostList = ({ userId, loggedIn }) => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
-          'body': JSON.stringify({ userId, name }),
+          'body': JSON.stringify({ userId, name: name.toString() }),
           'credentials': 'include'
         })
-        console.log(response, 'Here' )
+        console.log(response, 'Here')
+        setShowAlert(false)
         getNoteposts();
 
       } catch (error) {
@@ -99,17 +104,36 @@ const NotepostList = ({ userId, loggedIn }) => {
     console.log("Model opened by:", userId)
   }
 
+
   return (
     <div className='main_container'>
       <section id='notepost_section'>
-        <CreateNotepost showModal={showModal} setShowModal={setShowModal} newNotepost={newNotepost} setNewNotepost={setNewNotepost} userId={userId} />
+        <CreateNotepost
+          showModal={showModal}
+          setShowModal={setShowModal}
+          newNotepost={newNotepost}
+          setNewNotepost={setNewNotepost}
+          userId={userId} />
         <div className='noteposts'>
-          {noteposts?.map((notepost) => (<Notepost key={notepost.name} name={notepost.name} date={notepost.date} content={notepost.content} deleteNotepost={() => deleteNotepost(notepost.name)} />))}
+          {noteposts?.map((notepost) => (
+            <Notepost key={notepost.name}
+              name={notepost.name}
+              date={notepost.date}
+              content={notepost.content}
+              setShowAlert={setShowAlert}
+              currentNotepostName={currentNotepostName}
+              setCurrentNotepostName={setCurrentNotepostName} />))}
         </div>
       </section>
-      <button onClick={openModal}>
+      <button onClick={openModal} id='add_notepost_button'>
         New Notepost +
       </button>
+      {showAlert ? (
+        <AlertModal
+          setShowAlert={setShowAlert}
+          deleteNotepost={deleteNotepost}
+          currentNotepostName={currentNotepostName}
+        />) : null}
     </div>
   )
 }
