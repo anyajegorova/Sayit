@@ -6,6 +6,10 @@ import Cookies from 'js-cookie';
 const Login = ({ mode, setUserId, setLoggedIn }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [currentUser, setCurrentUser] = useState({
+        id: '',
+        email: ''
+    })
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -30,7 +34,7 @@ const Login = ({ mode, setUserId, setLoggedIn }) => {
                 setLoggedIn(true)
                 Cookies.set('token', data.token, { expires: 7 });
                 localStorage.setItem('userId', data.id);
-                
+
                 console.log('Login successful');
                 const saveId = data.id;
                 console.log('Login ', saveId)

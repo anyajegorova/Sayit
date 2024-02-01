@@ -103,10 +103,9 @@ router.post('/noteposts', async (req, res) => {
     }
 })
 
-// Get all noteposts
+// Get all user noteposts
 
 router.post('/all_noteposts', async (req, res) => {
-    console.log('all noteposts')
     try {
         const { userId } = await req.body;
         const noteposts = await Notepost.find({ owner: userId });
@@ -134,5 +133,31 @@ router.post('/delete_notepost', async (req, res) => {
     }
 }
 );
+
+// Get all noteposts
+
+router.get('/public_noteposts', async (req, res) => {
+    try {
+        const noteposts = await Notepost.find({});
+
+        //Creating array for storing promises for fetching user data using populate
+        const userPromises = noteposts.map(async (notepost) => { 
+            await Notepost.populate(notepost, { path: 'owner', select: 'email' });
+        });
+        await Promise.all(userPromises);
+
+        const formattedNoteposts = noteposts.map((notepost) => ({
+            name: notepost.name,
+            date: notepost.date,
+            content: notepost.content,
+            ownerEmail: notepost.owner.email
+        }));
+        console.log(formattedNoteposts)
+        res.status(200).json(formattedNoteposts);
+    } catch (error) {
+        console.error(error)
+    }
+
+})
 
 module.exports = router;

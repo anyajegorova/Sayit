@@ -72,9 +72,7 @@ const NotepostList = ({ userId, loggedIn }) => {
       console.log('No userId found')
       return
     }
-    console.log('userId found')
-    console.log('POST NAME:', name)
-    console.log(userId)
+
     if (token) {
       try {
         const response = await fetch('http://localhost:8000/delete_notepost', {
@@ -121,8 +119,9 @@ const NotepostList = ({ userId, loggedIn }) => {
               date={notepost.date}
               content={notepost.content}
               setShowAlert={setShowAlert}
-              currentNotepostName={currentNotepostName}
-              setCurrentNotepostName={setCurrentNotepostName} />))}
+              setCurrentNotepostName={setCurrentNotepostName}
+              mode={'edit'}
+               />))}
         </div>
       </section>
       <button onClick={openModal} id='add_notepost_button'>

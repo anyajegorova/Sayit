@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import MainRoutes from './components/MainRoutes';
 import Cookies from 'js-cookie';
 
@@ -9,6 +9,8 @@ function App() {
   const [userId, setUserId] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [tokenState, setTokenState] = useState('');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -41,13 +43,15 @@ function App() {
     setLoggedIn(false);
     setUserId('');
     console.log('Logout ', userId)
+    navigate('/login')
   }
   return (
     <div className='home_page'>
       <nav>
         <h1>Noteposts</h1>
         <ul>
-          <li><Link to='/all_noteposts' id='link'> Home</Link></li>
+          <li><Link to='/public_noteposts' id='link'>All Noteposts</Link></li>
+          <li><Link to='/all_noteposts' id='link'> My Noteposts</Link></li>
           {loggedIn ? (
             <>
               <li><Link to='/profile' id='link'>Profile</Link></li>
