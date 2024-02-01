@@ -73,10 +73,10 @@
     margin: 10px;
 }
 
-#alert_buttons #yes:hover {
+ #yes:hover {
     background-color: #b3ec8d;
 }
 
-#alert_buttons #no:hover {
+ #no:hover {
     background-color: #ff9999;
 }

@@ -19,7 +19,7 @@
     margin-top: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
-    padding: 5em;
+    padding: 0em 5em 5em 5em;
     border-radius: 5px;
     height: 480px;
     width: 500px;
@@ -32,7 +32,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     text-align: start;
 }
 
@@ -41,4 +41,47 @@
     align-items: baseline;
     justify-content: space-between;
     width: 100%;
+}
+.change_password_container{
+    display: flex;
+    flex-direction: column;
+    height: 348px;
+    width: 100%;
+}
+
+#change_password_input{
+    margin-bottom: 10px;
+    width: 100%;
+    height: 40px;
+}
+
+#change_password_input::placeholder{
+    font-size: 14px;
+    
+} 
+#change_password{
+    border: none;
+    background-color: transparent;
+    color: #007bff;
+    cursor: pointer;
+
+    margin: 20px;
+}
+
+.change_password_buttons{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    
+}
+
+.change_password_buttons button{
+    width: 100px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
 }
