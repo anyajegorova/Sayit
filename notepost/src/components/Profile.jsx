@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import './Profile.css'
 const Profile = ({ userId }) => {
     const [user, setUser] = useState({
+        username: '',
         email: ''
 
     })
@@ -27,7 +28,7 @@ const Profile = ({ userId }) => {
                     'credentials': 'include'
                 })
                 const data = await response.json();
-                setUser({ email: data.email })
+                setUser({ username: data.username, email: data.email })
             } catch (error) {
                 console.log('Error getting noteposts ', error)
             }
@@ -40,8 +41,17 @@ const Profile = ({ userId }) => {
             <h1>Profile</h1>
             <div className='profile_container'>
                 <div className='profile'>
-
-                    This is Profile page of {user.email}
+                    <div id='info'>
+                        <h3>Username</h3>
+                        <div className='profile_username'>{user.username}</div>
+                    </div>
+                    <div id='info'>
+                        <h3>Email</h3>
+                        <div className='profile_email'>{user.email}</div>
+                    </div>
+                    <div>
+                        <h4>Change Password</h4>
+                    </div>
                 </div>
             </div>
         </div>

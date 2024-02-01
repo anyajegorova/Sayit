@@ -59,8 +59,8 @@ router.post('/logout', async (req, res) => {
 router.post('/register', async (req, res) => {
 
     try {
-        const { email, password } = req.body;
-        console.log(email, password)
+        const { username, email, password } = req.body;
+        console.log(username, email, password)
         //Checking if user already exists
         const user = await User.findOne({ email });
         if (user) {
@@ -71,6 +71,7 @@ router.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = new User({
+            username: username,
             email: email,
             password: hashedPassword
         });
@@ -177,7 +178,7 @@ router.post('/profile', async (req, res) => {
     const { userId } = req.body;
     try {
         const user = await User.findById(userId)
-        res.status(200).json({ email: user.email });
+        res.status(200).json({ username: user.username, email: user.email });
     } catch (error) {
         console.error(error)
     }

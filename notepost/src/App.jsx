@@ -3,10 +3,12 @@ import './App.css'
 
 import { Link, useNavigate } from 'react-router-dom';
 import MainRoutes from './components/MainRoutes';
+import Navbar from './components/Navbar';
 import Cookies from 'js-cookie';
 
 function App() {
   const [userId, setUserId] = useState('');
+  const [username, setUsername] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [tokenState, setTokenState] = useState('');
 
@@ -21,10 +23,13 @@ function App() {
   useEffect(() => {
     const token = Cookies.get('token');
     const storedUserId = localStorage.getItem('userId');
+    const storedUsername = localStorage.getItem('username');
+
     console.log('Token in App.jsx:', token);
     if (token) {
       setLoggedIn(true);
       setUserId(storedUserId);
+      setUsername(storedUsername);
 
     } else {
       setLoggedIn(false);
@@ -47,24 +52,13 @@ function App() {
   }
   return (
     <div className='home_page'>
-      <nav>
-        <h1>Noteposts</h1>
-        <ul>
-          <li><Link to='/public_noteposts' id='link'>All Noteposts</Link></li>
-          <li><Link to='/all_noteposts' id='link'> My Noteposts</Link></li>
-          {loggedIn ? (
-            <>
-              <li><Link to='/profile' id='link'>Profile</Link></li>
-              <li onClick={logout} id='link'>Logout</li>
-            </>
-
-          ) :
-            <li>
-              <Link to='/login' >Login</Link>
-            </li>}
-        </ul>
-      </nav>
-      <MainRoutes userId={userId} setUserId={setUserId} setLoggedIn={setLoggedIn} loggedIn={loggedIn} />
+      <Navbar loggedIn={loggedIn} logout={logout} />
+      <MainRoutes
+        userId={userId}
+        setUserId={setUserId}
+        setLoggedIn={setLoggedIn}
+        loggedIn={loggedIn}
+      />
     </div>
   )
 }

@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 const Login = ({ mode, setUserId, setLoggedIn }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('');
     const [currentUser, setCurrentUser] = useState({
         id: '',
         email: ''
@@ -34,6 +35,7 @@ const Login = ({ mode, setUserId, setLoggedIn }) => {
                 setLoggedIn(true)
                 Cookies.set('token', data.token, { expires: 7 });
                 localStorage.setItem('userId', data.id);
+                localStorage.setItem('username', data.username);
 
                 console.log('Login successful');
                 const saveId = data.id;
@@ -61,6 +63,7 @@ const Login = ({ mode, setUserId, setLoggedIn }) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    username,
                     email,
                     password
                 })
@@ -85,6 +88,7 @@ const Login = ({ mode, setUserId, setLoggedIn }) => {
             <div className='login_container'>
                 {mode === 'login' ? <h1>Login</h1> : <h1>Register</h1>}
                 <form>
+                    {mode === 'register' ? <input type="text" placeholder="Username" onChange={(e) => { setUsername(e.target.value) }} /> : null}
                     <input type="text" placeholder="Email" onChange={(e) => { setEmail(e.target.value) }} />
                     <input type="password" placeholder="Password" onChange={(e) => { setPassword(e.target.value) }} />
                     {mode === 'register' ? <input type="password" placeholder="Confirm Password" /> : null}
