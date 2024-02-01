@@ -40,15 +40,19 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    padding: 10px 30px;
+    box-sizing: border-box;
 }
  #notepost_name {
     flex: 1;
     font-weight: 600;
     padding-top: 40px;
+    
 }
 
 #notepost_date {
     padding-top: 10px;
+    font-size: 14px;
 }
 
 

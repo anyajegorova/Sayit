@@ -17,12 +17,13 @@ const NotepostList = ({ userId, loggedIn }) => {
   })
   const [noteposts, setNoteposts] = useState([])
   const [currentNotepostName, setCurrentNotepostName] = useState('')
+  useEffect(() => { getNoteposts() }, [])
   useEffect(() => {
     if (userId) {
       getNoteposts();
-      console.log('useEffect getNoteposts ', userId)
+      console.log('getNoteposts ', userId)
     } else {
-      console.log('useEffect NO FOUND getNoteposts ', userId)
+      console.log('NO FOUND getNoteposts ', userId)
     }
 
   }, [userId, showModal])
@@ -121,7 +122,7 @@ const NotepostList = ({ userId, loggedIn }) => {
               setShowAlert={setShowAlert}
               setCurrentNotepostName={setCurrentNotepostName}
               mode={'edit'}
-               />))}
+            />))}
         </div>
       </section>
       <button onClick={openModal} id='add_notepost_button'>

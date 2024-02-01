@@ -5,6 +5,12 @@ import Notepost from './Notepost';
 const AllNoteposts = () => {
     const [noteposts, setNoteposts] = useState([]);
 
+    // const formatDate = (date) => {
+    //     const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    //     const formattedDate = new Date(date).toLocaleDateString('en-US', options);
+    //     return formattedDate;
+    // }
+
     useEffect(() => { getAllNoteposts() }, [])
 
     const getAllNoteposts = async () => {
@@ -18,9 +24,16 @@ const AllNoteposts = () => {
             })
 
             const data = await response.json();
+
+            const formattedNoteposts = data.map((notepost) => ({
+                name: notepost.name,
+                date: notepost.date,
+                content: notepost.content,
+                ownerEmail: notepost.ownerEmail
+            }))
             console.log('Here', response)
-            console.log(data)
-            setNoteposts(data);
+
+            setNoteposts(formattedNoteposts);
 
         } catch (error) {
             console.log('Error getting noteposts ', error)
@@ -37,9 +50,9 @@ const AllNoteposts = () => {
                         content={notepost.content}
                         setShowAlert={''}
                         setCurrentNotepostName={''}
-                        mode={'public'} 
+                        mode={'public'}
                         ownerEmail={notepost.ownerEmail}
-                        />))}
+                    />))}
             </div>
         </div>
     );

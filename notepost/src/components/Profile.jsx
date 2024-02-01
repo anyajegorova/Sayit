@@ -1,34 +1,47 @@
+import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 import './Profile.css'
-const Profile = () => {
+const Profile = ({ userId }) => {
+    const [user, setUser] = useState({
+        email: ''
 
-    // const [user, setUser] = useState({})
-    // const [loading, setLoading] = useState(true)
-    // const [error, setError] = useState(null)
+    })
 
-    // useEffect(() => {
-    //     const fetchUser = async () => {
-    //         try {
-    //             const res = await axios.get('/api/users/profile')
-    //             setUser(res.data)
-    //             setLoading(false)
-    //         } catch (err) {
-    //             setError(err)
-    //             setLoading(false)
-    //         }
-    //     }
-    //     fetchUser()
-    // }, [])
+    useEffect(() => {
+        getUser()
+        console.log(userId)
+    }, [])
 
-    // if (loading) return <p>Loading...</p>
-    // if (error) return <p>{error.message}</p>
+    const getUser = async () => {
+        const token = Cookies.get('token');
+
+        if (token) {
+            try {
+                const response = await fetch('http://localhost:8000/profile', {
+                    'method': 'POST',
+                    'headers': {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    'body': JSON.stringify({ userId }),
+                    'credentials': 'include'
+                })
+                const data = await response.json();
+                setUser({ email: data.email })
+            } catch (error) {
+                console.log('Error getting noteposts ', error)
+            }
+        } else {
+            console.log('No token found')
+        }
+    }
     return (
         <div className='profile_page'>
             <h1>Profile</h1>
             <div className='profile_container'>
                 <div className='profile'>
-                    {/* <h2>{user.name}</h2>
-                    <p>{user.email}</p> */}
-                    This is Profile page
+
+                    This is Profile page of {user.email}
                 </div>
             </div>
         </div>

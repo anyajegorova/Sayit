@@ -1,6 +1,7 @@
 const User = require('./models/User');
 const Notepost = require('./models/Notepost');
 
+const moment = require('moment');
 const express = require('express')
 const bcrypt = require('bcrypt')
 const router = express.Router();
@@ -25,7 +26,12 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ message: 'Invalid email or password' });
         } else {
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-            res.status(200).json({ message: 'Login successful', email: user.email, id: user._id, token });
+            res.status(200).json({
+                message: 'Login successful',
+                email: user.email,
+                id: user._id,
+                token
+            });
             console.log('Login here', user._id, user.email, token)
         }
 
@@ -109,7 +115,13 @@ router.post('/all_noteposts', async (req, res) => {
     try {
         const { userId } = await req.body;
         const noteposts = await Notepost.find({ owner: userId });
-        res.status(200).json(noteposts);
+        const formattedNoteposts = noteposts.map((notepost) => ({
+            name: notepost.name,
+            date: moment(notepost.date).format('Do [of] MMMM YYYY'),
+            content: notepost.content,
+            ownerEmail: notepost.owner.email
+        }));
+        res.status(200).json(formattedNoteposts);
     } catch (error) {
         console.error(error)
 
@@ -141,19 +153,31 @@ router.get('/public_noteposts', async (req, res) => {
         const noteposts = await Notepost.find({});
 
         //Creating array for storing promises for fetching user data using populate
-        const userPromises = noteposts.map(async (notepost) => { 
+        const userPromises = noteposts.map(async (notepost) => {
             await Notepost.populate(notepost, { path: 'owner', select: 'email' });
         });
         await Promise.all(userPromises);
 
         const formattedNoteposts = noteposts.map((notepost) => ({
             name: notepost.name,
-            date: notepost.date,
+            date: moment(notepost.date).format('Do [of] MMMM YYYY'),
             content: notepost.content,
             ownerEmail: notepost.owner.email
         }));
-        console.log(formattedNoteposts)
         res.status(200).json(formattedNoteposts);
+    } catch (error) {
+        console.error(error)
+    }
+
+})
+
+//Get user info
+
+router.post('/profile', async (req, res) => {
+    const { userId } = req.body;
+    try {
+        const user = await User.findById(userId)
+        res.status(200).json({ email: user.email });
     } catch (error) {
         console.error(error)
     }
