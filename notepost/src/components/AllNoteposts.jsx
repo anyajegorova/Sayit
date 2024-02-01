@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import './AllNoteposts.css'
 import Notepost from './Notepost';
-const AllNoteposts = () => {
+const AllNoteposts = ({mode}) => {
     const [noteposts, setNoteposts] = useState([]);
 
     // const formatDate = (date) => {
@@ -50,7 +50,7 @@ const AllNoteposts = () => {
                         content={notepost.content}
                         setShowAlert={''}
                         setCurrentNotepostName={''}
-                        mode={'public'}
+                        currentMode={mode}
                         ownerEmail={notepost.ownerEmail}
                     />))}
             </div>

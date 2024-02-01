@@ -5,7 +5,7 @@ import AlertModal from './AlertModal';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
-const NotepostList = ({ userId, loggedIn }) => {
+const NotepostList = ({ userId, loggedIn, mode }) => {
   const [showModal, setShowModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [newNotepost, setNewNotepost] = useState({
@@ -121,7 +121,7 @@ const NotepostList = ({ userId, loggedIn }) => {
               content={notepost.content}
               setShowAlert={setShowAlert}
               setCurrentNotepostName={setCurrentNotepostName}
-              mode={'edit'}
+              currentMode={mode}
             />))}
         </div>
       </section>

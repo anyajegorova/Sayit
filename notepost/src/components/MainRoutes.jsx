@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Login from './Login';
 import Profile from './Profile';
@@ -14,8 +14,8 @@ const MainRoutes = ({ setUserId, setLoggedIn, userId, loggedIn }) => {
             <Route path='/login' element={<Login mode='login' setUserId={setUserId} setLoggedIn={setLoggedIn} />} />
             <Route path='/register' element={<Login mode='register' setUserId={setUserId} setLoggedIn={setLoggedIn} />} />
             <Route path='/profile' element={<Profile userId={saveUserId} />} />
-            {loggedIn ? (<Route path='/all_noteposts' element={<NotepostList userId={saveUserId} />} />) : (<Route path='/user_noteposts' element={<Login mode='login' setUserId={setUserId} setLoggedIn={setLoggedIn} />} />)}
-            <Route path='/public_noteposts' element={<AllNoteposts />} />
+            {loggedIn ? (<Route path='/all_noteposts' element={<NotepostList userId={saveUserId} loggedIn={loggedIn} mode='edit' />} />) : (<Route path='/user_noteposts' element={<Login mode='login' setUserId={setUserId} setLoggedIn={setLoggedIn}/>} />)}
+            <Route path='/public_noteposts' element={<AllNoteposts mode='public'/>} />
 
         </Routes>
     )
