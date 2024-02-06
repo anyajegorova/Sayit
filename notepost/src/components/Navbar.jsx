@@ -8,10 +8,12 @@ const Navbar = ({ loggedIn, logout }) => {
             <h1>Noteposts</h1>
             <ul>
                 <li><Link to='/public_noteposts' className='link'>All Noteposts</Link></li>
-                <li><Link to='/all_noteposts' className='link'> My Noteposts</Link></li>
+
                 {loggedIn ? (
                     <>
+                        <li><Link to='/all_noteposts' className='link'> My Noteposts</Link></li>
                         <li><Link to='/profile' className='link'>Profile</Link></li>
+                        <li><Link to='/favourites' className='link'>Favourites</Link></li>
                         <li onClick={logout} className='link' id='logout'>Logout</li>
                     </>
 

@@ -5,11 +5,6 @@ import Notepost from './Notepost';
 const AllNoteposts = ({mode}) => {
     const [noteposts, setNoteposts] = useState([]);
 
-    // const formatDate = (date) => {
-    //     const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    //     const formattedDate = new Date(date).toLocaleDateString('en-US', options);
-    //     return formattedDate;
-    // }
 
     useEffect(() => { getAllNoteposts() }, [])
 
@@ -29,7 +24,9 @@ const AllNoteposts = ({mode}) => {
                 name: notepost.name,
                 date: notepost.date,
                 content: notepost.content,
-                ownerEmail: notepost.ownerEmail
+                ownerEmail: notepost.ownerEmail,
+                username: notepost.username,
+                isFavourite: notepost.isFavourite
             }))
             console.log('Here', response)
 
@@ -48,10 +45,12 @@ const AllNoteposts = ({mode}) => {
                         name={notepost.name}
                         date={notepost.date}
                         content={notepost.content}
+                        isFavourite={notepost.isFavourite}
                         setShowAlert={''}
                         setCurrentNotepostName={''}
                         currentMode={mode}
                         ownerEmail={notepost.ownerEmail}
+                        username={notepost.username}
                     />))}
             </div>
         </div>

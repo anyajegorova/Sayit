@@ -1,21 +1,19 @@
-import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 import Login from './Login';
 import Profile from './Profile';
 import NotepostList from './NotepostList';
 import AllNoteposts from './AllNoteposts';
-import { useEffect } from 'react';
-const MainRoutes = ({ setUserId, setLoggedIn, userId, loggedIn }) => {
-    const [saveUserId, setSaveUserId] = useState('')
+import Favourites from './Favourites';
 
-    useEffect(() => { setSaveUserId(userId) }, [userId])
+const MainRoutes = ({ loggedIn,setLoggedIn }) => {
     return (
         <Routes>
-            <Route path='/login' element={<Login mode='login' setUserId={setUserId} setLoggedIn={setLoggedIn} />} />
-            <Route path='/register' element={<Login mode='register' setUserId={setUserId} setLoggedIn={setLoggedIn} />} />
-            <Route path='/profile' element={<Profile userId={saveUserId} />} />
-            {loggedIn ? (<Route path='/all_noteposts' element={<NotepostList userId={saveUserId} loggedIn={loggedIn} mode='edit' />} />) : (<Route path='/user_noteposts' element={<Login mode='login' setUserId={setUserId} setLoggedIn={setLoggedIn}/>} />)}
-            <Route path='/public_noteposts' element={<AllNoteposts mode='public'/>} />
+            <Route path='/login' element={<Login mode='login'setLoggedIn={setLoggedIn} />} />
+            <Route path='/register' element={<Login mode='register' setLoggedIn={setLoggedIn} />} />
+            <Route path='/profile' element={<Profile />} />
+            {loggedIn ? (<Route path='/favourites' element={<Favourites />} />) : null}
+            {loggedIn ? (<Route path='/all_noteposts' element={<NotepostList mode='edit' />} />) : (<Route path='/user_noteposts' element={<Login mode='login' setLoggedIn={setLoggedIn} />} />)}
+            <Route path='/public_noteposts' element={<AllNoteposts mode='public' />} />
 
         </Routes>
     )

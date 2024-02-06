@@ -45,6 +45,7 @@
 .change_password_container{
     display: flex;
     flex-direction: column;
+    align-items: center;
     height: 348px;
     width: 100%;
 }
@@ -57,7 +58,7 @@
 
 #change_password_input::placeholder{
     font-size: 14px;
-    
+
 } 
 #change_password{
     border: none;

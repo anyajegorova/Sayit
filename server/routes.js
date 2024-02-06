@@ -201,10 +201,58 @@ router.post('/change_password', async (req, res) => {
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         const updatedUser = await User.findByIdAndUpdate(userId, { password: hashedPassword });
         res.status(200).json({ message: 'Password changed successfully' });
-        
+
     } catch (error) {
         console.error(error)
     }
 });
+
+//Toggle favourite notepost
+router.post('/toggle_favourite', async (req, res) => {
+    try {
+
+        const { userId, notepostId } = req.body;
+        const user = await User.findById(userId);
+        const isFavourite = user.favourites.includes(notepostId);
+
+        if (isFavourite) {
+            user.favourites.pull(notepostId);
+        } else {
+            user.favourites.push(notepostId)
+        }
+
+
+        await user.save();
+        res.status(200).json({ message: 'Favourite updated successfully' });
+
+    } catch (error) {
+        console.error(error)
+    }
+});
+
+// //Get favourite noteposts
+// router.post('/favourites', async (req, res) => {
+//     try {
+//         const { userId } = req.body;
+//         console.log('userID', userId)
+//         const user = await User.findById(userId).populate('favourites');
+//         console.log('User', user)
+//         const formattedNoteposts = user.favourites.map((notepost) => ({
+//             name: notepost.name,
+//             date: moment(notepost.date).format('Do [of] MMMM YYYY'),
+//             content: notepost.content,
+//             ownerEmail: notepost.owner.email
+//         }));
+//         if (formattedNoteposts.length === 0) {
+//             return res.status(200).json({ message: 'No favourite noteposts' });
+//             console.log('formattedNoteposts', formattedNoteposts);
+//         }
+        
+//         res.status(200).json(formattedNoteposts);
+//         console.log('FORMATTED NOTEPOSTS ',formattedNoteposts)
+//     } catch (error) {
+//         console.error(error)
+//     }
+// });
 
 module.exports = router;

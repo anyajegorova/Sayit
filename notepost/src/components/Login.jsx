@@ -3,14 +3,10 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-const Login = ({ mode, setUserId, setLoggedIn }) => {
+const Login = ({ mode, setLoggedIn }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const [currentUser, setCurrentUser] = useState({
-        id: '',
-        email: ''
-    })
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -37,10 +33,8 @@ const Login = ({ mode, setUserId, setLoggedIn }) => {
                 localStorage.setItem('userId', data.id);
                 localStorage.setItem('username', data.username);
 
-                console.log('Login successful');
-                const saveId = data.id;
-                console.log('Login ', saveId)
-                setUserId(saveId);
+                console.log('Login ', data.id)
+
                 navigate('/all_noteposts')
 
             } else {

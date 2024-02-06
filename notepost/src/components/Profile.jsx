@@ -1,18 +1,31 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import './Profile.css'
-const Profile = ({ userId }) => {
+import './Profile.css';
+import { useNavigate } from 'react-router-dom';
+
+const Profile = () => {
+    const [tokenState, setTokenState] = useState('');
     const [user, setUser] = useState({
         username: '',
         email: ''
 
     })
-
     const [newPassword, setNewPassword] = useState('')
     const [newPasswordConfirmation, setNewPasswordConfirmation] = useState('')
     const [oldPassword, setOldPassword] = useState('')
-
+    const [success, setSuccess] = useState(false)
     const [changePassword, setChangePassword] = useState(false)
+
+    const userId = localStorage.getItem('userId');
+
+    useEffect(() => {
+        const token = Cookies.get('token');
+        if (token) {
+            setTokenState(token)
+        }
+    }, [])
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         getUser()
@@ -34,6 +47,17 @@ const Profile = ({ userId }) => {
                     'credentials': 'include'
                 })
                 const data = await response.json();
+                if (response.status === 200) {
+                    setChangePassword(false)
+                    setNewPassword('')
+                    setNewPasswordConfirmation('')
+                    setOldPassword('')
+                    setSuccess(true)
+                    setTimeout(() => {
+                        setSuccess(false)
+                    }, 3000)
+
+                }
                 console.log(data)
             } catch (error) {
                 console.log('Error changing password ', error)
@@ -89,10 +113,13 @@ const Profile = ({ userId }) => {
                                 <div className='change_password_buttons'>
                                     <button onClick={changePasswordHandler} id='yes'>Submit</button>
                                     <button onClick={() => setChangePassword(!changePassword)} id='no'>Cancel</button>
+
                                 </div>
+
                             </>)
                             : null
                         }
+                        {success ? <div className='success'>Password changed successfully</div> : null}
                     </div>
                 </div>
             </div>

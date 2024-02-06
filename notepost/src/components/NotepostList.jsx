@@ -5,7 +5,8 @@ import AlertModal from './AlertModal';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
-const NotepostList = ({ userId, loggedIn, mode }) => {
+const NotepostList = ({ mode }) => {
+  
   const [showModal, setShowModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [newNotepost, setNewNotepost] = useState({
@@ -17,6 +18,9 @@ const NotepostList = ({ userId, loggedIn, mode }) => {
   })
   const [noteposts, setNoteposts] = useState([])
   const [currentNotepostName, setCurrentNotepostName] = useState('')
+
+  const userId = localStorage.getItem('userId');
+
   useEffect(() => { getNoteposts() }, [])
   useEffect(() => {
     if (userId) {
@@ -26,7 +30,7 @@ const NotepostList = ({ userId, loggedIn, mode }) => {
       console.log('NO FOUND getNoteposts ', userId)
     }
 
-  }, [userId, showModal])
+  }, [showModal])
 
   //Get all noteposts
   const getNoteposts = async () => {
@@ -52,8 +56,17 @@ const NotepostList = ({ userId, loggedIn, mode }) => {
         })
         const data = await response.json();
         console.log('Here', response)
-        console.log(data)
-        setNoteposts(data);
+        console.log(data);
+        const formattedNoteposts = data.map((notepost) => ({
+          name: notepost.name,
+          date: notepost.date,
+          content: notepost.content,
+          ownerEmail: notepost.ownerEmail,
+          username: notepost.username,
+          isFavourite: notepost.isFavourite
+      }))
+        setNoteposts(formattedNoteposts);
+        
 
       } catch (error) {
         console.log('Error getting noteposts ', error)
@@ -119,6 +132,7 @@ const NotepostList = ({ userId, loggedIn, mode }) => {
               name={notepost.name}
               date={notepost.date}
               content={notepost.content}
+              isFavourite={notepost.isFavourite}
               setShowAlert={setShowAlert}
               setCurrentNotepostName={setCurrentNotepostName}
               currentMode={mode}
