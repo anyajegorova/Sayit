@@ -116,20 +116,56 @@ router.post('/all_noteposts', async (req, res) => {
     try {
         const { userId } = await req.body;
         const noteposts = await Notepost.find({ owner: userId });
+        const userPromises = noteposts.map(async (notepost) => {
+            await Notepost.populate(notepost, { path: 'owner', select: 'email username' });
+        });
+        await Promise.all(userPromises);
         const formattedNoteposts = noteposts.map((notepost) => ({
             name: notepost.name,
             date: moment(notepost.date).format('Do [of] MMMM YYYY'),
             content: notepost.content,
-            ownerEmail: notepost.owner.email
+            ownerEmail: notepost.owner.email,
+            username: notepost.owner.username,
+            notepostId: notepost._id,
+            likedBy: notepost.likedBy,
+            likeCount: notepost.likeCount
         }));
         res.status(200).json(formattedNoteposts);
+        console.log('formattedNoteposts', formattedNoteposts)
     } catch (error) {
         console.error(error)
 
     }
 }
 )
+// Get all noteposts
 
+router.get('/public_noteposts', async (req, res) => {
+    try {
+        const noteposts = await Notepost.find({});
+
+        //Creating array for storing promises for fetching user data using populate
+        const userPromises = noteposts.map(async (notepost) => {
+            await Notepost.populate(notepost, { path: 'owner', select: 'email username' });
+        });
+        await Promise.all(userPromises);
+
+        const formattedNoteposts = noteposts.map((notepost) => ({
+            name: notepost.name,
+            date: moment(notepost.date).format('Do [of] MMMM YYYY'),
+            content: notepost.content,
+            ownerEmail: notepost.owner.email,
+            username: notepost.owner.username,
+            notepostId: notepost._id,
+            likedBy: notepost.likedBy,
+            likeCount: notepost.likeCount
+        }));
+        res.status(200).json(formattedNoteposts);
+    } catch (error) {
+        console.error(error)
+    }
+
+})
 // Delete notepost
 
 router.post('/delete_notepost', async (req, res) => {
@@ -147,30 +183,7 @@ router.post('/delete_notepost', async (req, res) => {
 }
 );
 
-// Get all noteposts
 
-router.get('/public_noteposts', async (req, res) => {
-    try {
-        const noteposts = await Notepost.find({});
-
-        //Creating array for storing promises for fetching user data using populate
-        const userPromises = noteposts.map(async (notepost) => {
-            await Notepost.populate(notepost, { path: 'owner', select: 'email' });
-        });
-        await Promise.all(userPromises);
-
-        const formattedNoteposts = noteposts.map((notepost) => ({
-            name: notepost.name,
-            date: moment(notepost.date).format('Do [of] MMMM YYYY'),
-            content: notepost.content,
-            ownerEmail: notepost.owner.email
-        }));
-        res.status(200).json(formattedNoteposts);
-    } catch (error) {
-        console.error(error)
-    }
-
-})
 
 //Get user info
 
@@ -207,52 +220,62 @@ router.post('/change_password', async (req, res) => {
     }
 });
 
-//Toggle favourite notepost
-router.post('/toggle_favourite', async (req, res) => {
+
+//Toggle like 
+router.post('/toggle_like/:userId/like', async (req, res) => {
+    const { notepostId } = req.body;
+    const { userId } = req.params;
     try {
-
-        const { userId, notepostId } = req.body;
-        const user = await User.findById(userId);
-        const isFavourite = user.favourites.includes(notepostId);
-
-        if (isFavourite) {
-            user.favourites.pull(notepostId);
-        } else {
-            user.favourites.push(notepostId)
+        const notepost = await Notepost.findById(notepostId);
+        if (!notepost) {
+            return res.status(404).json({ message: 'Notepost not found' });
         }
+        if (notepost.likedBy.includes(userId)) {
+            notepost.likedBy.pull(userId);
+            notepost.likeCount--;
+        } else {
+            notepost.likedBy.push(userId);
+            notepost.likeCount++;
+        }
+        await notepost.save();
+        const updatedNotepost = await Notepost.findById(notepostId);
+        res.status(200).json({
+            message: 'Like toggled successfully',
+            updatedNotepost,
+        });
+    }
+    catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Server error' })
+    }
+})
 
+//Get all user likes 
+router.post('/favourites/:userId', async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const noteposts = await Notepost.find({ likedBy: userId });
+        const userPromises = noteposts.map(async (notepost) => {
+            await Notepost.populate(notepost, { path: 'owner', select: 'email username' });
+        });
 
-        await user.save();
-        res.status(200).json({ message: 'Favourite updated successfully' });
+        await Promise.all(userPromises);
 
+        const formattedNoteposts = noteposts.map((notepost) => ({
+            name: notepost.name,
+            date: moment(notepost.date).format('Do [of] MMMM YYYY'),
+            content: notepost.content,
+            ownerEmail: notepost.owner.email,
+            username: notepost.owner.username,
+            notepostId: notepost._id,
+            likedBy: notepost.likedBy,
+            likeCount: notepost.likeCount
+        }));
+        res.status(200).json(formattedNoteposts);
+        console.log(formattedNoteposts)
     } catch (error) {
         console.error(error)
     }
 });
-
-// //Get favourite noteposts
-// router.post('/favourites', async (req, res) => {
-//     try {
-//         const { userId } = req.body;
-//         console.log('userID', userId)
-//         const user = await User.findById(userId).populate('favourites');
-//         console.log('User', user)
-//         const formattedNoteposts = user.favourites.map((notepost) => ({
-//             name: notepost.name,
-//             date: moment(notepost.date).format('Do [of] MMMM YYYY'),
-//             content: notepost.content,
-//             ownerEmail: notepost.owner.email
-//         }));
-//         if (formattedNoteposts.length === 0) {
-//             return res.status(200).json({ message: 'No favourite noteposts' });
-//             console.log('formattedNoteposts', formattedNoteposts);
-//         }
-        
-//         res.status(200).json(formattedNoteposts);
-//         console.log('FORMATTED NOTEPOSTS ',formattedNoteposts)
-//     } catch (error) {
-//         console.error(error)
-//     }
-// });
 
 module.exports = router;

@@ -20,7 +20,8 @@ const allowedOrigins = [
     'http://localhost:5173/all_noteposts',
     'http://localhost:5173/public_noteposts',
     'http://localhost:5173/noteposts/delete_notepost',
-    'http://localhost:5173/noteposts/favourites'
+    'http://localhost:5173/noteposts/favourites',
+    'http://localhost:5173/noteposts/toggle_like',
 ]
 const corsOptions = {
     origin: allowedOrigins,

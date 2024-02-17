@@ -6,22 +6,26 @@ import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
 const NotepostList = ({ mode }) => {
-  
   const [showModal, setShowModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [newNotepost, setNewNotepost] = useState({
     userId: '',
     name: '',
     date: Date.now(),
-    content: ''
+    content: '',
+    isLikedBy: [],
+
 
   })
   const [noteposts, setNoteposts] = useState([])
-  const [currentNotepostName, setCurrentNotepostName] = useState('')
+  const [currentNotepostName, setCurrentNotepostName] = useState('');
 
   const userId = localStorage.getItem('userId');
 
-  useEffect(() => { getNoteposts() }, [])
+  useEffect(() => {
+    getNoteposts()
+  }, [])
+
   useEffect(() => {
     if (userId) {
       getNoteposts();
@@ -30,11 +34,10 @@ const NotepostList = ({ mode }) => {
       console.log('NO FOUND getNoteposts ', userId)
     }
 
-  }, [showModal])
+  }, [newNotepost])
 
-  //Get all noteposts
+  //Get all user noteposts
   const getNoteposts = async () => {
-    console.log('Getting noteposts')
     const token = Cookies.get('token');
     console.log(token)
 
@@ -55,18 +58,20 @@ const NotepostList = ({ mode }) => {
           'credentials': 'include'
         })
         const data = await response.json();
-        console.log('Here', response)
-        console.log(data);
+        console.log('Here', data);
         const formattedNoteposts = data.map((notepost) => ({
           name: notepost.name,
           date: notepost.date,
           content: notepost.content,
           ownerEmail: notepost.ownerEmail,
           username: notepost.username,
-          isFavourite: notepost.isFavourite
-      }))
+          notepostId: notepost.notepostId,
+          likedBy: notepost.likedBy,
+          likeCount: notepost.likeCount
+        }))
         setNoteposts(formattedNoteposts);
-        
+        console.log(formattedNoteposts, 'Formatted noteposts')
+
 
       } catch (error) {
         console.log('Error getting noteposts ', error)
@@ -104,7 +109,6 @@ const NotepostList = ({ mode }) => {
 
       } catch (error) {
         console.log('Error deleting notepost ', error)
-        console.log(name, userId, token)
       }
     } else {
       console.log('No token found')
@@ -115,6 +119,7 @@ const NotepostList = ({ mode }) => {
     setShowModal(true)
     console.log("Model opened by:", userId)
   }
+
 
 
   return (
@@ -132,10 +137,14 @@ const NotepostList = ({ mode }) => {
               name={notepost.name}
               date={notepost.date}
               content={notepost.content}
-              isFavourite={notepost.isFavourite}
               setShowAlert={setShowAlert}
               setCurrentNotepostName={setCurrentNotepostName}
+              username={notepost.username}
               currentMode={mode}
+              notepostId={notepost.notepostId}
+              favourites={notepost.likedBy}
+              likeCount={notepost.likeCount}
+              setNoteposts={setNoteposts}
             />))}
         </div>
       </section>

@@ -7,6 +7,7 @@ const Login = ({ mode, setLoggedIn }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
+
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {

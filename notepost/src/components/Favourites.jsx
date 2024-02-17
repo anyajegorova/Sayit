@@ -3,48 +3,44 @@ import Notepost from './Notepost';
 import './Favourites.css';
 import Cookies from 'js-cookie';
 
-const Favourites = ({ userId }) => {
-
+const Favourites = () => {
     const [favourites, setFavourites] = useState([])
-
+    const userId = localStorage.getItem('userId');
+    
     useEffect(() => {
         getFavourites()
     }, [])
 
-    const getFavourites = async () => {
-        const token = Cookies.get('token');
-        console.log('USER ID HERE', userId)
-        console.log('TOKEN HERE FAVOURITES', token)
-        if (token) {
-            try {
-                const response = await fetch('http://localhost:8000/favourites', {
-                    'method': 'POST',
-                    'headers': {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    },
-                    'body': JSON.stringify({ userId }),
-                    'credentials': 'include'
-                })
-                const data = await response.json();
-                console.log(data, 'FAVOURITES DATA HERE');
-                if (response.status === 200) {
-                    // setFavourites(data);
-                    console.log(data, 'Favourites')
-                } else {
-                    console.log('Error getting favourites')
-                }
-            } catch (error) {
-                console.log('Error getting favourites ', error)
-            }
-        } else {
-            console.log('No token found')
-        }
-
+const getFavourites = async () => {
+    try {
+        const response = await fetch(`http://localhost:8000/favourites/${userId}`, {
+            'method': 'POST',
+            'headers': {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${Cookies.get('token')}`,
+            },
+            'credentials': 'include'
+        })
+        const data = await response.json();
+        console.log(data, 'Favourites')
+        const formattedNotepost = data.map((notepost) => ({
+            name: notepost.name,
+            date: notepost.date,
+            content: notepost.content,
+            ownerEmail: notepost.ownerEmail,
+            notepostId: notepost.notepostId,
+            likedBy: notepost.likedBy,
+            likeCount: notepost.likeCount,
+        }))
+        setFavourites(formattedNotepost);
+        console.log(formattedNotepost, 'Formatted favourites')
+    } catch (error) {
+        console.log('Error getting favourites ', error)
     }
+}
+
     return (
         <div className="Favourites">
-            <h1>Favourites</h1>
             <div className="favourites_container">
                 <div className="favourites_list">
                     {favourites?.map((notepost) => (
@@ -58,6 +54,10 @@ const Favourites = ({ userId }) => {
                             currentMode={''}
                             ownerEmail={''}
                             isFavourite={notepost.isFavourite}
+                            notepostId={notepost.notepostId}
+                            favourites={notepost.likedBy}
+                            likeCount={notepost.likeCount}
+                            setNoteposts={setFavourites}
                         />
                     ))}
                 </div>

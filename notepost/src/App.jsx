@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './App.css'
 
@@ -12,6 +12,13 @@ function App() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if (token) {
+      setLoggedIn(true);
+    }
+  }, [])
+
   const logout = () => {
     Cookies.remove('token');
     setLoggedIn(false);
@@ -19,6 +26,8 @@ function App() {
     console.log('Logout ', saveUserId)
     navigate('/login')
   }
+
+  
   return (
     <div className='home_page'>
       <Navbar loggedIn={loggedIn} logout={logout} />

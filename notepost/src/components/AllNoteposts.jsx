@@ -2,11 +2,15 @@ import { useState, useEffect } from 'react';
 
 import './AllNoteposts.css'
 import Notepost from './Notepost';
-const AllNoteposts = ({mode}) => {
+
+const AllNoteposts = ({ mode }) => {
     const [noteposts, setNoteposts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-
-    useEffect(() => { getAllNoteposts() }, [])
+    useEffect(() => {
+        getAllNoteposts();
+        setLoading(false)
+    }, [])
 
     const getAllNoteposts = async () => {
         try {
@@ -19,6 +23,7 @@ const AllNoteposts = ({mode}) => {
             })
 
             const data = await response.json();
+            console.log(data, 'All noteposts')
 
             const formattedNoteposts = data.map((notepost) => ({
                 name: notepost.name,
@@ -26,11 +31,13 @@ const AllNoteposts = ({mode}) => {
                 content: notepost.content,
                 ownerEmail: notepost.ownerEmail,
                 username: notepost.username,
-                isFavourite: notepost.isFavourite
+                notepostId: notepost.notepostId,
+                likedBy: notepost.likedBy,
+                likeCount: notepost.likeCount,
             }))
             console.log('Here', response)
-
             setNoteposts(formattedNoteposts);
+            console.log(formattedNoteposts, 'Formatted noteposts')
 
         } catch (error) {
             console.log('Error getting noteposts ', error)
@@ -40,18 +47,31 @@ const AllNoteposts = ({mode}) => {
     return (
         <div className='all_noteposts_container'>
             <div className='all_noteposts'>
-                {noteposts?.map((notepost) => (
-                    <Notepost key={notepost.name}
-                        name={notepost.name}
-                        date={notepost.date}
-                        content={notepost.content}
-                        isFavourite={notepost.isFavourite}
-                        setShowAlert={''}
-                        setCurrentNotepostName={''}
-                        currentMode={mode}
-                        ownerEmail={notepost.ownerEmail}
-                        username={notepost.username}
-                    />))}
+                {loading ? (
+                    <h1>Loading...</h1>
+                ) : (
+                    noteposts?.map((notepost) => (
+                        <Notepost key={notepost.name}
+                            name={notepost.name}
+                            date={notepost.date}
+                            content={notepost.content}
+                            setShowAlert={''}
+                            setCurrentNotepostName={''}
+                            currentMode={mode}
+                            ownerEmail={notepost.ownerEmail}
+                            username={notepost.username}
+                            notepostId={notepost.notepostId}
+                            favourites={notepost.likedBy}
+                            likeCount={notepost.likeCount}
+                            setNoteposts={setNoteposts}
+                        />))
+                )
+
+
+
+
+                }
+
             </div>
         </div>
     );

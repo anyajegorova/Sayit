@@ -8,7 +8,8 @@ const notepostSchema = new Schema({
     date: { type: Date, required: false},
     content: { type: String, required: true },
     owner: { type: Schema.Types.ObjectId, ref: 'User' },
-    isFavourite: { type: Boolean, default: false } 
+    likedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    likeCount: { type: Number, default: 0 },
 });
 
 
