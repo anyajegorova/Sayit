@@ -39,7 +39,7 @@ const CreateNotepost = ({ showModal, setShowModal, newNotepost, setNewNotepost, 
 
     const addNewNotepost = async (e) => {
         e.preventDefault()
-        setShowModal(false);
+
 
         try {
             console.log(userId)
@@ -53,14 +53,14 @@ const CreateNotepost = ({ showModal, setShowModal, newNotepost, setNewNotepost, 
                 body: JSON.stringify(newNotepost)
             }
             const response = await fetch('http://localhost:8000/noteposts', options);
-            
+
             if (response.ok) {
                 const data = await response.json();
                 console.log('Success', data);
             } else {
                 console.log('Error', response.status)
             }
-
+            setShowModal(false);
         } catch (error) {
             console.error({ message: 'Not able to save notepost' }, error)
         }

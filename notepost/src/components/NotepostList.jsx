@@ -2,7 +2,7 @@ import './NotepostList.css';
 import Notepost from './Notepost';
 import CreateNotepost from './CreateNotepost';
 import AlertModal from './AlertModal';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Cookies from 'js-cookie';
 
 const NotepostList = ({ mode }) => {
@@ -21,20 +21,24 @@ const NotepostList = ({ mode }) => {
   const [currentNotepostName, setCurrentNotepostName] = useState('');
 
   const userId = localStorage.getItem('userId');
+  const prevShowModalRef = useRef();
 
   useEffect(() => {
     getNoteposts()
   }, [])
 
   useEffect(() => {
+    if(prevShowModalRef.current && !showModal) {
     if (userId) {
       getNoteposts();
       console.log('getNoteposts ', userId)
     } else {
       console.log('NO FOUND getNoteposts ', userId)
     }
+    } 
+    prevShowModalRef.current = showModal;
 
-  }, [newNotepost])
+  }, [showModal])
 
   //Get all user noteposts
   const getNoteposts = async () => {
