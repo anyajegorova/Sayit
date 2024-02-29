@@ -16,7 +16,6 @@ const Profile = () => {
     const [success, setSuccess] = useState(false)
     const [changePassword, setChangePassword] = useState(false)
 
-    const userId = localStorage.getItem('userId');
 
     useEffect(() => {
         const token = Cookies.get('token');
@@ -29,7 +28,6 @@ const Profile = () => {
 
     useEffect(() => {
         getUser()
-        console.log(userId)
     }, [])
 
     const changePasswordHandler = async () => {
@@ -43,7 +41,7 @@ const Profile = () => {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`,
                     },
-                    'body': JSON.stringify({ userId, oldPassword, newPassword, newPasswordConfirmation }),
+                    'body': JSON.stringify({ oldPassword, newPassword, newPasswordConfirmation }),
                     'credentials': 'include'
                 })
                 const data = await response.json();
@@ -64,6 +62,7 @@ const Profile = () => {
             }
         } else {
             console.log('No token found')
+            navigate('/login')
         }
     }
 
@@ -78,7 +77,6 @@ const Profile = () => {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`,
                     },
-                    'body': JSON.stringify({ userId }),
                     'credentials': 'include'
                 })
                 const data = await response.json();

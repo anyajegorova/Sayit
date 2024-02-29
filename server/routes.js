@@ -1,5 +1,7 @@
 const User = require('./models/User');
 const Notepost = require('./models/Notepost');
+const tokenVerifyMiddleware = require('./middleware/tokenVerifyMiddleware');
+const authMiddleware = require('./middleware/authMiddleware');
 
 const moment = require('moment');
 const express = require('express')
@@ -8,6 +10,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 
+dotenv.config();
 //Login
 
 router.post('/login', async (req, res) => {
@@ -23,12 +26,13 @@ router.post('/login', async (req, res) => {
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (!passwordMatch) {
-            return res.status(401).json({ message: 'Invalid email or password' });
+            return res.status(401).json({ message: 'Invalid password' });
         } else {
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
             res.status(200).json({
                 message: 'Login successful',
                 email: user.email,
+                username: user.username,
                 id: user._id,
                 token
             });
@@ -90,9 +94,10 @@ router.post('/register', async (req, res) => {
 
 // Add new notepost
 
-router.post('/noteposts', async (req, res) => {
+router.post('/noteposts', tokenVerifyMiddleware, async (req, res) => {
     try {
-        const { userId, name, date, content } = req.body;
+        const userId = req.user.id;
+        const { name, date, content } = req.body;
         if (name) {
             const newNotepost = new Notepost({
                 name: name,
@@ -112,9 +117,9 @@ router.post('/noteposts', async (req, res) => {
 
 // Get all user noteposts
 
-router.post('/all_noteposts', async (req, res) => {
+router.post('/all_noteposts', tokenVerifyMiddleware, async (req, res) => {
     try {
-        const { userId } = await req.body;
+        const userId = req.user.id;
         const noteposts = await Notepost.find({ owner: userId });
         const userPromises = noteposts.map(async (notepost) => {
             await Notepost.populate(notepost, { path: 'owner', select: 'email username' });
@@ -168,9 +173,10 @@ router.get('/public_noteposts', async (req, res) => {
 })
 // Delete notepost
 
-router.post('/delete_notepost', async (req, res) => {
+router.post('/delete_notepost', tokenVerifyMiddleware, async (req, res) => {
     try {
-        const { userId, name } = req.body;
+        const userId = req.user.id;
+        const name = req.body;
 
         const deletedNotepost = await Notepost.deleteOne({ owner: userId, name: name });
         console.log('Deleted notepost', deletedNotepost)
@@ -187,8 +193,8 @@ router.post('/delete_notepost', async (req, res) => {
 
 //Get user info
 
-router.post('/profile', async (req, res) => {
-    const { userId } = req.body;
+router.post('/profile', tokenVerifyMiddleware, async (req, res) => {
+    const userId = req.user.id;
     try {
         const user = await User.findById(userId)
         res.status(200).json({ username: user.username, email: user.email });
@@ -200,8 +206,9 @@ router.post('/profile', async (req, res) => {
 
 //Change password
 
-router.post('/change_password', async (req, res) => {
-    const { userId, oldPassword, newPassword, newPasswordConfirmation } = req.body;
+router.post('/change_password', tokenVerifyMiddleware, async (req, res) => {
+    const userId = req.user.id;
+    const { oldPassword, newPassword, newPasswordConfirmation } = req.body;
     try {
         const user = await User.findById(userId);
         const passwordMatch = await bcrypt.compare(oldPassword, user.password);
@@ -222,9 +229,9 @@ router.post('/change_password', async (req, res) => {
 
 
 //Toggle like 
-router.post('/toggle_like/:userId/like', async (req, res) => {
+router.post('/toggle_like/like', tokenVerifyMiddleware, async (req, res) => {
     const { notepostId } = req.body;
-    const { userId } = req.params;
+    const userId = req.user.id;
     try {
         const notepost = await Notepost.findById(notepostId);
         if (!notepost) {
@@ -251,8 +258,8 @@ router.post('/toggle_like/:userId/like', async (req, res) => {
 })
 
 //Get all user likes 
-router.post('/favourites/:userId', async (req, res) => {
-    const { userId } = req.params;
+router.post('/favourites', tokenVerifyMiddleware, async (req, res) => {
+    const userId = req.user.id;
     try {
         const noteposts = await Notepost.find({ likedBy: userId });
         const userPromises = noteposts.map(async (notepost) => {

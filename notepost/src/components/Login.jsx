@@ -10,6 +10,7 @@ const Login = ({ mode, setLoggedIn }) => {
 
     const navigate = useNavigate();
 
+
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
@@ -27,16 +28,26 @@ const Login = ({ mode, setLoggedIn }) => {
 
             if (response.ok) {
                 const data = await response.json();
-
-                console.log(data)
                 setLoggedIn(true)
                 Cookies.set('token', data.token, { expires: 7 });
-                localStorage.setItem('userId', data.id);
+                localStorage.setItem('token', data.token)
                 localStorage.setItem('username', data.username);
+                const token = localStorage.getItem('token');
+                console.log(token, 'Token')
+                console.log(data)
+                
+                
+                
 
+                //Logging all local storage
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    const value = localStorage.getItem(key);
+                    console.log(`${key}: ${value}`);
+                }
                 console.log('Login ', data.id)
 
-                navigate('/all_noteposts')
+                navigate('/public_noteposts')
 
             } else {
                 console.log('Login failed')

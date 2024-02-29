@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import Like from './Like';
 import './Notepost.css';
+
+import {jwtDecode} from 'jwt-decode';
+
+
 const Notepost = ({
     name,
     date,
@@ -15,22 +19,22 @@ const Notepost = ({
     setNoteposts
 
 }) => {
+    const token = localStorage.getItem('token');
+    const decodedToken = jwtDecode(token);
 
-    const [userId, setUserId] = useState(localStorage.getItem('userId'));
-    const [isFavourite, setIsFavourite] = useState(userId && favourites?.includes(userId) ? true : false);
+    const [isFavourite, setIsFavourite] = useState(decodedToken && favourites?.includes(decodedToken.id));
     const [like, setLike] = useState(likeCount);
 
-    const token = localStorage.getItem('token');
 
-    const openDeleteAlert = () => {
+    const openDeleteAlert = (name) => {
         setShowAlert(true)
         setCurrentNotepostName(name)
     }
 
     useEffect(() => {
-        setUserId(localStorage.getItem('userId'))
-        console.log(userId, 'userId')
-    }, [])
+        setIsFavourite(decodedToken && favourites?.includes(decodedToken.id));
+
+    }, [favourites, decodedToken])
 
     const toggleLike = () => {
         onToggleLike(notepostId)
@@ -38,7 +42,7 @@ const Notepost = ({
 
     const onToggleLike = async (notepostId) => {
         try {
-            const response = await fetch(`http://localhost:8000/toggle_like/${userId}/like`, {
+            const response = await fetch(`http://localhost:8000/toggle_like/like`, {
                 'method': 'POST',
                 'headers': {
                     'Content-Type': 'application/json',
@@ -63,10 +67,7 @@ const Notepost = ({
 
                 setLike(updatedNotepost.likeCount)
                 setIsFavourite(!isFavourite);
-                console.log(like, isFavourite)
                 console.log(updatedNotepost, 'Updated notepost')
-
-
                 console.log('Favourites updated')
             } else {
                 console.log('Error updating like')
@@ -79,7 +80,7 @@ const Notepost = ({
     }
     return (
         <div className='notepost'>
-            {(currentMode == 'edit') ? <div id='close' onClick={openDeleteAlert}>✖</div> : null}
+            {(currentMode == 'edit') ? <div id='close' onClick={() => openDeleteAlert(name)}>✖</div> : null}
             {(currentMode == 'public') ? <div id='owner'>By: {username}</div> : null}
             <Like onToggleLike={toggleLike} isFavourite={isFavourite} likes={like} />
 

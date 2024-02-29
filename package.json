@@ -8,5 +8,8 @@
         "backend": " cd server && nodemon server.js"
     },
     "author": "Anna Jegorova",
-    "license": "ISC"
+    "license": "ISC",
+    "dependencies": {
+        "node": "^21.6.2"
+    }
 }

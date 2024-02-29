@@ -1,4 +1,5 @@
 import './NotepostList.css';
+import { useNavigate } from 'react-router-dom';
 import Notepost from './Notepost';
 import CreateNotepost from './CreateNotepost';
 import AlertModal from './AlertModal';
@@ -9,7 +10,6 @@ const NotepostList = ({ mode }) => {
   const [showModal, setShowModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [newNotepost, setNewNotepost] = useState({
-    userId: '',
     name: '',
     date: Date.now(),
     content: '',
@@ -19,8 +19,8 @@ const NotepostList = ({ mode }) => {
   })
   const [noteposts, setNoteposts] = useState([])
   const [currentNotepostName, setCurrentNotepostName] = useState('');
+  const navigate = useNavigate();
 
-  const userId = localStorage.getItem('userId');
   const prevShowModalRef = useRef();
 
   useEffect(() => {
@@ -28,28 +28,17 @@ const NotepostList = ({ mode }) => {
   }, [])
 
   useEffect(() => {
-    if(prevShowModalRef.current && !showModal) {
-    if (userId) {
+    if (prevShowModalRef.current && !showModal) {
       getNoteposts();
-      console.log('getNoteposts ', userId)
-    } else {
-      console.log('NO FOUND getNoteposts ', userId)
     }
-    } 
     prevShowModalRef.current = showModal;
 
   }, [showModal])
 
+    const token = localStorage.getItem('token');
+    
   //Get all user noteposts
   const getNoteposts = async () => {
-    const token = Cookies.get('token');
-    console.log(token)
-
-    if (!userId) {
-      console.log('No userId found')
-      return
-    }
-    console.log('userId found')
     if (token) {
       try {
         const response = await fetch('http://localhost:8000/all_noteposts', {
@@ -58,30 +47,43 @@ const NotepostList = ({ mode }) => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
-          'body': JSON.stringify({ userId }),
           'credentials': 'include'
         })
-        const data = await response.json();
-        console.log('Here', data);
-        const formattedNoteposts = data.map((notepost) => ({
-          name: notepost.name,
-          date: notepost.date,
-          content: notepost.content,
-          ownerEmail: notepost.ownerEmail,
-          username: notepost.username,
-          notepostId: notepost.notepostId,
-          likedBy: notepost.likedBy,
-          likeCount: notepost.likeCount
-        }))
-        setNoteposts(formattedNoteposts);
-        console.log(formattedNoteposts, 'Formatted noteposts')
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Data:', data);
+          const formattedNoteposts = data.map((notepost) => ({
+            name: notepost.name,
+            date: notepost.date,
+            content: notepost.content,
+            ownerEmail: notepost.ownerEmail,
+            username: notepost.username,
+            notepostId: notepost.notepostId,
+            likedBy: notepost.likedBy,
+            likeCount: notepost.likeCount
+          }))
+
+          setNoteposts(formattedNoteposts);
+          console.log(formattedNoteposts, 'Formatted noteposts')
+        } else {
+          console.error('Error getting noteposts. Status:', response.status);
+          const errorData = await response.json();
+          console.error('Error Data:', errorData);
+          if (response.status === 401) {
+            console.error('Invalid or expired token. Redirecting to login...');
+            navigate('/login');
+          }
+        }
 
 
       } catch (error) {
         console.log('Error getting noteposts ', error)
+        console.log(token)
       }
     } else {
       console.log('No token found')
+      navigate('/login')
+
     }
 
   }
@@ -90,21 +92,15 @@ const NotepostList = ({ mode }) => {
   const deleteNotepost = async (name) => {
     console.log('Deleting notepost ', name)
     const token = Cookies.get('token');
-
-    if (!userId) {
-      console.log('No userId found')
-      return
-    }
-
     if (token) {
       try {
         const response = await fetch('http://localhost:8000/delete_notepost', {
           'method': 'POST',
           'headers': {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
-          'body': JSON.stringify({ userId, name: name.toString() }),
+          'body': JSON.stringify({ name: name.toString() }),
           'credentials': 'include'
         })
         console.log(response, 'Here')
@@ -121,7 +117,7 @@ const NotepostList = ({ mode }) => {
 
   const openModal = () => {
     setShowModal(true)
-    console.log("Model opened by:", userId)
+    console.log("Model opened")
   }
 
 
@@ -133,8 +129,7 @@ const NotepostList = ({ mode }) => {
           showModal={showModal}
           setShowModal={setShowModal}
           newNotepost={newNotepost}
-          setNewNotepost={setNewNotepost}
-          userId={userId} />
+          setNewNotepost={setNewNotepost} />
         <div className='noteposts'>
           {noteposts?.map((notepost) => (
             <Notepost key={notepost.name}

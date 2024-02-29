@@ -2,7 +2,7 @@ import './CreateNotepost.css';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 
-const CreateNotepost = ({ showModal, setShowModal, newNotepost, setNewNotepost, userId }) => {
+const CreateNotepost = ({ showModal, setShowModal, newNotepost, setNewNotepost }) => {
 
 
     const closeModal = () => {
@@ -30,19 +30,11 @@ const CreateNotepost = ({ showModal, setShowModal, newNotepost, setNewNotepost, 
     }
 
 
-    useEffect(() => {
-        setNewNotepost((prev) => ({
-            ...prev,
-            userId: userId
-        }))
-    }, [setNewNotepost, userId]);
-
     const addNewNotepost = async (e) => {
         e.preventDefault()
 
 
         try {
-            console.log(userId)
             const token = Cookies.get('token');
             const options = {
                 method: 'POST',

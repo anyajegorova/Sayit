@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 
 const Navbar = ({ loggedIn, logout }) => {
 
+    const username = localStorage.getItem('username');
+    console.log(username, 'Username')
+
     return (
         <nav>
-            <h1>Noteposts</h1>
+            <h1> {username}</h1>
             <ul>
                 <li><Link to='/public_noteposts' className='link'>All Noteposts</Link></li>
 
