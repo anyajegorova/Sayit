@@ -1,74 +1,73 @@
 .notepost {
-    width: 400px;
-    height: 400px;
-    max-height: 600px;
+    width: 90%;
+    min-height: 100px;
     display: flex;
-    margin: 30px 40px;
+    padding: 20px 40px 20px 60px;
 
     position: relative;
     flex-direction: column;
-    background-color: #fff;
-    justify-content: space-between;
+    background-color: #74747421;
+
     align-items: center;
+    border-radius: 10px;
     box-sizing: border-box;
-    border-radius: 5px;
-    border: 0.5px solid #cacaca9a;
-    box-shadow: 2px 2px 2px #5858580e;
-    color: #585858;
+    margin: 10px;
 }
 
 #close {
     position: absolute;
-    right: 0;
+    left: 0;
     top: 0;
-    margin: 10px;
+    margin: 20px;
     cursor: pointer;
-    color: #585858;
+    color: #fff;
 }
 
 .notepost h1,
 .notepost h2 {
-    width: 100%;
     max-width: 100%;
     text-align: center;
     margin: 0;
-    color: #585858;
+    color: #ffffff;
 }
 
 .notepost_info {
-    flex: 1;
     width: 100%;
-    display: flex;
     flex-direction: column;
-    padding: 10px 30px;
-    box-sizing: border-box;
+    align-items: center;
 }
- #notepost_name {
-    flex: 1;
+
+#notepost_name {
     font-weight: 600;
-    padding-top: 40px;
-    
+    font-size: 1.2rem;
+    align-self: flex-start;
+
 }
 
 #notepost_date {
-    padding-top: 10px;
+    padding: 0;
     font-size: 14px;
+    font-weight: 300;
+    align-self: flex-end; 
+    color: #949494;
+
 }
 
 
- #notepost_content {
-    flex: 10;
+#notepost_content {
     width: 100%;
     max-width: 100%;
-    height: 100%;
-    max-height: 100%;
-
-    padding: 30px;
-    box-sizing: border-box;
-    overflow: auto;
     text-align: justify;
 
     font-weight: 300;
     font-size: 1.2rem;
 }
 
+#owner{
+    color: #ff004c;
+    cursor: pointer;
+    padding: 5px 0px 20px 0px;
+    align-self: flex-start;
+    text-decoration: underline;
+    letter-spacing: 1px;
+}

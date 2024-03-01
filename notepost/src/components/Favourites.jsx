@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Notepost from './Notepost';
 import './Favourites.css';
-import Cookies from 'js-cookie';
+
+
 
 const Favourites = () => {
     const [favourites, setFavourites] = useState([]);
@@ -12,9 +13,10 @@ const Favourites = () => {
     useEffect(() => {
         getFavourites()
     }, [])
+    const token = localStorage.getItem('token');
 
     const getFavourites = async () => {
-        const token = Cookies.get('token');
+
 
         if (token) {
             try {
@@ -59,8 +61,8 @@ const Favourites = () => {
                             content={notepost.content}
                             setShowAlert={''}
                             setCurrentNotepostName={''}
-                            currentMode={''}
-                            ownerEmail={''}
+                            currentMode={'public'}
+                            ownerEmail={notepost.ownerEmail}
                             isFavourite={notepost.isFavourite}
                             notepostId={notepost.notepostId}
                             favourites={notepost.likedBy}

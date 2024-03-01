@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Like from './Like';
 import './Notepost.css';
 
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 
 const Notepost = ({
@@ -79,17 +79,18 @@ const Notepost = ({
         }
     }
     return (
-        <div className='notepost'>
+        <div className='notepost'><h1 id='notepost_name'>{name}</h1>
             {(currentMode == 'edit') ? <div id='close' onClick={() => openDeleteAlert(name)}>✖</div> : null}
-            {(currentMode == 'public') ? <div id='owner'>By: {username}</div> : null}
+            {(currentMode == 'public') ? <div id='owner'>{username}</div> : null}
             <Like onToggleLike={toggleLike} isFavourite={isFavourite} likes={like} />
 
             <div className='notepost_info'>
-                <h1 id='notepost_name'>{name}</h1>
-                <h1 id='notepost_date'>{date}</h1>
+                
+                <h2 id='notepost_content'>{content}</h2>
             </div>
 
-            <h2 id='notepost_content'>{content}</h2>
+            <h1 id='notepost_date'>{date}</h1>
+
         </div>
     )
 }

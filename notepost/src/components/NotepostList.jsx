@@ -4,7 +4,6 @@ import Notepost from './Notepost';
 import CreateNotepost from './CreateNotepost';
 import AlertModal from './AlertModal';
 import { useEffect, useRef, useState } from 'react';
-import Cookies from 'js-cookie';
 
 const NotepostList = ({ mode }) => {
   const [showModal, setShowModal] = useState(false);
@@ -91,7 +90,7 @@ const NotepostList = ({ mode }) => {
   // Delete notepost
   const deleteNotepost = async (name) => {
     console.log('Deleting notepost ', name)
-    const token = Cookies.get('token');
+    const token = localStorage.getItem('token');
     if (token) {
       try {
         const response = await fetch('http://localhost:8000/delete_notepost', {
@@ -147,15 +146,15 @@ const NotepostList = ({ mode }) => {
             />))}
         </div>
       </section>
-      <button onClick={openModal} id='add_notepost_button'>
+      {/* <button onClick={openModal} id='add_notepost_button'>
         New Notepost +
-      </button>
+      </button> */}
       {showAlert ? (
         <AlertModal
           setShowAlert={setShowAlert}
           deleteNotepost={deleteNotepost}
           currentNotepostName={currentNotepostName}
-        />) : null}
+        />) : null} 
     </div>
   )
 }

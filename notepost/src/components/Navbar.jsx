@@ -1,5 +1,5 @@
 import './Navbar.css';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Navbar = ({ loggedIn, logout }) => {
 
@@ -8,21 +8,25 @@ const Navbar = ({ loggedIn, logout }) => {
 
     return (
         <nav>
-            <h1> {username}</h1>
+            <div className='logo_container'>
+                <h1 id='logo'>Say it{loggedIn ? ' ,' : ' !'} </h1>
+                <h1> {username ? username : null}</h1>
+            </div>
+
             <ul>
-                <li><Link to='/public_noteposts' className='link'>All Noteposts</Link></li>
+                <li><NavLink to='/public_noteposts' className='link'>All Noteposts</NavLink></li>
 
                 {loggedIn ? (
                     <>
-                        <li><Link to='/all_noteposts' className='link'> My Noteposts</Link></li>
-                        <li><Link to='/profile' className='link'>Profile</Link></li>
-                        <li><Link to='/favourites' className='link'>Favourites</Link></li>
-                        <li onClick={logout} className='link' id='logout'>Logout</li>
+                        <li><NavLink to='/all_noteposts' className='link' activeClassName='activeLink'> My Noteposts</NavLink></li>
+                        <li><NavLink to='/favourites' className='link' activeClassName='activeLink'>Likes</NavLink></li>
+                        <li><NavLink to='/profile' className='link' activeClassName='activeLink'>Profile</NavLink></li>
+                        <li onClick={logout} className='logout' id='logout'>Logout</li>
                     </>
 
                 ) :
                     <li>
-                        <Link to='/login' >Login</Link>
+                        <NavLink to='/login' className='login'>Login</NavLink>
                     </li>}
             </ul>
         </nav>

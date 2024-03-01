@@ -29,7 +29,7 @@ function App() {
 
   
   return (
-    <div className='home_page'>
+    <div className='main_page'>
       <Navbar loggedIn={loggedIn} logout={logout} />
       <MainRoutes
         loggedIn={loggedIn}
