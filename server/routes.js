@@ -9,6 +9,10 @@ const bcrypt = require('bcrypt')
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
+const upload = multer();
 
 dotenv.config();
 //Login
@@ -33,6 +37,7 @@ router.post('/login', async (req, res) => {
                 message: 'Login successful',
                 email: user.email,
                 username: user.username,
+                avatar: user.avatar,
                 id: user._id,
                 token
             });
@@ -151,7 +156,7 @@ router.get('/public_noteposts', async (req, res) => {
 
         //Creating array for storing promises for fetching user data using populate
         const userPromises = noteposts.map(async (notepost) => {
-            await Notepost.populate(notepost, { path: 'owner', select: 'email username' });
+            await Notepost.populate(notepost, { path: 'owner', select: 'email username avatar' });
         });
         await Promise.all(userPromises);
 
@@ -161,10 +166,12 @@ router.get('/public_noteposts', async (req, res) => {
             content: notepost.content,
             ownerEmail: notepost.owner.email,
             username: notepost.owner.username,
+            avatar: notepost.owner.avatar,
             notepostId: notepost._id,
             likedBy: notepost.likedBy,
             likeCount: notepost.likeCount
         }));
+        console.log(formattedNoteposts, 'Formatted noteposts')
         res.status(200).json(formattedNoteposts);
     } catch (error) {
         console.error(error)
@@ -196,13 +203,110 @@ router.post('/delete_notepost', tokenVerifyMiddleware, async (req, res) => {
 router.post('/profile', tokenVerifyMiddleware, async (req, res) => {
     const userId = req.user.id;
     try {
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
         const user = await User.findById(userId)
-        res.status(200).json({ username: user.username, email: user.email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ username: user.username, email: user.email, avatar: user.avatar });
     } catch (error) {
         console.error(error)
     }
 
 })
+
+//Set user avatar
+
+router.post('/avatar', upload.single('avatar'), tokenVerifyMiddleware, async (req, res) => {
+    try {
+        console.log(req.file, 'Req file')
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+
+        const fileName = `avatar_${user.id}_${Date.now()}.png`;
+        console.log(fileName, 'Filename')
+        const filePath = path.join(__dirname, 'uploads', fileName);
+
+        fs.writeFileSync(filePath, req.file.buffer);
+        console.log(typeof req.file.buffer, 'Req file buffer')
+        console.log(typeof fileName, 'file name')
+
+        user.avatar = { data: fileName };
+        console.log(user.avatar, 'User Avatar')
+        await user.save();
+
+
+        res.status(200).json({ message: 'Avatar uploaded successfully' });
+
+    } catch (error) {
+        console.error('Error uploading avatar', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+
+    }
+})
+
+//Fetching user avatar
+
+router.get('/get_avatar', tokenVerifyMiddleware, async (req, res) => {
+    const userId = req.user.id;
+    try {
+        const user = await User.findById(userId);
+        console.log(user, 'User')
+        console.log(user.avatar.data, 'User Avatar')
+        if (!user || !user.avatar.data) {
+            res.send(user.avatar.data)
+        } else {
+            const filePath = path.join(__dirname, 'uploads', user.avatar.data);
+            console.log('File Path', filePath)
+            const avatarData = fs.readFileSync(filePath);
+            console.log('Avatar data ', avatarData)
+            res.setHeader('Content-Type', 'image/*');
+            res.send(avatarData);
+        }
+
+    } catch (error) {
+        console.error('Error fetching avatar', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+//Fetching user avatars by notepost owner 
+
+router.post('/get_user_avatar', tokenVerifyMiddleware, async (req, res) => {
+    const ownerEmail = req.body;
+    console.log(ownerEmail, 'Owner Email')
+    try {
+        const user = await User.findOne({ email: ownerEmail });
+        console.log(user, 'User')
+
+        if (!user || !user.avatar.data) {
+            res.send(user.avatar.data)
+        } else {
+            const filePath = path.join(__dirname, 'uploads', user.avatar.data);
+            console.log('File Path', filePath)
+            const avatarData = fs.readFileSync(filePath);
+            console.log('Avatar data ', avatarData)
+            res.setHeader('Content-Type', 'image/*');
+            res.send(avatarData);
+        }
+
+    } catch (error) {
+        console.error('Error fetching avatar', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
 
 //Change password
 
@@ -263,7 +367,7 @@ router.post('/favourites', tokenVerifyMiddleware, async (req, res) => {
     try {
         const noteposts = await Notepost.find({ likedBy: userId });
         const userPromises = noteposts.map(async (notepost) => {
-            await Notepost.populate(notepost, { path: 'owner', select: 'email username' });
+            await Notepost.populate(notepost, { path: 'owner', select: 'email username avatar' });
         });
 
         await Promise.all(userPromises);
@@ -274,6 +378,7 @@ router.post('/favourites', tokenVerifyMiddleware, async (req, res) => {
             content: notepost.content,
             ownerEmail: notepost.owner.email,
             username: notepost.owner.username,
+            avatar: notepost.owner.avatar,
             notepostId: notepost._id,
             likedBy: notepost.likedBy,
             likeCount: notepost.likeCount

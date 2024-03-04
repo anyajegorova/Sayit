@@ -35,6 +35,7 @@ const Favourites = () => {
                     date: notepost.date,
                     content: notepost.content,
                     ownerEmail: notepost.ownerEmail,
+                    avatar: notepost.avatar.data,
                     notepostId: notepost.notepostId,
                     likedBy: notepost.likedBy,
                     likeCount: notepost.likeCount,
@@ -63,6 +64,7 @@ const Favourites = () => {
                             setCurrentNotepostName={''}
                             currentMode={'public'}
                             ownerEmail={notepost.ownerEmail}
+                            avatar={notepost.avatar}
                             isFavourite={notepost.isFavourite}
                             notepostId={notepost.notepostId}
                             favourites={notepost.likedBy}

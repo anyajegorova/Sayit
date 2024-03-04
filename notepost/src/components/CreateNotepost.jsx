@@ -1,5 +1,4 @@
 import './CreateNotepost.css';
-import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 
 const CreateNotepost = ({ showModal, setShowModal, newNotepost, setNewNotepost }) => {

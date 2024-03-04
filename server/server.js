@@ -11,6 +11,7 @@ const app = express();
 const db = mongoose.connection;
 const port = process.env.PORT || 5000;
 const mongoURL = process.env.MONGO_URL;
+const path = require('path');
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -22,6 +23,10 @@ const allowedOrigins = [
     'http://localhost:5173/noteposts/delete_notepost',
     'http://localhost:5173/noteposts/favourites',
     'http://localhost:5173/noteposts/toggle_like',
+    'http://localhost:5173/noteposts/avatar',
+    'http://localhost:5173/noteposts/profile',
+    'http://localhost:5173/noteposts/get_avatar',
+    'http://localhost:8000/get_user_avatar/'
 ]
 const corsOptions = {
     origin: allowedOrigins,
@@ -34,6 +39,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use('/', routes);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true });
 db.on('error', console.error.bind(console, 'Database connection error:'));

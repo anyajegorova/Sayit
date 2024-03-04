@@ -4,10 +4,10 @@ import './Profile.css';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
-    const [tokenState, setTokenState] = useState('');
     const [user, setUser] = useState({
         username: '',
-        email: ''
+        email: '',
+        avatar: ''
 
     })
     const [newPassword, setNewPassword] = useState('')
@@ -17,12 +17,8 @@ const Profile = () => {
     const [changePassword, setChangePassword] = useState(false)
 
 
-    useEffect(() => {
-        const token = Cookies.get('token');
-        if (token) {
-            setTokenState(token)
-        }
-    }, [])
+
+    const firstCharacter = user.username.charAt(0);
 
     const navigate = useNavigate();
 
@@ -30,8 +26,40 @@ const Profile = () => {
         getUser()
     }, [])
 
+    const handleAvatarClick = () => {
+        document.getElementById('avatarInput').click()
+    }
+
+    const handleAvatarChange = async (e) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const formData = new FormData();
+                formData.append('avatar', e.target.files[0])
+                const response = await fetch('http://localhost:8000/avatar', {
+                    'method': 'POST',
+                    'headers': {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    'body': formData,
+                    'credentials': 'include'
+                })
+                const data = await response.json();
+                if (response.status === 200) {
+                    getUser()
+                }
+                console.log(data)
+            } catch (error) {
+                console.log('Error changing avatar ', error)
+            }
+        } else {
+            console.log('No token found')
+            navigate('/login')
+        }
+    }
+
     const changePasswordHandler = async () => {
-        const token = Cookies.get('token');
+        const token = localStorage.getItem('token');
 
         if (token) {
             try {
@@ -67,7 +95,7 @@ const Profile = () => {
     }
 
     const getUser = async () => {
-        const token = Cookies.get('token');
+        const token = localStorage.getItem('token');
 
         if (token) {
             try {
@@ -80,7 +108,22 @@ const Profile = () => {
                     'credentials': 'include'
                 })
                 const data = await response.json();
-                setUser({ username: data.username, email: data.email })
+
+                setUser({ username: data.username, email: data.email, avatar: data.avatar.data })
+                console.log(data.avatar.data, 'Avatar DATA')
+                if (data.avatar.data !== null) {
+                    // Fetch and set the avatar image
+                    const avatarResponse = await fetch('http://localhost:8000/get_avatar', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                        },
+                        credentials: 'include',
+                    });
+                    const avatarBlob = await avatarResponse.blob();
+                    const avatarUrl = URL.createObjectURL(avatarBlob);
+                    setUser((prevUser) => ({ ...prevUser, avatar: avatarUrl }));
+                }
+
             } catch (error) {
                 console.log('Error getting noteposts ', error)
             }
@@ -90,9 +133,21 @@ const Profile = () => {
     }
     return (
         <div className='profile_page'>
+            {user.avatar !== null ? <div className='avatar'>
+                <img src={user.avatar} alt='Avatar' className='avatar_img' onClick={handleAvatarClick} />
+                <input type='file' id='avatarInput' onChange={handleAvatarChange} accept='image/*' name='avatar'
+                />
+            </div>
+
+                :
+                <div className='avatar'>{firstCharacter}
+                    <input type='file' id='avatarInput' onChange={handleAvatarChange} accept='image/*' name='avatar'
+                    /></div>
+            }
             <h1>{user.username}</h1>
             <div className='profile_container'>
                 <div className='profile'>
+
                     <div id='info'>
                         <h3>Username</h3>
                         <div className='profile_username'>{user.username}</div>

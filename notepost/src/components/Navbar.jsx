@@ -10,17 +10,17 @@ const Navbar = ({ loggedIn, logout }) => {
         <nav>
             <div className='logo_container'>
                 <h1 id='logo'>Say it{loggedIn ? ' ,' : ' !'} </h1>
-                <h1> {username ? username : null}</h1>
+                <h1> {loggedIn ? username : null}</h1>
             </div>
 
             <ul>
-                <li><NavLink to='/public_noteposts' className='link'>All Noteposts</NavLink></li>
+                <li><NavLink to='/public_noteposts' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>All Noteposts</NavLink></li>
 
                 {loggedIn ? (
                     <>
-                        <li><NavLink to='/all_noteposts' className='link' activeClassName='activeLink'> My Noteposts</NavLink></li>
-                        <li><NavLink to='/favourites' className='link' activeClassName='activeLink'>Likes</NavLink></li>
-                        <li><NavLink to='/profile' className='link' activeClassName='activeLink'>Profile</NavLink></li>
+                        <li><NavLink to='/all_noteposts' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}> My Noteposts</NavLink></li>
+                        <li><NavLink to='/favourites' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>Likes</NavLink></li>
+                        <li><NavLink to='/profile' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>Profile</NavLink></li>
                         <li onClick={logout} className='logout' id='logout'>Logout</li>
                     </>
 

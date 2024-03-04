@@ -18,6 +18,7 @@ const NotepostList = ({ mode }) => {
   })
   const [noteposts, setNoteposts] = useState([])
   const [currentNotepostName, setCurrentNotepostName] = useState('');
+
   const navigate = useNavigate();
 
   const prevShowModalRef = useRef();
@@ -34,8 +35,8 @@ const NotepostList = ({ mode }) => {
 
   }, [showModal])
 
-    const token = localStorage.getItem('token');
-    
+  const token = localStorage.getItem('token');
+
   //Get all user noteposts
   const getNoteposts = async () => {
     if (token) {
@@ -59,7 +60,7 @@ const NotepostList = ({ mode }) => {
             username: notepost.username,
             notepostId: notepost.notepostId,
             likedBy: notepost.likedBy,
-            likeCount: notepost.likeCount
+            likeCount: notepost.likeCount,
           }))
 
           setNoteposts(formattedNoteposts);
@@ -73,6 +74,7 @@ const NotepostList = ({ mode }) => {
             navigate('/login');
           }
         }
+
 
 
       } catch (error) {
@@ -120,7 +122,6 @@ const NotepostList = ({ mode }) => {
   }
 
 
-
   return (
     <div className='main_container'>
       <section id='notepost_section'>
@@ -146,15 +147,15 @@ const NotepostList = ({ mode }) => {
             />))}
         </div>
       </section>
-      {/* <button onClick={openModal} id='add_notepost_button'>
+      <button onClick={openModal} id='add_notepost_button'>
         New Notepost +
-      </button> */}
+      </button>
       {showAlert ? (
         <AlertModal
           setShowAlert={setShowAlert}
           deleteNotepost={deleteNotepost}
           currentNotepostName={currentNotepostName}
-        />) : null} 
+        />) : null}
     </div>
   )
 }

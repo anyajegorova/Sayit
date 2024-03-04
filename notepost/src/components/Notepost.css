@@ -2,11 +2,11 @@
     width: 90%;
     min-height: 100px;
     display: flex;
-    padding: 20px 40px 20px 60px;
+    padding: 10px 40px 10px 60px;
 
     position: relative;
     flex-direction: column;
-    background-color: #74747421;
+    background-color: #ffffff86;
 
     align-items: center;
     border-radius: 10px;
@@ -20,7 +20,7 @@
     top: 0;
     margin: 20px;
     cursor: pointer;
-    color: #fff;
+    color: #000;
 }
 
 .notepost h1,
@@ -28,7 +28,7 @@
     max-width: 100%;
     text-align: center;
     margin: 0;
-    color: #ffffff;
+    color: #0f0911;
 }
 
 .notepost_info {
@@ -49,7 +49,7 @@
     font-size: 14px;
     font-weight: 300;
     align-self: flex-end; 
-    color: #949494;
+    color: #0f0911;
 
 }
 
@@ -59,7 +59,7 @@
     max-width: 100%;
     text-align: justify;
 
-    font-weight: 300;
+    font-weight: 400;
     font-size: 1.2rem;
 }
 
@@ -70,4 +70,20 @@
     align-self: flex-start;
     text-decoration: underline;
     letter-spacing: 1px;
+}
+
+#notepost_avatar{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ffffff8e;
+    text-transform: uppercase;
+    color: #2b222c6b;
+    font-size: 1.5rem;
+    font-weight: 600;
+    top:25;
+    left: -25px;
+
+    position: absolute;
+    box-shadow: rgb(36, 16, 27) 0px 0px 10px 0px;
 }

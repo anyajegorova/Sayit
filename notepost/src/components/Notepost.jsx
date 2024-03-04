@@ -12,6 +12,7 @@ const Notepost = ({
     setShowAlert,
     setCurrentNotepostName,
     currentMode,
+    avatar,
     username,
     notepostId,
     favourites,
@@ -30,6 +31,10 @@ const Notepost = ({
         setShowAlert(true)
         setCurrentNotepostName(name)
     }
+
+    const avatarBlob = new Blob([avatar], { type: 'image/png' });
+    const avatarUrl = URL.createObjectURL(avatarBlob);
+
 
     useEffect(() => {
         setIsFavourite(decodedToken && favourites?.includes(decodedToken.id));
@@ -78,14 +83,41 @@ const Notepost = ({
 
         }
     }
+    // // Get user avatar
+    // const getAvatar = async () => {
+    //     if (token) {
+    //         try {
+
+
+    //             const avatarResponse = await fetch('http://localhost:8000/get_user_avatar/', {
+    //                 'method': 'POST',
+    //                 'headers': {
+    //                     'Content-Type': 'application/json',
+    //                     'Authorization': `Bearer ${token}`,
+    //                 },
+    //                 'body': JSON.stringify({ username }),
+    //                 'credentials': 'include'
+    //             });
+    //             const avatarBlob = await avatarResponse.blob();
+    //             const avatarUrl = URL.createObjectURL(avatarBlob);
+    //             setUserAvatar(avatarUrl);
+
+    //         }
+    //         catch (error) {
+    //             console.log('Error getting avatar ', error)
+    //         }
+    //     }
+    // }
+
     return (
         <div className='notepost'><h1 id='notepost_name'>{name}</h1>
+            {(currentMode == 'public') ? <img id='notepost_avatar' src={`http://localhost:8000/uploads/${avatar}`} alt='avatar' /> : null}
             {(currentMode == 'edit') ? <div id='close' onClick={() => openDeleteAlert(name)}>✖</div> : null}
             {(currentMode == 'public') ? <div id='owner'>{username}</div> : null}
             <Like onToggleLike={toggleLike} isFavourite={isFavourite} likes={like} />
 
             <div className='notepost_info'>
-                
+
                 <h2 id='notepost_content'>{content}</h2>
             </div>
 

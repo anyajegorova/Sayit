@@ -23,19 +23,18 @@ const AllNoteposts = ({ mode }) => {
             })
 
             const data = await response.json();
-            console.log(data, 'All noteposts')
 
             const formattedNoteposts = data.map((notepost) => ({
                 name: notepost.name,
                 date: notepost.date,
                 content: notepost.content,
                 ownerEmail: notepost.ownerEmail,
+                avatar: notepost.avatar.data,
                 username: notepost.username,
                 notepostId: notepost.notepostId,
                 likedBy: notepost.likedBy,
                 likeCount: notepost.likeCount,
             }))
-            console.log('Here', response)
             setNoteposts(formattedNoteposts);
             console.log(formattedNoteposts, 'Formatted noteposts')
 
@@ -59,6 +58,7 @@ const AllNoteposts = ({ mode }) => {
                             setCurrentNotepostName={''}
                             currentMode={mode}
                             ownerEmail={notepost.ownerEmail}
+                            avatar={notepost.avatar}
                             username={notepost.username}
                             notepostId={notepost.notepostId}
                             favourites={notepost.likedBy}
