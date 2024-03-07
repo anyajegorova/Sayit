@@ -1,0 +1,8 @@
+#close {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 20px;
+    cursor: pointer;
+    color: #000;
+}

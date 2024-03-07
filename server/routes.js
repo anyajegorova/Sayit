@@ -120,6 +120,27 @@ router.post('/noteposts', tokenVerifyMiddleware, async (req, res) => {
     }
 })
 
+//Create notepost
+
+router.post('/create_notepost', tokenVerifyMiddleware, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { name, content } = req.body;
+        const date = new Date();
+        const newNotepost = new Notepost({
+            name: name,
+            date: date,
+            content: content,
+            owner: userId
+        });
+        const notepostSaved = await newNotepost.save();
+        res.status(201).json({ message: 'Notepost created successfully', notepostSaved });
+    } catch (error) {
+        console.error(error)
+    }
+
+})
+
 // Get all user noteposts
 
 router.post('/all_noteposts', tokenVerifyMiddleware, async (req, res) => {
@@ -183,9 +204,9 @@ router.get('/public_noteposts', async (req, res) => {
 router.post('/delete_notepost', tokenVerifyMiddleware, async (req, res) => {
     try {
         const userId = req.user.id;
-        const name = req.body;
+        const { notepostId } = req.body;
 
-        const deletedNotepost = await Notepost.deleteOne({ owner: userId, name: name });
+        const deletedNotepost = await Notepost.deleteOne({ owner: userId, _id: notepostId });
         console.log('Deleted notepost', deletedNotepost)
         res.status(200).json({ message: 'Notepost deleted successfully' });
 

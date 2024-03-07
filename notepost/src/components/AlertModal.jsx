@@ -1,14 +1,13 @@
-import './AlertModal.css';
+import './styles/AlertModal.css';
 
-const AlertModal = ({ setShowAlert, deleteNotepost, currentNotepostName }) => {
+const AlertModal = ({  notepostName, deleteNotepost, setShowAlert }) => {
 
     const closeModal = () => {
         setShowAlert(false)
     }
 
     const handleDelete = () => {
-        deleteNotepost(currentNotepostName)
-        setShowAlert(false)
+        deleteNotepost()
     }
 
     return (
@@ -17,8 +16,8 @@ const AlertModal = ({ setShowAlert, deleteNotepost, currentNotepostName }) => {
                 <div className='modal_alert'>
                     <div className='content_container'>
                         <div id='closeAlert' onClick={closeModal}>✖</div>
-                        <h1>Delete {`"${currentNotepostName}"`} ?</h1>
-                        <p>Are you sure you want to delete {`"${currentNotepostName}"`}? The post will be deleted permanently.</p>
+                        <h1>Delete {`"${notepostName}"`} ?</h1>
+                        <p>Are you sure you want to delete {`"${notepostName}"`}? The post will be deleted permanently.</p>
                         <div id='alert_buttons'>
                             <button onClick={handleDelete} id='yes'>Yes</button>
                             <button onClick={closeModal} id='no'>No</button>
@@ -28,7 +27,7 @@ const AlertModal = ({ setShowAlert, deleteNotepost, currentNotepostName }) => {
                 </div>
 
 
-            </div>
+            </div>                                                         
         </>
     )
 }

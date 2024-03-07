@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 
-import './AllNoteposts.css'
-import Notepost from './Notepost';
+import './styles/AllNoteposts.css'
+import Notepost from '../components/Notepost';
+import CreateNotepostArea from '../components/CreateNotepostArea';
 
 const AllNoteposts = ({ mode }) => {
     const [noteposts, setNoteposts] = useState([]);
@@ -36,7 +37,6 @@ const AllNoteposts = ({ mode }) => {
                 likeCount: notepost.likeCount,
             }))
             setNoteposts(formattedNoteposts);
-            console.log(formattedNoteposts, 'Formatted noteposts')
 
         } catch (error) {
             console.log('Error getting noteposts ', error)
@@ -66,12 +66,11 @@ const AllNoteposts = ({ mode }) => {
                             setNoteposts={setNoteposts}
                         />))
                 )
-
-
-
-
                 }
 
+            </div>
+            <div className='create_notepost_container'>
+                <CreateNotepostArea getAllNoteposts={getAllNoteposts}/>
             </div>
         </div>
     );

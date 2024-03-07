@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
-import Login from './Login';
-import Profile from './Profile';
-import NotepostList from './NotepostList';
-import AllNoteposts from './AllNoteposts';
-import Favourites from './Favourites';
+import Login from '../views/Login';
+import Profile from '../views/Profile';
+import NotepostList from '../views/NotepostList';
+import AllNoteposts from '../views/AllNoteposts';
+import Favourites from '../views/Favourites';
 
 const MainRoutes = ({ loggedIn, setLoggedIn }) => {
     return (

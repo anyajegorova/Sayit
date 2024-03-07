@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Notepost from './Notepost';
-import './Favourites.css';
-
-
+import Notepost from '../components/Notepost';
+import './styles/Favourites.css';
 
 const Favourites = () => {
     const [favourites, setFavourites] = useState([]);
@@ -13,11 +11,10 @@ const Favourites = () => {
     useEffect(() => {
         getFavourites()
     }, [])
+
     const token = localStorage.getItem('token');
 
     const getFavourites = async () => {
-
-
         if (token) {
             try {
                 const response = await fetch("http://localhost:8000/favourites/", {
@@ -29,7 +26,6 @@ const Favourites = () => {
                     'credentials': 'include'
                 })
                 const data = await response.json();
-                console.log(data, 'Favourites')
                 const formattedNotepost = data.map((notepost) => ({
                     name: notepost.name,
                     date: notepost.date,
@@ -41,7 +37,6 @@ const Favourites = () => {
                     likeCount: notepost.likeCount,
                 }))
                 setFavourites(formattedNotepost);
-                console.log(formattedNotepost, 'Formatted favourites')
             } catch (error) {
                 console.log('Error getting favourites ', error)
             }
@@ -60,8 +55,6 @@ const Favourites = () => {
                             name={notepost.name}
                             date={notepost.date}
                             content={notepost.content}
-                            setShowAlert={''}
-                            setCurrentNotepostName={''}
                             currentMode={'public'}
                             ownerEmail={notepost.ownerEmail}
                             avatar={notepost.avatar}

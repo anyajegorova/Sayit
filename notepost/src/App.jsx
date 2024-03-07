@@ -21,6 +21,7 @@ function App() {
 
   const logout = () => {
     Cookies.remove('token');
+    localStorage.removeItem('token');
     setLoggedIn(false);
     setSaveUserId('');
     console.log('Logout ', saveUserId)

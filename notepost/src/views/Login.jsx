@@ -1,4 +1,4 @@
-import './Login.css';
+import './styles/Login.css';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -93,7 +93,7 @@ const Login = ({ mode, setLoggedIn }) => {
         <div className='login_page'>
             <div className='login_container'>
                 {mode === 'login' ? <h1>Login</h1> : <h1>Register</h1>}
-                <form>
+                <form id='login_form'>
                     {mode === 'register' ? <input type="text" placeholder="Username" onChange={(e) => { setUsername(e.target.value) }} /> : null}
                     <input type="text" placeholder="Email" onChange={(e) => { setEmail(e.target.value) }} />
                     <input type="password" placeholder="Password" onChange={(e) => { setPassword(e.target.value) }} />

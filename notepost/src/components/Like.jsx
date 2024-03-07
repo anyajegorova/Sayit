@@ -1,5 +1,5 @@
 
-import './Like.css';
+import './styles/Like.css';
 
 const Like = ({ onToggleLike, isFavourite, likes }) => {
     return (

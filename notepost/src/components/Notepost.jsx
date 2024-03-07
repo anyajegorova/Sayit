@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Like from './Like';
-import './Notepost.css';
+import DeleteNotepost from './DeleteNotepost';
+import './styles/Notepost.css';
 
 import { jwtDecode } from 'jwt-decode';
 
@@ -9,15 +10,14 @@ const Notepost = ({
     name,
     date,
     content,
-    setShowAlert,
-    setCurrentNotepostName,
     currentMode,
     avatar,
     username,
     notepostId,
     favourites,
     likeCount,
-    setNoteposts
+    setNoteposts,
+    getNoteposts
 
 }) => {
     const token = localStorage.getItem('token');
@@ -25,16 +25,6 @@ const Notepost = ({
 
     const [isFavourite, setIsFavourite] = useState(decodedToken && favourites?.includes(decodedToken.id));
     const [like, setLike] = useState(likeCount);
-
-
-    const openDeleteAlert = (name) => {
-        setShowAlert(true)
-        setCurrentNotepostName(name)
-    }
-
-    const avatarBlob = new Blob([avatar], { type: 'image/png' });
-    const avatarUrl = URL.createObjectURL(avatarBlob);
-
 
     useEffect(() => {
         setIsFavourite(decodedToken && favourites?.includes(decodedToken.id));
@@ -83,36 +73,11 @@ const Notepost = ({
 
         }
     }
-    // // Get user avatar
-    // const getAvatar = async () => {
-    //     if (token) {
-    //         try {
-
-
-    //             const avatarResponse = await fetch('http://localhost:8000/get_user_avatar/', {
-    //                 'method': 'POST',
-    //                 'headers': {
-    //                     'Content-Type': 'application/json',
-    //                     'Authorization': `Bearer ${token}`,
-    //                 },
-    //                 'body': JSON.stringify({ username }),
-    //                 'credentials': 'include'
-    //             });
-    //             const avatarBlob = await avatarResponse.blob();
-    //             const avatarUrl = URL.createObjectURL(avatarBlob);
-    //             setUserAvatar(avatarUrl);
-
-    //         }
-    //         catch (error) {
-    //             console.log('Error getting avatar ', error)
-    //         }
-    //     }
-    // }
 
     return (
         <div className='notepost'><h1 id='notepost_name'>{name}</h1>
             {(currentMode == 'public') ? <img id='notepost_avatar' src={`http://localhost:8000/uploads/${avatar}`} alt='avatar' /> : null}
-            {(currentMode == 'edit') ? <div id='close' onClick={() => openDeleteAlert(name)}>✖</div> : null}
+            {(currentMode == 'edit') ? <DeleteNotepost notepostId={notepostId} notepostName={name} getNoteposts={getNoteposts}/> : null}
             {(currentMode == 'public') ? <div id='owner'>{username}</div> : null}
             <Like onToggleLike={toggleLike} isFavourite={isFavourite} likes={like} />
 

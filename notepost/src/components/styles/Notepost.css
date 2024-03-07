@@ -14,14 +14,6 @@
     margin: 10px;
 }
 
-#close {
-    position: absolute;
-    left: 0;
-    top: 0;
-    margin: 20px;
-    cursor: pointer;
-    color: #000;
-}
 
 .notepost h1,
 .notepost h2 {
@@ -78,7 +70,6 @@
     border-radius: 50%;
     background-color: #ffffff8e;
     text-transform: uppercase;
-    color: #2b222c6b;
     font-size: 1.5rem;
     font-weight: 600;
     top:25;

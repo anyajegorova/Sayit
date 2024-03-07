@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import './Profile.css';
+import './styles/Profile.css';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
@@ -110,7 +110,6 @@ const Profile = () => {
                 const data = await response.json();
 
                 setUser({ username: data.username, email: data.email, avatar: data.avatar.data })
-                console.log(data.avatar.data, 'Avatar DATA')
                 if (data.avatar.data !== null) {
                     // Fetch and set the avatar image
                     const avatarResponse = await fetch('http://localhost:8000/get_avatar', {
