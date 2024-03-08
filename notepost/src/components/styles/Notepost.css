@@ -33,6 +33,7 @@
     font-weight: 600;
     font-size: 1.2rem;
     align-self: flex-start;
+    padding-top: 16px;
 
 }
 
@@ -40,7 +41,7 @@
     padding: 0;
     font-size: 14px;
     font-weight: 300;
-    align-self: flex-end; 
+    align-self: flex-end;
     color: #0f0911;
 
 }
@@ -52,29 +53,36 @@
     text-align: justify;
 
     font-weight: 400;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
-#owner{
+#owner {
     color: #ff004c;
     cursor: pointer;
-    padding: 5px 0px 20px 0px;
+    padding: 5px 0px 5px 0px;
     align-self: flex-start;
     text-decoration: underline;
     letter-spacing: 1px;
 }
 
-#notepost_avatar{
+#notepost_avatar {
     width: 50px;
     height: 50px;
+    position: absolute;
+    top: 25;
+    left: -25px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     border-radius: 50%;
-    background-color: #ffffff8e;
+    background-color: #fffffff1;
     text-transform: uppercase;
     font-size: 1.5rem;
     font-weight: 600;
-    top:25;
-    left: -25px;
+    color: #2b222c6b;
 
-    position: absolute;
+    cursor: pointer;
     box-shadow: rgb(36, 16, 27) 0px 0px 10px 0px;
 }

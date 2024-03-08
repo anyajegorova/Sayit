@@ -3,7 +3,7 @@
     max-width: 100vw;
     height: 100%;
     background-color: transparent;
-    
+
 }
 
 .create_notepost {
@@ -84,9 +84,10 @@
     margin: 10px;
     padding: 10px;
 }
+
 #name_input:focus,
 #content_input:focus {
-background-color: #ffffffef
+    background-color: #ffffffef
 }
 
 input:focus,
@@ -103,15 +104,19 @@ button svg {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background-color: #ffffff8e;
+    background-color: #fffffffa;
     text-transform: uppercase;
     color: #2b222c6b;
-    font-size: 1.5rem;
     font-weight: 600;
     top: 25;
     left: -40px;
+    font-size: 3rem;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
-    box-shadow: rgb(36, 16, 27) 0px 0px 10px 0px;
 
+    box-shadow: rgb(36, 16, 27) 0px 0px 10px 0px;
+    cursor: pointer;
 }

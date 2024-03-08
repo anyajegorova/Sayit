@@ -1,6 +1,7 @@
 import './styles/Login.css';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 
 const Login = ({ mode, setLoggedIn }) => {
@@ -9,8 +10,6 @@ const Login = ({ mode, setLoggedIn }) => {
     const [username, setUsername] = useState('');
 
     const navigate = useNavigate();
-
-
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
@@ -32,20 +31,13 @@ const Login = ({ mode, setLoggedIn }) => {
                 Cookies.set('token', data.token, { expires: 7 });
                 localStorage.setItem('token', data.token)
                 localStorage.setItem('username', data.username);
-                const token = localStorage.getItem('token');
-                console.log(token, 'Token')
-                console.log(data)
-                
-                
-                
 
-                //Logging all local storage
-                for (let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    const value = localStorage.getItem(key);
-                    console.log(`${key}: ${value}`);
-                }
-                console.log('Login ', data.id)
+                // //Logging all local storage
+                // for (let i = 0; i < localStorage.length; i++) {
+                //     const key = localStorage.key(i);
+                //     const value = localStorage.getItem(key);
+                //     console.log(`${key}: ${value}`);
+                // }
 
                 navigate('/public_noteposts')
 
@@ -74,10 +66,19 @@ const Login = ({ mode, setLoggedIn }) => {
                     password
                 })
             })
-            const data = response.ok ? await response.json() : console.log('not ok');
 
             if (response.ok) {
                 navigate('/login')
+                toast.success('User created successfully!', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'dark'
+                })
                 console.log('User created successfully!');
             } else {
                 console.log('User creation failed')

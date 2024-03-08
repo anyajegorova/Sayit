@@ -16,8 +16,6 @@ const Profile = () => {
     const [success, setSuccess] = useState(false)
     const [changePassword, setChangePassword] = useState(false)
 
-
-
     const firstCharacter = user.username.charAt(0);
 
     const navigate = useNavigate();

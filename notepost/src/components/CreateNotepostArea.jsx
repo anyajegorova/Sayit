@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './styles/CreateNotepostArea.css';
+import { useNavigate } from 'react-router-dom';
 
 const CreateNotepostArea = ({ getAllNoteposts }) => {
     const token = localStorage.getItem('token');
@@ -9,11 +10,18 @@ const CreateNotepostArea = ({ getAllNoteposts }) => {
         content: ''
     });
 
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         getAvatar()
     }, [])
+    const username = localStorage.getItem('username');
+    const firstCharacter = username.charAt(0);
 
+    const handleClick = () => {
+        navigate('/profile')
+    }
 
     const getAvatar = async () => {
         if (token) {
@@ -24,12 +32,14 @@ const CreateNotepostArea = ({ getAllNoteposts }) => {
                     },
                     credentials: 'include',
                 });
-
-
-                if (avatarResponse.ok) {
+                console.log(avatarResponse.status, 'Avatar Response')
+                if (avatarResponse.status == 404) {
+                    setAvatar(null)
+                } else if (avatarResponse.ok && avatarResponse !== null) {
                     const avatarBlob = await avatarResponse.blob();
                     const avatarUrl = URL.createObjectURL(avatarBlob);
                     setAvatar(avatarUrl);
+                    console.log(avatar, 'Avatar URL')
 
                 }
             } catch (error) {
@@ -63,16 +73,19 @@ const CreateNotepostArea = ({ getAllNoteposts }) => {
             console.log('Error creating notepost', error)
         }
     }
-
-
     return (
-
         <>
             <section className='create_notepost_area'>
 
                 <div className='create_notepost'>
                     <form id='create_notepost_form'>
-                        <img src={avatar} alt='Avatar' className='create_notepost_avatar' />
+                        {avatar !== null ?
+                            <img src={avatar} alt='Avatar' className='create_notepost_avatar' onClick={handleClick} />
+                            :
+                            <div className='create_notepost_avatar' onClick={handleClick}>{firstCharacter}
+                            </div>
+                        }
+
                         <div className='input_container'>
                             <input
                                 id='name_input'

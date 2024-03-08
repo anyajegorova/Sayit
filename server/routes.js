@@ -286,6 +286,9 @@ router.get('/get_avatar', tokenVerifyMiddleware, async (req, res) => {
         const user = await User.findById(userId);
         console.log(user, 'User')
         console.log(user.avatar.data, 'User Avatar')
+        if(user.avatar.data === null){
+            return res.status(404).json({message: 'No avatar found'})
+        }
         if (!user || !user.avatar.data) {
             res.send(user.avatar.data)
         } else {

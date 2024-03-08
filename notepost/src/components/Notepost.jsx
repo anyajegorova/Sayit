@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Like from './Like';
 import DeleteNotepost from './DeleteNotepost';
 import './styles/Notepost.css';
+import { useNavigate } from 'react-router-dom';
 
 import { jwtDecode } from 'jwt-decode';
 
@@ -22,6 +23,8 @@ const Notepost = ({
 }) => {
     const token = localStorage.getItem('token');
     const decodedToken = jwtDecode(token);
+    const firstCharacter = name.charAt(0);
+    const navigate = useNavigate();
 
     const [isFavourite, setIsFavourite] = useState(decodedToken && favourites?.includes(decodedToken.id));
     const [like, setLike] = useState(likeCount);
@@ -35,6 +38,10 @@ const Notepost = ({
         onToggleLike(notepostId)
     }
 
+    const handleClick = () => {
+        navigate('/profile')
+    }
+    console.log(avatar, 'Avatar')
     const onToggleLike = async (notepostId) => {
         try {
             const response = await fetch(`http://localhost:8000/toggle_like/like`, {
@@ -76,8 +83,9 @@ const Notepost = ({
 
     return (
         <div className='notepost'><h1 id='notepost_name'>{name}</h1>
-            {(currentMode == 'public') ? <img id='notepost_avatar' src={`http://localhost:8000/uploads/${avatar}`} alt='avatar' /> : null}
-            {(currentMode == 'edit') ? <DeleteNotepost notepostId={notepostId} notepostName={name} getNoteposts={getNoteposts}/> : null}
+            {(currentMode == 'public' && avatar !== null) ? <img id='notepost_avatar' src={`http://localhost:8000/uploads/${avatar}`} alt='avatar' /> : null}
+            {(currentMode == 'public' && avatar == null) ? <div id='notepost_avatar' onClick={handleClick}>{firstCharacter} </div> : null}
+            {(currentMode == 'edit') ? <DeleteNotepost notepostId={notepostId} notepostName={name} getNoteposts={getNoteposts} /> : null}
             {(currentMode == 'public') ? <div id='owner'>{username}</div> : null}
             <Like onToggleLike={toggleLike} isFavourite={isFavourite} likes={like} />
 

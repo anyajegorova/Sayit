@@ -5,6 +5,7 @@ import './App.css'
 import MainRoutes from './components/MainRoutes';
 import Navbar from './components/Navbar';
 import Cookies from 'js-cookie';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -36,6 +37,7 @@ function App() {
         loggedIn={loggedIn}
         setLoggedIn={setLoggedIn}
       />
+      <ToastContainer />
     </div>
   )
 }
