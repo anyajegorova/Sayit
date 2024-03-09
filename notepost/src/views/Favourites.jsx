@@ -46,7 +46,7 @@ const Favourites = () => {
         }
     }
     return (
-        <div className="Favourites">
+        <div className="favourites">
             <div className="favourites_container">
                 <div className="favourites_list">
                     {favourites?.map((notepost) => (

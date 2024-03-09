@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Topic = require('./Topic');
 const User = require('./User');
 
 
@@ -10,6 +11,7 @@ const notepostSchema = new Schema({
     owner: { type: Schema.Types.ObjectId, ref: 'User' },
     likedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     likeCount: { type: Number, default: 0 },
+    topic: { type: Schema.Types.ObjectId, ref: 'Topic', default: null },
 });
 
 

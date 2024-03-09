@@ -13,12 +13,14 @@ function App() {
 
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const token = Cookies.get('token');
     if (token) {
       setLoggedIn(true);
     }
   }, [])
+
 
   const logout = () => {
     Cookies.remove('token');
@@ -29,9 +31,9 @@ function App() {
     navigate('/login')
   }
 
-  
+
   return (
-    <div className='main_page'>
+    <div className="main_page">
       <Navbar loggedIn={loggedIn} logout={logout} />
       <MainRoutes
         loggedIn={loggedIn}

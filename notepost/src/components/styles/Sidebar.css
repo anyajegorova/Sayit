@@ -1,0 +1,46 @@
+.sidebar {
+    height: 100dvh;
+    display: flex;
+    left: 0;
+    top: 70px;
+    position: fixed;
+    overflow-y: hidden;
+    width: 400px;
+    transition: width 0.3s ease;
+    background-color: #0f0911;
+    color: #fff;
+    z-index: 1000;
+    transition: width 0.3s ease;
+}
+
+.topics_container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hide_sidebar button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    height: 100%;
+    width: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+
+.hide_sidebar button:hover {
+    background-color: #150e18;
+}
+
+.sidebar_closed {
+    width: 30px;
+    overflow: hidden;
+}

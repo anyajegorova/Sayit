@@ -3,15 +3,21 @@ import { useState, useEffect } from 'react';
 import './styles/AllNoteposts.css'
 import Notepost from '../components/Notepost';
 import CreateNotepostArea from '../components/CreateNotepostArea';
+import Sidebar from '../components/Sidebar';
 
 const AllNoteposts = ({ mode }) => {
     const [noteposts, setNoteposts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
     useEffect(() => {
         getAllNoteposts();
         setLoading(false)
     }, [])
+
+    const handleCloseSidebar = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+    }
 
     const getAllNoteposts = async () => {
         try {
@@ -44,34 +50,39 @@ const AllNoteposts = ({ mode }) => {
     }
 
     return (
-        <div className='all_noteposts_container'>
-            <div className='all_noteposts'>
-                {loading ? (
-                    <h1>Loading...</h1>
-                ) : (
-                    noteposts?.map((notepost) => (
-                        <Notepost key={notepost.name}
-                            name={notepost.name}
-                            date={notepost.date}
-                            content={notepost.content}
-                            setShowAlert={''}
-                            setCurrentNotepostName={''}
-                            currentMode={mode}
-                            ownerEmail={notepost.ownerEmail}
-                            avatar={notepost.avatar}
-                            username={notepost.username}
-                            notepostId={notepost.notepostId}
-                            favourites={notepost.likedBy}
-                            likeCount={notepost.likeCount}
-                            setNoteposts={setNoteposts}
-                        />))
-                )
-                }
+        <div className="all_noteposts_section_container">
+            <Sidebar onClose={handleCloseSidebar} isSidebarOpen={isSidebarOpen} />
+            <div className={`all_noteposts_container ${isSidebarOpen ? 'sidebar_open' : 'sidebar_closed'}`}>
+                <div className='all_noteposts'>
+                    {loading ? (
+                        <h1>Loading...</h1>
+                    ) : (
+                        noteposts?.map((notepost) => (
+                            <Notepost key={notepost.name}
+                                name={notepost.name}
+                                date={notepost.date}
+                                content={notepost.content}
+                                setShowAlert={''}
+                                setCurrentNotepostName={''}
+                                currentMode={mode}
+                                ownerEmail={notepost.ownerEmail}
+                                avatar={notepost.avatar}
+                                username={notepost.username}
+                                notepostId={notepost.notepostId}
+                                favourites={notepost.likedBy}
+                                likeCount={notepost.likeCount}
+                                setNoteposts={setNoteposts}
+                            />))
+                    )
+                    }
+
+                </div>
+                <div className='create_notepost_container'>
+                    <CreateNotepostArea getAllNoteposts={getAllNoteposts} />
+                </div>
 
             </div>
-            <div className='create_notepost_container'>
-                <CreateNotepostArea getAllNoteposts={getAllNoteposts}/>
-            </div>
+
         </div>
     );
 }
