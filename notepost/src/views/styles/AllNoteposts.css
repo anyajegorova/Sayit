@@ -2,17 +2,18 @@
     display: flex;
     padding-top: 70px;
     width: 100%;
-    
+
 }
 
 .all_noteposts_container {
     display: flex;
     flex-direction: column;
-    background: rgb(36, 16, 27);
-    background: linear-gradient(90deg, rgba(36, 16, 27, 1) 0%, rgba(44, 19, 32, 1) 50%, rgba(36, 16, 27, 1) 100%);
+    background: rgb(29, 26, 57);
+    background: linear-gradient(90deg, rgba(29, 26, 57, 1) 10%, rgba(69, 25, 82, 1) 50%, rgba(29, 26, 57, 1) 90%);
     flex: 5;
     padding-left: 400px;
     transition: padding-left 0.3s ease;
+    padding-top: 20px;
 }
 
 .all_noteposts {
@@ -31,6 +32,6 @@
     bottom: 0;
 }
 
-.all_noteposts_container.sidebar_closed  {
+.all_noteposts_container.sidebar_closed {
     padding-left: 24px;
 }

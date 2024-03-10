@@ -1,3 +1,4 @@
+import Topic from './Topic';
 import './styles/Sidebar.css';
 
 const Sidebar = ({ onClose, isSidebarOpen }) => {
@@ -7,9 +8,10 @@ const Sidebar = ({ onClose, isSidebarOpen }) => {
     }
     return (
         <div className={`sidebar ${isSidebarOpen ? 'sidebar_open' : 'sidebar_closed'}`}>
-            <div className="topics_container">
+            <div className={`${isSidebarOpen ? 'topics_container' : 'hidden_topics_container'}`}>
+                <button>New Topic</button>
                 <div className="topics_list">
-
+                    <Topic />
                 </div>
             </div>
             <div className='hide_sidebar'>

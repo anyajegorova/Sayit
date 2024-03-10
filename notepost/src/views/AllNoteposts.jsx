@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import './styles/AllNoteposts.css'
 import Notepost from '../components/Notepost';
 import CreateNotepostArea from '../components/CreateNotepostArea';
@@ -10,6 +10,8 @@ const AllNoteposts = ({ mode }) => {
     const [loading, setLoading] = useState(true);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         getAllNoteposts();
         setLoading(false)
@@ -19,34 +21,41 @@ const AllNoteposts = ({ mode }) => {
         setIsSidebarOpen(!isSidebarOpen);
     }
 
+    const token = localStorage.getItem('token');
+
     const getAllNoteposts = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/public_noteposts', {
-                'method': 'GET',
-                'headers': {
-                    'Content-Type': 'application/json',
-                },
-                'credentials': 'include'
-            })
+        if (token) {
+            try {
+                const response = await fetch('http://localhost:8000/public_noteposts', {
+                    'method': 'GET',
+                    'headers': {
+                        'Content-Type': 'application/json',
+                    },
+                    'credentials': 'include'
+                })
 
-            const data = await response.json();
+                const data = await response.json();
 
-            const formattedNoteposts = data.map((notepost) => ({
-                name: notepost.name,
-                date: notepost.date,
-                content: notepost.content,
-                ownerEmail: notepost.ownerEmail,
-                avatar: notepost.avatar.data,
-                username: notepost.username,
-                notepostId: notepost.notepostId,
-                likedBy: notepost.likedBy,
-                likeCount: notepost.likeCount,
-            }))
-            setNoteposts(formattedNoteposts);
+                const formattedNoteposts = data.map((notepost) => ({
+                    name: notepost.name,
+                    date: notepost.date,
+                    content: notepost.content,
+                    ownerEmail: notepost.ownerEmail,
+                    avatar: notepost.avatar.data,
+                    username: notepost.username,
+                    notepostId: notepost.notepostId,
+                    likedBy: notepost.likedBy,
+                    likeCount: notepost.likeCount,
+                }))
+                setNoteposts(formattedNoteposts);
 
-        } catch (error) {
-            console.log('Error getting noteposts ', error)
+            } catch (error) {
+                console.log('Error getting noteposts ', error)
+            }
+        } else {
+            navigate('/login');
         }
+
     }
 
     return (

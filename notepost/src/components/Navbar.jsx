@@ -14,10 +14,10 @@ const Navbar = ({ loggedIn, logout }) => {
             </div>
 
             <ul>
-                <li><NavLink to='/public_noteposts' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>All Noteposts</NavLink></li>
+
 
                 {loggedIn ? (
-                    <>
+                    <><li><NavLink to='/public_noteposts' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>All Noteposts</NavLink></li>
                         <li><NavLink to='/all_noteposts' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}> My Noteposts</NavLink></li>
                         <li><NavLink to='/favourites' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>Likes</NavLink></li>
                         <li><NavLink to='/profile' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>Profile</NavLink></li>

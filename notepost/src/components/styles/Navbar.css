@@ -9,8 +9,10 @@ nav {
     box-sizing: border-box;
     position: fixed;
     z-index: 1000;
-    background: rgb(15, 9, 17);
-    background: linear-gradient(90deg, rgba(15, 9, 17, 1) 0%, rgba(56, 23, 29, 1) 50%, rgba(56, 23, 29, 1) 100%);
+    /* background: rgb(15, 9, 17);
+    background: linear-gradient(90deg, rgba(15, 9, 17, 1) 0%, rgba(56, 23, 29, 1) 50%, rgba(56, 23, 29, 1) 100%); */
+    background: rgb(29, 26, 57);
+    background: linear-gradient(90deg, rgba(29, 26, 57, 1) 0%, rgba(102, 37, 73, 1) 75%);
     width: 100dvw;
     top: 0;
     left: 0;

@@ -3,8 +3,8 @@
     padding: 80px 0px 20px 0px;
     width: 100%;
     min-height: 100vh;
-    background: rgb(36, 16, 27);
-    background: linear-gradient(90deg, rgba(36, 16, 27, 1) 0%, rgba(44, 19, 32, 1) 50%, rgba(36, 16, 27, 1) 100%);
+    background: rgb(29, 26, 57);
+    background: linear-gradient(90deg, rgba(29, 26, 57, 1) 10%, rgba(69, 25, 82, 1) 50%, rgba(29, 26, 57, 1) 90%);
 }
 
 #notepost_section {
