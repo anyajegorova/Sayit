@@ -2,20 +2,20 @@ import { useState, useEffect } from 'react';
 import './styles/CreateNotepostArea.css';
 import { useNavigate } from 'react-router-dom';
 
-const CreateNotepostArea = ({ getAllNoteposts }) => {
+const CreateNotepostArea = ({ getAllNoteposts, currentTopic }) => {
     const token = localStorage.getItem('token');
     const [avatar, setAvatar] = useState(null);
     const [newNotepost, setNewNotepost] = useState({
-        name: '',
-        content: ''
+        content: '',
+        topic: currentTopic
     });
 
     const navigate = useNavigate();
 
-
     useEffect(() => {
         getAvatar()
     }, [])
+
     const username = localStorage.getItem('username');
     const firstCharacter = username.charAt(0);
 
@@ -52,7 +52,6 @@ const CreateNotepostArea = ({ getAllNoteposts }) => {
     }
 
     const createNotepost = async (e) => {
-        console.log(e, 'Event')
         e.preventDefault();
         try {
             const response = await fetch('http://localhost:8000/create_notepost', {
@@ -65,8 +64,7 @@ const CreateNotepostArea = ({ getAllNoteposts }) => {
                 'credentials': 'include'
             })
             if (response.ok) {
-                setNewNotepost({ name: '', content: '' })
-                console.log('Notepost created')
+                setNewNotepost({ content: '', topic: currentTopic })
                 getAllNoteposts()
             }
         } catch (error) {
@@ -87,17 +85,12 @@ const CreateNotepostArea = ({ getAllNoteposts }) => {
                         }
 
                         <div className='input_container'>
-                            <input
-                                id='name_input'
-                                placeholder='Name'
-                                value={newNotepost.name}
-                                onChange={(e) => setNewNotepost({ ...newNotepost, name: e.target.value })}
-                            />
                             <textarea
                                 id='content_input'
-                                placeholder='Content'
+                                placeholder='Type here..'
                                 value={newNotepost.content}
-                                onChange={(e) => setNewNotepost({ ...newNotepost, content: e.target.value })}
+                                onChange={(e) => setNewNotepost({ content: e.target.value, topic: currentTopic })}
+                                maxLength="200"
                             />
                         </div>
                         <button

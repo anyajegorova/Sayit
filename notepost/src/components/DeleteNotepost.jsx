@@ -2,10 +2,8 @@ import { useState } from 'react';
 import AlertModal from './AlertModal';
 import './styles/DeleteNotepost.css';
 
-const DeleteNotepost = ({ notepostId, notepostName, getNoteposts }) => {
+const DeleteNotepost = ({ notepostId, getNoteposts }) => {
     const [showAlert, setShowAlert] = useState(false);
-
-    console.log(notepostId, 'Notepost id', notepostName, 'Notepost name');
     const handleClick = () => {
         setShowAlert(true)
     }
@@ -46,7 +44,6 @@ const DeleteNotepost = ({ notepostId, notepostName, getNoteposts }) => {
                 <AlertModal
                     setShowAlert={setShowAlert}
                     deleteNotepost={deleteNotepost}
-                    notepostName={notepostName}
                 />) : null}
         </>
 

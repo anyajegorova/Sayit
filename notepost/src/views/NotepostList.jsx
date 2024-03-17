@@ -28,7 +28,6 @@ const NotepostList = ({ mode }) => {
         if (response.ok) {
           const data = await response.json();
           const formattedNoteposts = data.map((notepost) => ({
-            name: notepost.name,
             date: notepost.date,
             content: notepost.content,
             ownerEmail: notepost.ownerEmail,
@@ -37,12 +36,9 @@ const NotepostList = ({ mode }) => {
             likedBy: notepost.likedBy,
             likeCount: notepost.likeCount,
           }))
-
           setNoteposts(formattedNoteposts);
         } else {
           console.error('Error getting noteposts. Status:', response.status);
-          const errorData = await response.json();
-          console.error('Error Data:', errorData);
           if (response.status === 401) {
             console.error('Invalid or expired token. Redirecting to login...');
             navigate('/login');
@@ -67,8 +63,8 @@ const NotepostList = ({ mode }) => {
       <section id='notepost_section'>
         <div className='noteposts'>
           {noteposts?.map((notepost) => (
-            <Notepost key={notepost.name}
-              name={notepost.name}
+            <Notepost
+              key={notepost.notepostId + notepost.date + notepost.username}
               date={notepost.date}
               content={notepost.content}
               username={notepost.username}

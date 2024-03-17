@@ -2,9 +2,11 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    align-items: center;
 }
 
-h3 {
+.topic_container .topic_button {
+    border: none;
     border-radius: 5px;
     border-bottom: 1px solid #ffffff11;
     padding: 16px;
@@ -19,7 +21,7 @@ h3 {
     text-overflow: ellipsis;
 }
 
-h3:hover {
+.topic_container .topic_button:hover {
     background-color: #ffffff0c;
     transform: translate(2px, 2px);
 }

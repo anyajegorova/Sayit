@@ -27,10 +27,10 @@ const Favourites = () => {
                 })
                 const data = await response.json();
                 const formattedNotepost = data.map((notepost) => ({
-                    name: notepost.name,
                     date: notepost.date,
                     content: notepost.content,
                     ownerEmail: notepost.ownerEmail,
+                    username: notepost.username,
                     avatar: notepost.avatar.data,
                     notepostId: notepost.notepostId,
                     likedBy: notepost.likedBy,
@@ -51,8 +51,8 @@ const Favourites = () => {
                 <div className="favourites_list">
                     {favourites?.map((notepost) => (
                         <Notepost
-                            key={notepost.name}
-                            name={notepost.name}
+                            key={notepost.notepostId + notepost.date + notepost.username}
+                            username={notepost.username}
                             date={notepost.date}
                             content={notepost.content}
                             currentMode={'public'}

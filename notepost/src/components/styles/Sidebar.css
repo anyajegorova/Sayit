@@ -34,7 +34,7 @@
     display: block;
     margin: 10px 0;
     color: #ffff;
-    transition: transform 0.3s ease;
+    /* transition: transform 0.3s ease; */
     cursor: pointer;
 }
 
@@ -44,7 +44,7 @@
 
 .topics_container button:hover {
     background-color: #f39f5a0c;
-    transform: translate(1px, 1px);
+    /* transform: translate(1px, 1px); */
 }
 
 .hidden_topics_container {
@@ -74,4 +74,24 @@
 .sidebar_closed {
     width: 30px;
     overflow: hidden;
+}
+
+#topic_input {
+    background-color: transparent;
+    border: 1px solid #f39f5a3f;
+    padding: 12px;
+    width: 272px;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin: 10px 0;
+    color: #ffff;
+}
+
+#topic_input:focus {
+    border: 1 px solid #f39f5a83;
+}
+
+
+#topic_input:focus::placeholder {
+    color: transparent;
 }

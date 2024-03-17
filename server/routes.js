@@ -1,5 +1,6 @@
 const User = require('./models/User');
 const Notepost = require('./models/Notepost');
+const Topic = require('./models/Topic');
 const tokenVerifyMiddleware = require('./middleware/tokenVerifyMiddleware');
 const authMiddleware = require('./middleware/authMiddleware');
 
@@ -13,6 +14,7 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const upload = multer();
+const mongoose = require('mongoose');
 
 dotenv.config();
 //Login
@@ -41,7 +43,6 @@ router.post('/login', async (req, res) => {
                 id: user._id,
                 token
             });
-            console.log('Login here', user._id, user.email, token)
         }
 
 
@@ -69,7 +70,6 @@ router.post('/register', async (req, res) => {
 
     try {
         const { username, email, password } = req.body;
-        console.log(username, email, password)
         //Checking if user already exists
         const user = await User.findOne({ email });
         if (user) {
@@ -97,41 +97,20 @@ router.post('/register', async (req, res) => {
     }
 })
 
-// Add new notepost
-
-router.post('/noteposts', tokenVerifyMiddleware, async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const { name, date, content } = req.body;
-        if (name) {
-            const newNotepost = new Notepost({
-                name: name,
-                date: date,
-                content: content,
-                owner: userId
-            });
-            const notepostSaved = await newNotepost.save();
-            res.status(201).json({ message: 'Notepost created successfully', notepostSaved });
-        } else {
-            res.status(500).json({ message: 'Database error' });
-        }
-    } catch (error) {
-        console.error(error)
-    }
-})
-
 //Create notepost
 
 router.post('/create_notepost', tokenVerifyMiddleware, async (req, res) => {
     try {
         const userId = req.user.id;
-        const { name, content } = req.body;
+        const { content, topic } = req.body;
         const date = new Date();
         const newNotepost = new Notepost({
-            name: name,
             date: date,
             content: content,
-            owner: userId
+            owner: userId,
+            likedBy: [],
+            likeCount: 0,
+            topic: topic
         });
         const notepostSaved = await newNotepost.save();
         res.status(201).json({ message: 'Notepost created successfully', notepostSaved });
@@ -152,7 +131,6 @@ router.post('/all_noteposts', tokenVerifyMiddleware, async (req, res) => {
         });
         await Promise.all(userPromises);
         const formattedNoteposts = noteposts.map((notepost) => ({
-            name: notepost.name,
             date: moment(notepost.date).format('Do [of] MMMM YYYY'),
             content: notepost.content,
             ownerEmail: notepost.owner.email,
@@ -162,7 +140,6 @@ router.post('/all_noteposts', tokenVerifyMiddleware, async (req, res) => {
             likeCount: notepost.likeCount
         }));
         res.status(200).json(formattedNoteposts);
-        console.log('formattedNoteposts', formattedNoteposts)
     } catch (error) {
         console.error(error)
 
@@ -171,18 +148,17 @@ router.post('/all_noteposts', tokenVerifyMiddleware, async (req, res) => {
 )
 // Get all noteposts
 
-router.get('/public_noteposts', async (req, res) => {
+router.post('/public_noteposts', async (req, res) => {
     try {
-        const noteposts = await Notepost.find({});
-
-        //Creating array for storing promises for fetching user data using populate
+        const currentTopic = req.body.topic;
+        const noteposts = await Notepost.find({ topic: currentTopic});
+        // Creating array for storing promises for fetching user data using populate
         const userPromises = noteposts.map(async (notepost) => {
             await Notepost.populate(notepost, { path: 'owner', select: 'email username avatar' });
         });
         await Promise.all(userPromises);
 
         const formattedNoteposts = noteposts.map((notepost) => ({
-            name: notepost.name,
             date: moment(notepost.date).format('Do [of] MMMM YYYY'),
             content: notepost.content,
             ownerEmail: notepost.owner.email,
@@ -190,15 +166,17 @@ router.get('/public_noteposts', async (req, res) => {
             avatar: notepost.owner.avatar,
             notepostId: notepost._id,
             likedBy: notepost.likedBy,
-            likeCount: notepost.likeCount
+            likeCount: notepost.likeCount,
+            topic: notepost.topic
         }));
-        console.log(formattedNoteposts, 'Formatted noteposts')
         res.status(200).json(formattedNoteposts);
     } catch (error) {
         console.error(error)
     }
 
 })
+
+
 // Delete notepost
 
 router.post('/delete_notepost', tokenVerifyMiddleware, async (req, res) => {
@@ -207,7 +185,6 @@ router.post('/delete_notepost', tokenVerifyMiddleware, async (req, res) => {
         const { notepostId } = req.body;
 
         const deletedNotepost = await Notepost.deleteOne({ owner: userId, _id: notepostId });
-        console.log('Deleted notepost', deletedNotepost)
         res.status(200).json({ message: 'Notepost deleted successfully' });
 
     } catch (error) {
@@ -243,7 +220,6 @@ router.post('/profile', tokenVerifyMiddleware, async (req, res) => {
 
 router.post('/avatar', upload.single('avatar'), tokenVerifyMiddleware, async (req, res) => {
     try {
-        console.log(req.file, 'Req file')
         if (!req.user || !req.user.id) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
@@ -257,15 +233,11 @@ router.post('/avatar', upload.single('avatar'), tokenVerifyMiddleware, async (re
         }
 
         const fileName = `avatar_${user.id}_${Date.now()}.png`;
-        console.log(fileName, 'Filename')
         const filePath = path.join(__dirname, 'uploads', fileName);
 
         fs.writeFileSync(filePath, req.file.buffer);
-        console.log(typeof req.file.buffer, 'Req file buffer')
-        console.log(typeof fileName, 'file name')
 
         user.avatar = { data: fileName };
-        console.log(user.avatar, 'User Avatar')
         await user.save();
 
 
@@ -284,18 +256,14 @@ router.get('/get_avatar', tokenVerifyMiddleware, async (req, res) => {
     const userId = req.user.id;
     try {
         const user = await User.findById(userId);
-        console.log(user, 'User')
-        console.log(user.avatar.data, 'User Avatar')
-        if(user.avatar.data === null){
-            return res.status(404).json({message: 'No avatar found'})
+        if (user.avatar.data === null) {
+            return res.status(404).json({ message: 'No avatar found' })
         }
         if (!user || !user.avatar.data) {
             res.send(user.avatar.data)
         } else {
             const filePath = path.join(__dirname, 'uploads', user.avatar.data);
-            console.log('File Path', filePath)
             const avatarData = fs.readFileSync(filePath);
-            console.log('Avatar data ', avatarData)
             res.setHeader('Content-Type', 'image/*');
             res.send(avatarData);
         }
@@ -310,18 +278,14 @@ router.get('/get_avatar', tokenVerifyMiddleware, async (req, res) => {
 
 router.post('/get_user_avatar', tokenVerifyMiddleware, async (req, res) => {
     const ownerEmail = req.body;
-    console.log(ownerEmail, 'Owner Email')
     try {
         const user = await User.findOne({ email: ownerEmail });
-        console.log(user, 'User')
 
         if (!user || !user.avatar.data) {
             res.send(user.avatar.data)
         } else {
             const filePath = path.join(__dirname, 'uploads', user.avatar.data);
-            console.log('File Path', filePath)
             const avatarData = fs.readFileSync(filePath);
-            console.log('Avatar data ', avatarData)
             res.setHeader('Content-Type', 'image/*');
             res.send(avatarData);
         }
@@ -397,7 +361,6 @@ router.post('/favourites', tokenVerifyMiddleware, async (req, res) => {
         await Promise.all(userPromises);
 
         const formattedNoteposts = noteposts.map((notepost) => ({
-            name: notepost.name,
             date: moment(notepost.date).format('Do [of] MMMM YYYY'),
             content: notepost.content,
             ownerEmail: notepost.owner.email,
@@ -408,9 +371,47 @@ router.post('/favourites', tokenVerifyMiddleware, async (req, res) => {
             likeCount: notepost.likeCount
         }));
         res.status(200).json(formattedNoteposts);
-        console.log(formattedNoteposts)
     } catch (error) {
         console.error(error)
+    }
+});
+
+//Create topic
+
+router.post('/new_topic', tokenVerifyMiddleware, async (req, res) => {
+    const userId = req.user.id;
+    try {
+        const topic = req.body;
+        const newTopic = new Topic({
+            name: topic.topic,
+            creator: userId
+        });
+        const topicSaved = await newTopic.save();
+        res.status(201).json({ message: 'Topic created successfully', topicSaved });
+    } catch (error) {
+        console.error(error)
+    }
+});
+
+//Get all topics
+
+router.get('/topics', tokenVerifyMiddleware, async (req, res) => {
+    try {
+        const topics = await Topic.find();
+        res.status(200).json(topics);
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Server error' })
+    }
+});
+
+//Get general topic id 
+router.get('/topics/general', async (req, res) => {
+    try {
+        const generalTopic = await Topic.findOne({ name: 'General' });
+        res.status(200).json(generalTopic._id);
+    } catch (error) {
+        console.error('Error getting general topic', error)
     }
 });
 

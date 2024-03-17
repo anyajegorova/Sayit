@@ -21,12 +21,16 @@ const allowedOrigins = [
     'http://localhost:5173/all_noteposts',
     'http://localhost:5173/public_noteposts',
     'http://localhost:5173/noteposts/delete_notepost',
+    'http://localhost:5173/noteposts/create_notepost',
     'http://localhost:5173/noteposts/favourites',
     'http://localhost:5173/noteposts/toggle_like',
     'http://localhost:5173/noteposts/avatar',
     'http://localhost:5173/noteposts/profile',
     'http://localhost:5173/noteposts/get_avatar',
-    'http://localhost:8000/get_user_avatar/'
+    'http://localhost:8000/get_user_avatar/',
+    'http://localhost:8000/topics',
+    'http://localhost:8000/topics/general',
+    'http://localhost:8000/new_topic',
 ]
 const corsOptions = {
     origin: allowedOrigins,

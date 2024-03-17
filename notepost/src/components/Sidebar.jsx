@@ -1,18 +1,92 @@
+import { useEffect, useState } from 'react';
 import Topic from './Topic';
 import './styles/Sidebar.css';
 
-const Sidebar = ({ onClose, isSidebarOpen }) => {
-    console.log(onClose)
+const Sidebar = ({ onClose, isSidebarOpen, onTopicChange, mode }) => {
+    const [newTopic, setNewTopic] = useState('')
+    const [topics, setTopics] = useState([]);
+    const [loading, setLoading] = useState(true);
+    // const [generalTopic, setGeneralTopic] = useState('')
+
     const handleClose = () => {
         onClose();
     }
+    useEffect(() => {
+        getTopics()
+    }, [])
+
+    useEffect(() => {
+        getTopics()
+    }, [mode])
+
+    const token = localStorage.getItem('token');
+
+    const getTopics = async () => {
+        try {
+            setLoading(true)
+            const response = await fetch('http://localhost:8000/topics', {
+                'method': 'GET',
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                'credentials': 'include'
+            })
+            const data = await response.json();
+            setTopics(data)
+            console.log('Topics fetched:', data);
+            setLoading(false)
+            // console.log(data[0]._id, 'Data 2')
+            // setGeneralTopic(data[0]._id)
+            // console.log(generalTopic, 'General topic')
+        }
+        catch (error) {
+            console.error(error)
+        }
+    }
+
+    const addTopic = async () => {
+        if (newTopic === '') {
+            console.error('Topic cannot be empty')
+        } else {
+            try {
+                const response = await fetch('http://localhost:8000/new_topic', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    'credentials': 'include',
+                    body: JSON.stringify({ topic: newTopic })
+                })
+                const data = await response.json();
+                console.log(data)
+                setNewTopic('')
+                getTopics()
+
+
+            } catch (error) {
+                console.error('Error adding topic', error)
+            }
+        }
+
+    }
+
+
     return (
         <div className={`sidebar ${isSidebarOpen ? 'sidebar_open' : 'sidebar_closed'}`}>
             <div className={`${isSidebarOpen ? 'topics_container' : 'hidden_topics_container'}`}>
-                <button>New Topic</button>
-                <div className="topics_list">
-                    <Topic />
-                </div>
+                {loading ? (
+                    <div>Loading topics...</div>
+                ) : (
+                    <>
+                        <input onChange={(e) => { setNewTopic(e.target.value) }} id='topic_input' placeholder='Type here..'></input>
+                        <button onClick={addTopic}>New Topic</button>
+                        <div className="topics_list">
+                            <Topic topics={topics} onTopicChange={onTopicChange} />
+                        </div>
+                    </>
+                )}
             </div>
             <div className='hide_sidebar'>
                 <button onClick={handleClose}>

@@ -7,7 +7,7 @@ const topicSchema = new Schema({
     name: { type: String, required: true, unique: true },
     date: { type: Date, required: false, default: Date.now },
     creator: { type: Schema.Types.ObjectId, ref: 'User' },
-    noteposts: [{ type: Schema.Types.ObjectId, ref: 'Notepost' }],
+    noteposts: [{ type: Schema.Types.ObjectId, ref: 'Notepost', default: [] }],
 });
 
 

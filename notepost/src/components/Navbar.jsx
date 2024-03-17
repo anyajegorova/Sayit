@@ -12,10 +12,7 @@ const Navbar = ({ loggedIn, logout }) => {
                 <h1 id='logo'>Say it{loggedIn ? ' ,' : ' !'} </h1>
                 <h1> {loggedIn ? username : null}</h1>
             </div>
-
             <ul>
-
-
                 {loggedIn ? (
                     <><li><NavLink to='/public_noteposts' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>All Noteposts</NavLink></li>
                         <li><NavLink to='/all_noteposts' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}> My Noteposts</NavLink></li>
