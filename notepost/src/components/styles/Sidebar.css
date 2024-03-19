@@ -6,6 +6,7 @@
     position: fixed;
     overflow-y: hidden;
     width: 400px;
+    max-width: 95vw;
     transition: width 0.3s ease;
     background-color: #1d1a39;
     color: #fff;
@@ -34,7 +35,6 @@
     display: block;
     margin: 10px 0;
     color: #ffff;
-    /* transition: transform 0.3s ease; */
     cursor: pointer;
 }
 
@@ -44,7 +44,6 @@
 
 .topics_container button:hover {
     background-color: #f39f5a0c;
-    /* transform: translate(1px, 1px); */
 }
 
 .hidden_topics_container {

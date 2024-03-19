@@ -1,6 +1,6 @@
 import './styles/AlertModal.css';
 
-const AlertModal = ({  deleteNotepost, setShowAlert }) => {
+const AlertModal = ({ deleteNotepost, setShowAlert }) => {
 
     const closeModal = () => {
         setShowAlert(false)
@@ -18,15 +18,15 @@ const AlertModal = ({  deleteNotepost, setShowAlert }) => {
                         <div id='closeAlert' onClick={closeModal}>✖</div>
                         <p>Are you sure you want to delete the post? The post will be deleted permanently.</p>
                         <div id='alert_buttons'>
-                            <button onClick={handleDelete} id='yes'>Yes</button>
                             <button onClick={closeModal} id='no'>No</button>
+                            <button onClick={handleDelete} id='yes'>Yes</button>
                         </div>
                     </div>
 
                 </div>
 
 
-            </div>                                                         
+            </div>
         </>
     )
 }

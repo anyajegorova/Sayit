@@ -28,21 +28,20 @@ h1 {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     letter-spacing: -3px;
     font-size: 1.9rem;
-
 }
 
 .logo_container {
     display: flex;
     align-items: center;
-
+    flex-wrap: wrap;
 }
 
-ul {
+nav #navbar_list {
     display: flex;
     justify-content: space-between;
 }
 
-li {
+nav #navbar_list li {
     list-style: none;
     margin: 0 10px;
     border-bottom: 1px solid transparent;
@@ -68,4 +67,54 @@ a,
     color: #b33147;
     margin-left: 30px;
     cursor: pointer;
+}
+
+nav svg {
+    display: none;
+}
+
+.hamburger_menu_container {
+    display: none;
+}
+
+
+/* Media queries */
+
+@media (max-width: 768px) {
+
+    #logo {
+        font-size: 1.5rem;
+    }
+
+    h1 {
+        margin: 2px;
+        font-size: 1.2rem;
+    }
+
+    nav #navbar_list {
+        display: none;
+    }
+
+    nav svg{
+        display: block;
+        height: 24px;
+        cursor: pointer;
+    }
+    .hamburger_menu_container {
+        display: flex;
+        align-items: center;
+    }
+}
+
+@media (max-width: 430px) {
+
+    #logo {
+        font-size: 1.2rem;
+        letter-spacing: -2px;
+    }
+
+    h1 {
+        margin: 1px;
+        font-size: 1.1rem;
+    }
 }

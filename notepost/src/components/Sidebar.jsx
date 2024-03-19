@@ -15,10 +15,6 @@ const Sidebar = ({ onClose, isSidebarOpen, onTopicChange, mode }) => {
         getTopics()
     }, [])
 
-    useEffect(() => {
-        getTopics()
-    }, [mode])
-
     const token = localStorage.getItem('token');
 
     const getTopics = async () => {
@@ -36,9 +32,6 @@ const Sidebar = ({ onClose, isSidebarOpen, onTopicChange, mode }) => {
             setTopics(data)
             console.log('Topics fetched:', data);
             setLoading(false)
-            // console.log(data[0]._id, 'Data 2')
-            // setGeneralTopic(data[0]._id)
-            // console.log(generalTopic, 'General topic')
         }
         catch (error) {
             console.error(error)

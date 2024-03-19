@@ -1,7 +1,7 @@
 import './styles/Login.css';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+// import { ToastContainer, toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 
 const Login = ({ mode, setLoggedIn }) => {
@@ -69,16 +69,16 @@ const Login = ({ mode, setLoggedIn }) => {
 
             if (response.ok) {
                 navigate('/login')
-                toast.success('User created successfully!', {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: 'dark'
-                })
+                // toast.success('User created successfully!', {
+                //     position: "top-center",
+                //     autoClose: 5000,
+                //     hideProgressBar: false,
+                //     closeOnClick: true,
+                //     pauseOnHover: true,
+                //     draggable: true,
+                //     progress: undefined,
+                //     theme: 'dark'
+                // })
                 console.log('User created successfully!');
             } else {
                 console.log('User creation failed')

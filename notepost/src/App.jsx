@@ -6,10 +6,12 @@ import MainRoutes from './components/MainRoutes';
 import Navbar from './components/Navbar';
 import Cookies from 'js-cookie';
 import { ToastContainer } from 'react-toastify';
+import MobileMenu from './components/MobileMenu';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [saveUserId, setSaveUserId] = useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -31,15 +33,19 @@ function App() {
     navigate('/login')
   }
 
+  const onMenuClick = () => {
+    setIsMenuOpen(!isMenuOpen)
+  }
+
 
   return (
     <div className="main_page">
-      <Navbar loggedIn={loggedIn} logout={logout} />
+      <Navbar loggedIn={loggedIn} logout={logout} onMenuClick={onMenuClick} isMenuOpen={isMenuOpen} />
       <MainRoutes
         loggedIn={loggedIn}
         setLoggedIn={setLoggedIn}
       />
-      <ToastContainer />
+      <MobileMenu isMenuOpen={isMenuOpen} onMenuClick={onMenuClick} logout={logout} loggedIn={loggedIn}/>
     </div>
   )
 }

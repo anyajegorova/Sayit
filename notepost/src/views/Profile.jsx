@@ -10,11 +10,12 @@ const Profile = () => {
         avatar: ''
 
     })
-    const [newPassword, setNewPassword] = useState('')
-    const [newPasswordConfirmation, setNewPasswordConfirmation] = useState('')
-    const [oldPassword, setOldPassword] = useState('')
-    const [success, setSuccess] = useState(false)
-    const [changePassword, setChangePassword] = useState(false)
+    const [newPassword, setNewPassword] = useState('');
+    const [newPasswordConfirmation, setNewPasswordConfirmation] = useState('');
+    const [oldPassword, setOldPassword] = useState('');
+    const [success, setSuccess] = useState(false);
+    const [changePassword, setChangePassword] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const firstCharacter = user.username.charAt(0);
 
@@ -119,6 +120,7 @@ const Profile = () => {
                     const avatarBlob = await avatarResponse.blob();
                     const avatarUrl = URL.createObjectURL(avatarBlob);
                     setUser((prevUser) => ({ ...prevUser, avatar: avatarUrl }));
+                    setLoading(false)
                 }
 
             } catch (error) {
@@ -130,17 +132,22 @@ const Profile = () => {
     }
     return (
         <div className='profile_page'>
-            {user.avatar !== null ? <div className='avatar'>
-                <img src={user.avatar} alt='Avatar' className='avatar_img' onClick={handleAvatarClick} />
-                <input type='file' id='avatarInput' onChange={handleAvatarChange} accept='image/*' name='avatar'
-                />
-            </div>
+            {loading ? <div className='loading'>Loading...</div> :
+                <>
+                    {user.avatar !== null ? <div className='avatar'>
+                        <img src={user.avatar} alt='Avatar' className='avatar_img' onClick={handleAvatarClick} />
+                        <input type='file' id='avatarInput' onChange={handleAvatarChange} accept='image/*' name='avatar'
+                        />
+                    </div>
 
-                :
-                <div className='avatar'>{firstCharacter}
-                    <input type='file' id='avatarInput' onChange={handleAvatarChange} accept='image/*' name='avatar'
-                    /></div>
+                        :
+                        <div className='avatar'>{firstCharacter}
+                            <input type='file' id='avatarInput' onChange={handleAvatarChange} accept='image/*' name='avatar'
+                            /></div>
+                    }
+                </>
             }
+
             <h1>{user.username}</h1>
             <div className='profile_container'>
                 <div className='profile'>
