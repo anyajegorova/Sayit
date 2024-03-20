@@ -1,6 +1,5 @@
 .notepost {
     width: 90%;
-    height: 100px;
     min-height: 100px;
     display: flex;
     padding: 10px 40px 10px 48px;
@@ -38,6 +37,7 @@
 
 .notepost_info {
     width: 100%;
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
@@ -51,15 +51,13 @@
 }
 
 #notepost_date {
+    margin-top: 10px;
     padding: 0;
     font-size: 14px;
     font-weight: 300;
     align-self: flex-end;
     color: #0f0911;
     font-family: 'Inter';
-    position: absolute;
-    bottom: 20px;
-    right: 20px
 }
 
 
@@ -70,6 +68,9 @@
     font-weight: 400;
     font-size: 1.2rem;
     font-family: 'Inter';
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 #owner {

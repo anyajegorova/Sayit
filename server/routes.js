@@ -115,7 +115,7 @@ router.post('/create_notepost', tokenVerifyMiddleware, async (req, res) => {
         const notepostSaved = await newNotepost.save();
         res.status(201).json({ message: 'Notepost created successfully', notepostSaved });
     } catch (error) {
-        console.error(error)
+        res.status(500).json({ message: 'Server error' });
     }
 
 })
@@ -126,6 +126,9 @@ router.post('/all_noteposts', tokenVerifyMiddleware, async (req, res) => {
     try {
         const userId = req.user.id;
         const noteposts = await Notepost.find({ owner: userId });
+        if (noteposts.length === 0) {
+            return res.status(404).json({ message: 'No noteposts found' });
+        }
         const userPromises = noteposts.map(async (notepost) => {
             await Notepost.populate(notepost, { path: 'owner', select: 'email username' });
         });
@@ -142,6 +145,7 @@ router.post('/all_noteposts', tokenVerifyMiddleware, async (req, res) => {
         res.status(200).json(formattedNoteposts);
     } catch (error) {
         console.error(error)
+        res.status(500).json({ message: 'Server error' })
 
     }
 }
@@ -151,8 +155,11 @@ router.post('/all_noteposts', tokenVerifyMiddleware, async (req, res) => {
 router.post('/public_noteposts', async (req, res) => {
     try {
         const currentTopic = req.body.topic;
-        const noteposts = await Notepost.find({ topic: currentTopic});
+        const noteposts = await Notepost.find({ topic: currentTopic });
         // Creating array for storing promises for fetching user data using populate
+        if (!noteposts) {
+            return res.status(404).json({ message: 'No noteposts found' })
+        }
         const userPromises = noteposts.map(async (notepost) => {
             await Notepost.populate(notepost, { path: 'owner', select: 'email username avatar' });
         });
@@ -172,6 +179,7 @@ router.post('/public_noteposts', async (req, res) => {
         res.status(200).json(formattedNoteposts);
     } catch (error) {
         console.error(error)
+        res.status(500).json({ message: 'Server error' })
     }
 
 })
@@ -183,6 +191,9 @@ router.post('/delete_notepost', tokenVerifyMiddleware, async (req, res) => {
     try {
         const userId = req.user.id;
         const { notepostId } = req.body;
+        if (!notepostId) {
+            return res.status(400).json({ message: 'No notepost id provided' });
+        }
 
         const deletedNotepost = await Notepost.deleteOne({ owner: userId, _id: notepostId });
         res.status(200).json({ message: 'Notepost deleted successfully' });
@@ -208,10 +219,10 @@ router.post('/profile', tokenVerifyMiddleware, async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-
         res.status(200).json({ username: user.username, email: user.email, avatar: user.avatar });
     } catch (error) {
         console.error(error)
+        res.status(500).json({ message: 'Internal Server Error' });
     }
 
 })
@@ -308,7 +319,7 @@ router.post('/change_password', tokenVerifyMiddleware, async (req, res) => {
             return res.status(401).json({ message: 'Invalid old password' });
         }
         if (newPassword !== newPasswordConfirmation) {
-            return res.status(401).json({ message: 'New passwords do not match' });
+            return res.status(422).json({ message: 'New passwords do not match' });
         }
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         const updatedUser = await User.findByIdAndUpdate(userId, { password: hashedPassword });
@@ -316,6 +327,7 @@ router.post('/change_password', tokenVerifyMiddleware, async (req, res) => {
 
     } catch (error) {
         console.error(error)
+        res.status(500).json({ message: 'Server error' })
     }
 });
 
@@ -354,6 +366,10 @@ router.post('/favourites', tokenVerifyMiddleware, async (req, res) => {
     const userId = req.user.id;
     try {
         const noteposts = await Notepost.find({ likedBy: userId });
+        console.log(noteposts)
+        if (noteposts.length === 0) {
+            return res.status(404).json({ message: 'No noteposts found' });
+        }
         const userPromises = noteposts.map(async (notepost) => {
             await Notepost.populate(notepost, { path: 'owner', select: 'email username avatar' });
         });
@@ -373,6 +389,7 @@ router.post('/favourites', tokenVerifyMiddleware, async (req, res) => {
         res.status(200).json(formattedNoteposts);
     } catch (error) {
         console.error(error)
+        res.status(500).json({ message: 'Server error' })
     }
 });
 
@@ -390,6 +407,7 @@ router.post('/new_topic', tokenVerifyMiddleware, async (req, res) => {
         res.status(201).json({ message: 'Topic created successfully', topicSaved });
     } catch (error) {
         console.error(error)
+        res.status(500).json({ message: 'Server error' })
     }
 });
 
@@ -412,6 +430,7 @@ router.get('/topics/general', async (req, res) => {
         res.status(200).json(generalTopic._id);
     } catch (error) {
         console.error('Error getting general topic', error)
+        res.status(500).json({ message: 'Server error' })
     }
 });
 

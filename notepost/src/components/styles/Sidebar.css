@@ -1,6 +1,6 @@
 .sidebar {
-    height: 100dvh;
     display: flex;
+    height: 94dvh;
     left: 0;
     top: 70px;
     position: fixed;
@@ -16,7 +16,6 @@
 
 .topics_container {
     width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -40,6 +39,14 @@
 
 .topics_list {
     width: 100%;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+}
+
+.topics_list::-webkit-scrollbar {
+    display: none;
 }
 
 .topics_container button:hover {

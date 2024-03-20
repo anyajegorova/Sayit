@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Notepost from '../components/Notepost';
 import './styles/Favourites.css';
+import { toast } from 'react-toastify';
 
 const Favourites = () => {
     const [favourites, setFavourites] = useState([]);
@@ -25,20 +26,29 @@ const Favourites = () => {
                     },
                     'credentials': 'include'
                 })
-                const data = await response.json();
-                const formattedNotepost = data.map((notepost) => ({
-                    date: notepost.date,
-                    content: notepost.content,
-                    ownerEmail: notepost.ownerEmail,
-                    username: notepost.username,
-                    avatar: notepost.avatar.data,
-                    notepostId: notepost.notepostId,
-                    likedBy: notepost.likedBy,
-                    likeCount: notepost.likeCount,
-                }))
-                setFavourites(formattedNotepost);
+                console.log(response.status)
+                if (response.ok) {
+                    const data = await response.json();
+                    const formattedNotepost = data.map((notepost) => ({
+                        date: notepost.date,
+                        content: notepost.content,
+                        ownerEmail: notepost.ownerEmail,
+                        username: notepost.username,
+                        avatar: notepost.avatar.data,
+                        notepostId: notepost.notepostId,
+                        likedBy: notepost.likedBy,
+                        likeCount: notepost.likeCount,
+                    }))
+                    setFavourites(formattedNotepost);
+                } else if (response.status === 404) {
+                    toast.info("You don't have any likes yet!")
+                } else {
+                    toast.error('Oops! Something went wrong. Please try again later.')
+                }
+
             } catch (error) {
                 console.log('Error getting favourites ', error)
+                toast.error('Oops! Something went wrong. Please try again later.')
             }
         } else {
             console.log('No token found')

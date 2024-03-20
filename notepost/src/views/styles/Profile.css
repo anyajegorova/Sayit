@@ -5,9 +5,12 @@
     justify-content: center;
 
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     background: rgb(29, 26, 57);
     background: linear-gradient(90deg, rgba(29, 26, 57, 1) 0%, rgba(102, 37, 73, 1) 75%);
+    padding-top: 70px;
+    overflow-y: hidden;
+    overflow-x: hidden;
     /* background: rgb(29, 26, 57);
     background: linear-gradient(90deg, rgba(29, 26, 57, 1) 10%, rgba(69, 25, 82, 1) 50%, rgba(29, 26, 57, 1) 90%); */
 }
@@ -22,8 +25,9 @@
     box-sizing: border-box;
     padding: 0em 5em 5em 5em;
     border-radius: 5px;
-    height: 480px;
+    min-height: 480px;
     width: 500px;
+    max-width: 500px;
 }
 
 .profile {

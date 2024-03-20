@@ -4,11 +4,12 @@ import './styles/AllNoteposts.css'
 import Notepost from '../components/Notepost';
 import CreateNotepostArea from '../components/CreateNotepostArea';
 import Sidebar from '../components/Sidebar';
+import { toast } from 'react-toastify';
 
 const AllNoteposts = ({ mode }) => {
     const [noteposts, setNoteposts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768 ? true : false);
     // const [generalTopic, setGeneralTopic] = useState('');
     const [currentTopic, setCurrentTopic] = useState(null);
     const navigate = useNavigate();
@@ -61,24 +62,28 @@ const AllNoteposts = ({ mode }) => {
                     body: JSON.stringify({ topic: currentTopic })
                 })
                 const data = await response.json();
-
-                const formattedNoteposts = data.map((notepost) => ({
-                    date: notepost.date,
-                    content: notepost.content,
-                    ownerEmail: notepost.ownerEmail,
-                    avatar: notepost.avatar.data,
-                    username: notepost.username,
-                    notepostId: notepost.notepostId.toString(),
-                    likedBy: notepost.likedBy,
-                    likeCount: notepost.likeCount,
-                    topic: notepost.topic
-                }))
-
-                setNoteposts(formattedNoteposts);
-
+                if (response.ok) {
+                    const formattedNoteposts = data.map((notepost) => ({
+                        date: notepost.date,
+                        content: notepost.content,
+                        ownerEmail: notepost.ownerEmail,
+                        avatar: notepost.avatar.data,
+                        username: notepost.username,
+                        notepostId: notepost.notepostId.toString(),
+                        likedBy: notepost.likedBy,
+                        likeCount: notepost.likeCount,
+                        topic: notepost.topic
+                    }))
+                    setNoteposts(formattedNoteposts);
+                } else if (response.status === 404) {
+                    toast.error('No posts found!')
+                } else if (response.status === 500) {
+                    toast.error('Oops! Something went wrong. Please, try again.')
+                }
 
             } catch (error) {
-                console.log('Error getting noteposts ', error)
+                toast.error('Oops! Something went wrong. Please, try again.')
+
             }
         } else {
             navigate('/login');

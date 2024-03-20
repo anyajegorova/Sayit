@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import './styles/Profile.css';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Profile = () => {
     const [user, setUser] = useState({
@@ -43,13 +44,17 @@ const Profile = () => {
                     'body': formData,
                     'credentials': 'include'
                 })
-                const data = await response.json();
                 if (response.status === 200) {
                     getUser()
+                    toast.success('Avatar changed successfully')
+                } else if (response.status === 400) {
+                    toast.error('No file selected')
+                } else {
+                    toast.error('Error changing avatar')
                 }
-                console.log(data)
             } catch (error) {
                 console.log('Error changing avatar ', error)
+                toast.error('Oops! Something went wrong. Please try again later.')
             }
         } else {
             console.log('No token found')
@@ -71,7 +76,7 @@ const Profile = () => {
                     'body': JSON.stringify({ oldPassword, newPassword, newPasswordConfirmation }),
                     'credentials': 'include'
                 })
-                const data = await response.json();
+
                 if (response.status === 200) {
                     setChangePassword(false)
                     setNewPassword('')
@@ -81,11 +86,16 @@ const Profile = () => {
                     setTimeout(() => {
                         setSuccess(false)
                     }, 3000)
+                    toast.success('Password changed successfully')
 
+                } else if (response.status === 401) {
+                    toast.error('Invalid password')
+                } else if (response.status === 422) {
+                    toast.error('Passwords do not match')
                 }
-                console.log(data)
             } catch (error) {
                 console.log('Error changing password ', error)
+                toast.error('Oops! Something went wrong. Please try again later.')
             }
         } else {
             console.log('No token found')
@@ -106,46 +116,60 @@ const Profile = () => {
                     },
                     'credentials': 'include'
                 })
-                const data = await response.json();
 
-                setUser({ username: data.username, email: data.email, avatar: data.avatar.data })
-                if (data.avatar.data !== null) {
-                    // Fetch and set the avatar image
-                    const avatarResponse = await fetch('http://localhost:8000/get_avatar', {
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                        },
-                        credentials: 'include',
-                    });
-                    const avatarBlob = await avatarResponse.blob();
-                    const avatarUrl = URL.createObjectURL(avatarBlob);
-                    setUser((prevUser) => ({ ...prevUser, avatar: avatarUrl }));
-                    setLoading(false)
+                if (response.ok) {
+                    const data = await response.json();
+
+                    setUser({ username: data.username, email: data.email, avatar: data.avatar.data })
+                    if (data.avatar.data !== null) {
+                        // Fetch and set the avatar image
+                        const avatarResponse = await fetch('http://localhost:8000/get_avatar', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                            },
+                            credentials: 'include',
+                        });
+                        const avatarBlob = await avatarResponse.blob();
+                        const avatarUrl = URL.createObjectURL(avatarBlob);
+                        setUser((prevUser) => ({ ...prevUser, avatar: avatarUrl }));
+                        setLoading(false)
+                    }
+
+                } else if (response.status === 500) {
+                    toast.error('Oops! Something went wrong. Please try again later.')
                 }
 
             } catch (error) {
                 console.log('Error getting noteposts ', error)
+                toast.error('Oops! Something went wrong. Please try again later.')
             }
         } else {
             console.log('No token found')
+            navigate('/login')
         }
     }
     return (
         <div className='profile_page'>
-            {loading ? <div className='loading'>Loading...</div> :
-                <>
-                    {user.avatar !== null ? <div className='avatar'>
+
+
+            {user.avatar !== null ? <div className='avatar'>
+                {loading ? <div className='loading'>Loading...</div> :
+                    <>
                         <img src={user.avatar} alt='Avatar' className='avatar_img' onClick={handleAvatarClick} />
                         <input type='file' id='avatarInput' onChange={handleAvatarChange} accept='image/*' name='avatar'
                         />
-                    </div>
+                    </>
+                }
+            </div>
 
-                        :
-                        <div className='avatar'>{firstCharacter}
-                            <input type='file' id='avatarInput' onChange={handleAvatarChange} accept='image/*' name='avatar'
-                            /></div>
-                    }
-                </>
+                :
+                <div className='avatar'>{firstCharacter}
+                    <input type='file' id='avatarInput' onChange={handleAvatarChange} accept='image/*' name='avatar'
+                    />
+
+                </div>
+
+
             }
 
             <h1>{user.username}</h1>

@@ -2,6 +2,7 @@ import './styles/NotepostList.css';
 import { useNavigate } from 'react-router-dom';
 import Notepost from '../components/Notepost';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const NotepostList = ({ mode }) => {
   const [noteposts, setNoteposts] = useState([])
@@ -15,6 +16,7 @@ const NotepostList = ({ mode }) => {
 
   //Get all user noteposts
   const getNoteposts = async () => {
+    console.log('Getting noteposts')
     if (token) {
       try {
         const response = await fetch('http://localhost:8000/all_noteposts', {
@@ -37,25 +39,19 @@ const NotepostList = ({ mode }) => {
             likeCount: notepost.likeCount,
           }))
           setNoteposts(formattedNoteposts);
-        } else {
-          console.error('Error getting noteposts. Status:', response.status);
-          if (response.status === 401) {
-            console.error('Invalid or expired token. Redirecting to login...');
-            navigate('/login');
-          }
+        } else if (response.status === 404) {
+          setNoteposts([])
+          toast.info('You have no posts yet!')
+        } else if (response.status === 500) {
+          toast.error('Oops! Something went wrong. Please, try again.')
         }
-
-
-
       } catch (error) {
-        console.log('Error getting noteposts ', error)
+        toast.error('Oops! Something went wrong. Please, try again.')
       }
     } else {
-      console.log('No token found')
       navigate('/login')
-
+      toast.error('Please, login!')
     }
-
   }
 
   return (

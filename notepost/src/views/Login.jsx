@@ -1,7 +1,7 @@
 import './styles/Login.css';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-// import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 
 const Login = ({ mode, setLoggedIn }) => {
@@ -31,18 +31,33 @@ const Login = ({ mode, setLoggedIn }) => {
                 Cookies.set('token', data.token, { expires: 7 });
                 localStorage.setItem('token', data.token)
                 localStorage.setItem('username', data.username);
-
-                // //Logging all local storage
-                // for (let i = 0; i < localStorage.length; i++) {
-                //     const key = localStorage.key(i);
-                //     const value = localStorage.getItem(key);
-                //     console.log(`${key}: ${value}`);
-                // }
-
                 navigate('/public_noteposts')
 
             } else {
-                console.log('Login failed')
+                if (response.status === 401) {
+                    toast.error('Invalid email or password!', {
+                        position: "top-center",
+                        autoClose: 3000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'dark'
+                    })
+                } else if (response.status === 500) {
+                    toast.error('Oops! Something went wrong. Please, try again.', {
+                        position: "top-center",
+                        autoClose: 3000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'dark'
+                    })
+                }
+
             }
 
         } catch (error) {
@@ -69,24 +84,53 @@ const Login = ({ mode, setLoggedIn }) => {
 
             if (response.ok) {
                 navigate('/login')
-                // toast.success('User created successfully!', {
-                //     position: "top-center",
-                //     autoClose: 5000,
-                //     hideProgressBar: false,
-                //     closeOnClick: true,
-                //     pauseOnHover: true,
-                //     draggable: true,
-                //     progress: undefined,
-                //     theme: 'dark'
-                // })
-                console.log('User created successfully!');
+                toast.success('User created successfully!', {
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'dark'
+                })
+                console.log('Registered successfully!');
             } else {
-                console.log('User creation failed')
+                if (response.status === 409) {
+                    toast.error('User already exists!', {
+                        position: "top-center",
+                        autoClose: 3000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'dark'
+                    })
+                } else if (response.status === 500) {
+                    toast.error('Oops! Something went wrong. Please, try again.', {
+                        position: "top-center",
+                        autoClose: 3000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'dark'
+                    })
+                }
             }
-
-
         } catch (error) {
-            console.error('Authentication error ', error)
+            toast.error('Please enter valid credentials!', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'dark'
+            })
         }
     }
 

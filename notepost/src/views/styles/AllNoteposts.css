@@ -2,7 +2,7 @@
     display: flex;
     padding-top: 70px;
     width: 100%;
-
+    overflow-y: hidden;
 }
 
 .all_noteposts_container {
@@ -14,6 +14,7 @@
     padding-left: 400px;
     transition: padding-left 0.3s ease;
     padding-top: 20px;
+    padding-bottom: 110px;
 }
 
 .all_noteposts {
@@ -34,4 +35,19 @@
 
 .all_noteposts_container.sidebar_closed {
     padding-left: 24px;
+}
+
+
+/*Media queries*/
+
+@media (max-width: 768px) {
+
+    .all_noteposts {
+        padding-left: 12px;
+    }
+
+    .create_notepost_container {
+        width: 100%;
+        margin-left: 40px;
+    }
 }

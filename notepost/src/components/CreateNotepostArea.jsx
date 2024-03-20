@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './styles/CreateNotepostArea.css';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const CreateNotepostArea = ({ getAllNoteposts, currentTopic }) => {
     const token = localStorage.getItem('token');
@@ -32,27 +33,28 @@ const CreateNotepostArea = ({ getAllNoteposts, currentTopic }) => {
                     },
                     credentials: 'include',
                 });
-                console.log(avatarResponse.status, 'Avatar Response')
                 if (avatarResponse.status == 404) {
                     setAvatar(null)
                 } else if (avatarResponse.ok && avatarResponse !== null) {
                     const avatarBlob = await avatarResponse.blob();
                     const avatarUrl = URL.createObjectURL(avatarBlob);
                     setAvatar(avatarUrl);
-                    console.log(avatar, 'Avatar URL')
-
                 }
             } catch (error) {
-                console.log('Error getting avatar', error)
+                toast.error('Oops! Something went wrong. Please, try again.')
             }
         } else {
             console.error('No token found')
+            navigate('/login')
         }
 
     }
 
     const createNotepost = async (e) => {
         e.preventDefault();
+        if (!currentTopic) {
+            return toast.error('Please, select a topic!')
+        }
         try {
             const response = await fetch('http://localhost:8000/create_notepost', {
                 'method': 'POST',
@@ -67,8 +69,13 @@ const CreateNotepostArea = ({ getAllNoteposts, currentTopic }) => {
                 setNewNotepost({ content: '', topic: currentTopic })
                 getAllNoteposts()
             }
+
+            if (response.status === 500) {
+                toast.error('Oops! Something went wrong. Please, try again.')
+
+            }
         } catch (error) {
-            console.log('Error creating notepost', error)
+            toast.error('Oops! Something went wrong. Please, try again.')
         }
     }
     return (

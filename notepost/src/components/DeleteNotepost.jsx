@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import AlertModal from './AlertModal';
 import './styles/DeleteNotepost.css';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const DeleteNotepost = ({ notepostId, getNoteposts }) => {
     const [showAlert, setShowAlert] = useState(false);
+    const navigate = useNavigate();
+
     const handleClick = () => {
         setShowAlert(true)
     }
     const deleteNotepost = async () => {
-        console.log('Deleting notepost ', notepostId)
         const token = localStorage.getItem('token');
         if (token) {
             try {
@@ -21,15 +24,22 @@ const DeleteNotepost = ({ notepostId, getNoteposts }) => {
                     'body': JSON.stringify({ notepostId: notepostId.toString() }),
                     'credentials': 'include'
                 })
-                console.log(response, 'Here')
-                setShowAlert(false)
-                getNoteposts();
+                if (response.ok) {
+                    getNoteposts();
+                    setShowAlert(false)
+                    toast.success('Notepost deleted successfully')
+
+                } else {
+                    toast.error('Error deleting notepost')
+                }
+
 
             } catch (error) {
-                console.log('Error deleting notepost ', error)
+                toast.error('Oops! Something went wrong. Please try again later.')
             }
         } else {
             console.log('No token found')
+            navigate('/login')
         }
     }
 

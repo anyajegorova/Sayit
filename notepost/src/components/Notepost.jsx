@@ -4,6 +4,7 @@ import DeleteNotepost from './DeleteNotepost';
 import './styles/Notepost.css';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { toast } from 'react-toastify';
 
 
 const Notepost = ({
@@ -69,11 +70,13 @@ const Notepost = ({
                 setIsFavourite(!isFavourite);
             } else {
                 console.log('Error updating like')
+                toast.error('Oops! Something went wrong. Please try again.')
+
             }
 
         } catch (error) {
             console.error('Error updating like', error)
-
+            toast.error('Oops! Something went wrong. Please try again.')
         }
     }
 
@@ -86,11 +89,10 @@ const Notepost = ({
             <Like onToggleLike={toggleLike} isFavourite={isFavourite} likes={like} />
 
             <div className='notepost_info'>
-
                 <h2 id='notepost_content' className={(currentMode == 'edit') ? 'edit' : ''}>{content}</h2>
+                <h1 id='notepost_date'>{date}</h1>
             </div>
 
-            <h1 id='notepost_date'>{date}</h1>
 
         </div>
     )

@@ -27,6 +27,7 @@
     width: 100%;
     max-width: 100%;
     padding: 0px 40px;
+    box-sizing: border-box;
 }
 
 #create_notepost_form {
@@ -63,7 +64,6 @@
 
 
 #content_input {
-    width: 100%;
     border-radius: 10px;
     box-shadow: none;
     background-color: #ffffff8e;
@@ -108,4 +108,40 @@ button svg {
 
     box-shadow: rgb(36, 16, 27) 0px 0px 10px 0px;
     cursor: pointer;
+}
+
+
+
+/*Media queries*/
+
+@media screen and (max-width: 768px) {
+    .create_notepost h1 {
+        font-size: 1.2rem;
+    }
+
+    .create_notepost_avatar {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+
+    #create_notepost_form {
+        padding: 5px;
+    }
+
+    #content_input {
+        font-size: 1rem;
+    }
+
+    .input_container {
+        padding-left: 25px;
+        padding-right: 0px;
+        margin: 0;
+    }
+
+    #create_notepost_form button {
+        height: 40px;
+        min-width: 40px;
+    }
+
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Topic from './Topic';
 import './styles/Sidebar.css';
+import { toast } from 'react-toastify';
 
 const Sidebar = ({ onClose, isSidebarOpen, onTopicChange, mode }) => {
     const [newTopic, setNewTopic] = useState('')
@@ -28,19 +29,26 @@ const Sidebar = ({ onClose, isSidebarOpen, onTopicChange, mode }) => {
                 },
                 'credentials': 'include'
             })
-            const data = await response.json();
-            setTopics(data)
-            console.log('Topics fetched:', data);
-            setLoading(false)
+            if (response.ok) {
+                const data = await response.json();
+                setTopics(data)
+                console.log('Topics fetched:', data);
+                setLoading(false)
+            } else {
+                toast.error('Unable to load topics. Please try again.')
+            }
+
         }
         catch (error) {
             console.error(error)
+            toast.error('Oops! Something went wrong. Please try again.')
         }
     }
 
     const addTopic = async () => {
         if (newTopic === '') {
             console.error('Topic cannot be empty')
+            toast.error('Topic cannot be empty')
         } else {
             try {
                 const response = await fetch('http://localhost:8000/new_topic', {
@@ -52,14 +60,21 @@ const Sidebar = ({ onClose, isSidebarOpen, onTopicChange, mode }) => {
                     'credentials': 'include',
                     body: JSON.stringify({ topic: newTopic })
                 })
-                const data = await response.json();
-                console.log(data)
-                setNewTopic('')
-                getTopics()
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(data)
+                    setNewTopic('')
+                    getTopics()
+
+                } else {
+                    console.error('Error adding topic')
+                    toast.error('Oops! Something went wrong. Please try again.')
+                }
 
 
             } catch (error) {
                 console.error('Error adding topic', error)
+                toast.error('Oops! Something went wrong. Please try again.')
             }
         }
 
@@ -76,7 +91,7 @@ const Sidebar = ({ onClose, isSidebarOpen, onTopicChange, mode }) => {
                         <input onChange={(e) => { setNewTopic(e.target.value) }} id='topic_input' placeholder='Type here..'></input>
                         <button onClick={addTopic}>New Topic</button>
                         <div className="topics_list">
-                            <Topic topics={topics} onTopicChange={onTopicChange} />
+                            <Topic topics={topics} onTopicChange={onTopicChange} onClose={onClose} />
                         </div>
                     </>
                 )}

@@ -21,7 +21,16 @@
     text-overflow: ellipsis;
 }
 
-.topic_container .topic_button:hover {
+.topic_container .topic_button:hover,
+.topic_container .topic_button:focus,
+.topic_container .topic_button:active {
     background-color: #ffffff0c;
     transform: translate(2px, 2px);
+}
+
+@media (hover: none) {
+    .topic_container .topic_button.active {
+        background-color: #ffffff0c;
+        transform: translate(2px, 2px);
+    }
 }
