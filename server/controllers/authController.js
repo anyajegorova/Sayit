@@ -53,7 +53,11 @@ const logout = async (req, res) => {
 
 const register = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, confirmPassword } = req.body;
+
+        if (password !== confirmPassword) {
+            return res.status(400).json({ message: 'Passwords do not match' });
+        }
         //Checking if user already exists
         const user = await User.findOne({ email });
         if (user) {

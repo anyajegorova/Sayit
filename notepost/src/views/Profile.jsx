@@ -65,6 +65,10 @@ const Profile = () => {
 
     const changePasswordHandler = async () => {
         const token = localStorage.getItem('token');
+        if (newPassword.length < 1 || newPasswordConfirmation.length < 1 || oldPassword.length < 1) {
+            toast.error('Please fill in all fields')
+            return
+        }
 
         if (token) {
             try {

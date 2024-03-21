@@ -14,11 +14,11 @@
     padding-left: 400px;
     transition: padding-left 0.3s ease;
     padding-top: 20px;
-    padding-bottom: 9rem;
 }
 
 .all_noteposts {
     width: 100%;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -26,12 +26,15 @@
     align-items: center;
     overflow-y: auto;
     overflow-anchor: none;
+    padding-bottom: 9rem;
 }
 
 .create_notepost_container {
-    width: 80%;
-    align-self: center;
-    max-width: 100%;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     position: fixed;
     bottom: 0;
 }
@@ -51,11 +54,11 @@
 @media (max-width: 768px) {
 
     .all_noteposts {
-        padding-left: 12px;
+        padding-left: 16px;
     }
 
     .create_notepost_container {
         width: 100%;
-        margin-left: 40px;
+        padding-left: 10px;
     }
 }
