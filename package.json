@@ -11,6 +11,7 @@
     "author": "Anna Jegorova",
     "license": "ISC",
     "dependencies": {
-        "node": "^21.6.2"
+        "node": "^21.6.2",
+        "vite": "^5.2.2"
     }
 }
