@@ -14,13 +14,21 @@ const AllNoteposts = ({ mode }) => {
     const [currentTopic, setCurrentTopic] = useState(null);
     const navigate = useNavigate();
 
+
+
     useEffect(() => {
         getAllNoteposts();
         setLoading(false)
     }, [])
 
     useEffect(() => {
+        window.scrollTo(0, document.getElementById('anchor').offsetTop - 100)
+        console.log('notepost dependency useeffect')
+    }, [noteposts])
+
+    useEffect(() => {
         getAllNoteposts();
+        window.scrollTo(0, document.getElementById('anchor').offsetTop - 100)
     }, [currentTopic, mode])
 
     const handleCloseSidebar = () => {
@@ -125,7 +133,7 @@ const AllNoteposts = ({ mode }) => {
                 <div className='create_notepost_container'>
                     <CreateNotepostArea getAllNoteposts={getAllNoteposts} currentTopic={currentTopic} />
                 </div>
-
+                <div id='anchor'></div>
             </div>
 
         </div>

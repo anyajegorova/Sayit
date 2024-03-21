@@ -14,15 +14,18 @@
     padding-left: 400px;
     transition: padding-left 0.3s ease;
     padding-top: 20px;
-    padding-bottom: 110px;
+    padding-bottom: 9rem;
 }
 
 .all_noteposts {
     width: 100%;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: flex-start;
+    justify-content: flex-end;
+    align-items: center;
+    overflow-y: auto;
+    overflow-anchor: none;
 }
 
 .create_notepost_container {
@@ -35,6 +38,11 @@
 
 .all_noteposts_container.sidebar_closed {
     padding-left: 24px;
+}
+
+#anchor {
+    overflow-anchor: auto;
+    height: 1px;
 }
 
 

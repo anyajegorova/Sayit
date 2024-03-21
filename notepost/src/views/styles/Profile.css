@@ -5,7 +5,7 @@
     justify-content: center;
 
     width: 100%;
-    min-height: 100vh;
+    min-height: 100dvh;
     background: rgb(29, 26, 57);
     background: linear-gradient(90deg, rgba(29, 26, 57, 1) 0%, rgba(102, 37, 73, 1) 75%);
     padding-top: 70px;

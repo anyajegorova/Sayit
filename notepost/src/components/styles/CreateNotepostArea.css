@@ -10,7 +10,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .create_notepost h1 {
@@ -31,7 +31,7 @@
 }
 
 #create_notepost_form {
-    width: 80%;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: row;
@@ -142,6 +142,7 @@ button svg {
     #create_notepost_form button {
         height: 40px;
         min-width: 40px;
+        margin: 5px;
     }
 
 }

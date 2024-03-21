@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const routes = require('./routes');
+const router = require('./router');
 const cookieParser = require('cookie-parser');
 
 dotenv.config();
@@ -15,22 +15,23 @@ const path = require('path');
 
 const allowedOrigins = [
     'http://localhost:5173',
-    'http://localhost:5173/register',
-    'http://localhost:5173/login',
-    'http://localhost:5173/noteposts',
-    'http://localhost:5173/all_noteposts',
-    'http://localhost:5173/public_noteposts',
-    'http://localhost:5173/noteposts/delete_notepost',
-    'http://localhost:5173/noteposts/create_notepost',
-    'http://localhost:5173/noteposts/favourites',
-    'http://localhost:5173/noteposts/toggle_like',
-    'http://localhost:5173/noteposts/avatar',
-    'http://localhost:5173/noteposts/profile',
-    'http://localhost:5173/noteposts/get_avatar',
-    'http://localhost:8000/get_user_avatar/',
-    'http://localhost:8000/topics',
-    'http://localhost:8000/topics/general',
-    'http://localhost:8000/new_topic',
+    'http://localhost:8000',
+    // 'http://localhost:5173/register',
+    // 'http://localhost:5173/login',
+    // 'http://localhost:5173/noteposts',
+    // 'http://localhost:5173/all_noteposts',
+    // 'http://localhost:5173/public_noteposts',
+    // 'http://localhost:5173/noteposts/delete_notepost',
+    // 'http://localhost:5173/noteposts/create_notepost',
+    // 'http://localhost:5173/noteposts/favourites',
+    // 'http://localhost:5173/noteposts/toggle_like',
+    // 'http://localhost:5173/noteposts/avatar',
+    // 'http://localhost:5173/noteposts/profile',
+    // 'http://localhost:5173/noteposts/get_avatar',
+    // 'http://localhost:5173/get_user_avatar/',
+    // 'http://localhost:5173/topics',
+    // 'http://localhost:5173/topics/general',
+    // 'http://localhost:5173/new_topic',
 ]
 const corsOptions = {
     origin: allowedOrigins,
@@ -42,7 +43,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use('/', routes);
+app.use('/', router);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true });

@@ -6,7 +6,7 @@
     position: fixed;
     overflow-y: hidden;
     width: 400px;
-    max-width: 95vw;
+    max-width: 95dvw;
     transition: width 0.3s ease;
     background-color: #1d1a39;
     color: #fff;

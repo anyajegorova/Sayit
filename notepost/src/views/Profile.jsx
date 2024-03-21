@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import './styles/Profile.css';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Skeleton from '@mui/material/Skeleton';
 
 const Profile = () => {
     const [user, setUser] = useState({
@@ -150,28 +151,27 @@ const Profile = () => {
     }
     return (
         <div className='profile_page'>
-
-
-            {user.avatar !== null ? <div className='avatar'>
-                {loading ? <div className='loading'>Loading...</div> :
-                    <>
-                        <img src={user.avatar} alt='Avatar' className='avatar_img' onClick={handleAvatarClick} />
-                        <input type='file' id='avatarInput' onChange={handleAvatarChange} accept='image/*' name='avatar'
-                        />
-                    </>
-                }
-            </div>
-
+            {user.avatar !== null
+                ?
+                <div className='avatar'>
+                    {loading
+                        ?
+                        <Skeleton variant='circular' width={100} height={100} />
+                        :
+                        <>
+                            <img src={user.avatar} alt='Avatar' className='avatar_img' onClick={handleAvatarClick} />
+                            <input type='file' id='avatarInput' onChange={handleAvatarChange} accept='image/*' name='avatar'
+                            />
+                        </>
+                    }
+                </div>
                 :
-                <div className='avatar'>{firstCharacter}
-                    <input type='file' id='avatarInput' onChange={handleAvatarChange} accept='image/*' name='avatar'
-                    />
-
+                <div className='avatar'>
+                    {firstCharacter}
+                    <input type='file' id='avatarInput' onChange={handleAvatarChange} accept='image/*' name='avatar' />
                 </div>
 
-
             }
-
             <h1>{user.username}</h1>
             <div className='profile_container'>
                 <div className='profile'>

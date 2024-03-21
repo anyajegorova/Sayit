@@ -4,7 +4,7 @@ import Notepost from '../components/Notepost';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-const NotepostList = ({ mode }) => {
+const UserPosts = ({ mode }) => {
   const [noteposts, setNoteposts] = useState([])
 
   const navigate = useNavigate();
@@ -76,4 +76,4 @@ const NotepostList = ({ mode }) => {
     </div>
   )
 }
-export default NotepostList;
+export default UserPosts;
