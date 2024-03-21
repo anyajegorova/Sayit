@@ -27,7 +27,7 @@ const CreateNotepostArea = ({ getAllNoteposts, currentTopic }) => {
     const getAvatar = async () => {
         if (token) {
             try {
-                const avatarResponse = await fetch('http://localhost:8000/get_avatar', {
+                const avatarResponse = await fetch('/get_avatar', {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },
@@ -56,7 +56,7 @@ const CreateNotepostArea = ({ getAllNoteposts, currentTopic }) => {
             return toast.error('Please, select a topic!')
         }
         try {
-            const response = await fetch('http://localhost:8000/create_notepost', {
+            const response = await fetch('/create_notepost', {
                 'method': 'POST',
                 'headers': {
                     'Content-Type': 'application/json',

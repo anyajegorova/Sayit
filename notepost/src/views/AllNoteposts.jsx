@@ -10,7 +10,6 @@ const AllNoteposts = ({ mode }) => {
     const [noteposts, setNoteposts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768 ? true : false);
-    // const [generalTopic, setGeneralTopic] = useState('');
     const [currentTopic, setCurrentTopic] = useState(null);
     const navigate = useNavigate();
 
@@ -40,28 +39,10 @@ const AllNoteposts = ({ mode }) => {
     }
     const token = localStorage.getItem('token');
 
-    // const getGeneralTopic = async () => {
-    //     try {
-    //         const response = await fetch('http://localhost:8000/topics/general', {
-    //             'method': 'GET',
-    //             'headers': {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             'credentials': 'include'
-
-    //         })
-    //         const data = await response.json();
-    //         setGeneralTopic(data)
-
-    //     } catch (error) {
-    //         console.error(error)
-    //     }
-    // }
-
     const getAllNoteposts = async () => {
         if (token) {
             try {
-                const response = await fetch('http://localhost:8000/public_noteposts', {
+                const response = await fetch('/public_noteposts', {
                     'method': 'POST',
                     'headers': {
                         'Content-Type': 'application/json',

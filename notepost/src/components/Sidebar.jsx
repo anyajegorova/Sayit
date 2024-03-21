@@ -21,7 +21,7 @@ const Sidebar = ({ onClose, isSidebarOpen, onTopicChange, mode }) => {
     const getTopics = async () => {
         try {
             setLoading(true)
-            const response = await fetch('http://localhost:8000/topics', {
+            const response = await fetch('/topics', {
                 'method': 'GET',
                 'headers': {
                     'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ const Sidebar = ({ onClose, isSidebarOpen, onTopicChange, mode }) => {
             toast.error('Topic cannot be empty')
         } else {
             try {
-                const response = await fetch('http://localhost:8000/new_topic', {
+                const response = await fetch('/new_topic', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

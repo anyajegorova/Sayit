@@ -37,7 +37,7 @@ const Profile = () => {
             try {
                 const formData = new FormData();
                 formData.append('avatar', e.target.files[0])
-                const response = await fetch('http://localhost:8000/avatar', {
+                const response = await fetch('/avatar', {
                     'method': 'POST',
                     'headers': {
                         'Authorization': `Bearer ${token}`,
@@ -72,7 +72,7 @@ const Profile = () => {
 
         if (token) {
             try {
-                const response = await fetch('http://localhost:8000/change_password', {
+                const response = await fetch('/change_password', {
                     'method': 'POST',
                     'headers': {
                         'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ const Profile = () => {
 
         if (token) {
             try {
-                const response = await fetch('http://localhost:8000/profile', {
+                const response = await fetch('/profile', {
                     'method': 'POST',
                     'headers': {
                         'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ const Profile = () => {
                     setUser({ username: data.username, email: data.email, avatar: data.avatar.data })
                     if (data.avatar.data !== null) {
                         // Fetch and set the avatar image
-                        const avatarResponse = await fetch('http://localhost:8000/get_avatar', {
+                        const avatarResponse = await fetch('/get_avatar', {
                             headers: {
                                 'Authorization': `Bearer ${token}`,
                             },

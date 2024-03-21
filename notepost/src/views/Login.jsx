@@ -14,7 +14,7 @@ const Login = ({ mode, setLoggedIn }) => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8000/login', {
+            const response = await fetch('/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -61,7 +61,7 @@ const Login = ({ mode, setLoggedIn }) => {
         }
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8000/register', {
+            const response = await fetch('/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

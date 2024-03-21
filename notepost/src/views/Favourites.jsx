@@ -18,7 +18,7 @@ const Favourites = () => {
     const getFavourites = async () => {
         if (token) {
             try {
-                const response = await fetch("http://localhost:8000/favourites/", {
+                const response = await fetch("/favourites/", {
                     'method': 'POST',
                     'headers': {
                         'Content-Type': 'application/json',

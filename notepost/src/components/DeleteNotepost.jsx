@@ -15,7 +15,7 @@ const DeleteNotepost = ({ notepostId, getNoteposts }) => {
         const token = localStorage.getItem('token');
         if (token) {
             try {
-                const response = await fetch('http://localhost:8000/delete_notepost', {
+                const response = await fetch('/delete_notepost', {
                     'method': 'POST',
                     'headers': {
                         'Content-Type': 'application/json',

@@ -19,7 +19,7 @@ const UserPosts = ({ mode }) => {
     console.log('Getting noteposts')
     if (token) {
       try {
-        const response = await fetch('http://localhost:8000/all_noteposts', {
+        const response = await fetch('/all_noteposts', {
           'method': 'POST',
           'headers': {
             'Content-Type': 'application/json',
