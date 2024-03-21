@@ -14,24 +14,7 @@ const mongoURL = process.env.MONGO_URL;
 const path = require('path');
 
 const allowedOrigins = [
-    'http://localhost:5173',
-    'http://localhost:8000',
-    // 'http://localhost:5173/register',
-    // 'http://localhost:5173/login',
-    // 'http://localhost:5173/noteposts',
-    // 'http://localhost:5173/all_noteposts',
-    // 'http://localhost:5173/public_noteposts',
-    // 'http://localhost:5173/noteposts/delete_notepost',
-    // 'http://localhost:5173/noteposts/create_notepost',
-    // 'http://localhost:5173/noteposts/favourites',
-    // 'http://localhost:5173/noteposts/toggle_like',
-    // 'http://localhost:5173/noteposts/avatar',
-    // 'http://localhost:5173/noteposts/profile',
-    // 'http://localhost:5173/noteposts/get_avatar',
-    // 'http://localhost:5173/get_user_avatar/',
-    // 'http://localhost:5173/topics',
-    // 'http://localhost:5173/topics/general',
-    // 'http://localhost:5173/new_topic',
+    'https://sayit.onrender.com'
 ]
 const corsOptions = {
     origin: allowedOrigins,
