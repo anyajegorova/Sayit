@@ -43,7 +43,7 @@ const Notepost = ({
 
     const onToggleLike = async (notepostId) => {
         try {
-            const response = await fetch(`http://localhost:8000/toggle_like/like`, {
+            const response = await fetch(`/toggle_like/like`, {
                 'method': 'POST',
                 'headers': {
                     'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ const Notepost = ({
 
     return (
         <div className='notepost'>
-            {(currentMode == 'public' && avatar !== null) ? <img id='notepost_avatar' src={`http://localhost:8000/uploads/${avatar}`} alt='avatar' /> : null}
+            {(currentMode == 'public' && avatar !== null) ? <img id='notepost_avatar' src={`/uploads/${avatar}`} alt='avatar' /> : null}
             {(currentMode == 'public' && avatar == null) ? <div id='notepost_avatar' onClick={handleClick}>{firstCharacter} </div> : null}
             {(currentMode == 'edit') ? <DeleteNotepost notepostId={notepostId} getNoteposts={getNoteposts} /> : null}
             {(currentMode == 'public') ? <div id='owner'>{username}</div> : null}

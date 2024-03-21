@@ -14,7 +14,7 @@ const mongoURL = process.env.MONGO_URL;
 const path = require('path');
 
 const allowedOrigins = [
-    'https://sayit-ox8w.onrender.com'
+    'https://sayit-ox8w.onrender.com',
 ]
 const corsOptions = {
     origin: allowedOrigins,
