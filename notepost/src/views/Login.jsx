@@ -14,7 +14,7 @@ const Login = ({ mode, setLoggedIn }) => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('/login', {
+            const response = await fetch('https://sayit-api.onrender.com/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ const Login = ({ mode, setLoggedIn }) => {
                 Cookies.set('token', data.token, { expires: 7 });
                 localStorage.setItem('token', data.token)
                 localStorage.setItem('username', data.username);
-                navigate('/public_noteposts')
+                navigate('https://sayit-api.onrender.com/public_noteposts')
 
             } else {
                 if (response.status === 401) {
@@ -61,7 +61,7 @@ const Login = ({ mode, setLoggedIn }) => {
         }
         e.preventDefault();
         try {
-            const response = await fetch('/register', {
+            const response = await fetch('https://sayit-api.onrender.com/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -102,7 +102,7 @@ const Login = ({ mode, setLoggedIn }) => {
                     {mode === 'login' ? <input type="submit" value="Login" onClick={handleLogin} /> : <input type="submit" value="Register" onClick={handleRegister} />}
 
                     {
-                        mode === 'login' ? <h4>Don't have an account? <span id='link' ><Link to='/register'>Register</Link></span></h4> : <h4>Already have an account? <span id='link'><Link to='/login'>Login</Link></span></h4>
+                        mode === 'login' ? <h4>Don't have an account? <span id='link' ><Link to='/register'>Register</Link></span></h4> : <h4>Already have an account? <span id='link'><Link to='https://sayit-api.onrender.com/login'>Login</Link></span></h4>
                     }
                 </form>
             </div>

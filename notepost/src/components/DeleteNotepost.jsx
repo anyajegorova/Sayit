@@ -15,7 +15,7 @@ const DeleteNotepost = ({ notepostId, getNoteposts }) => {
         const token = localStorage.getItem('token');
         if (token) {
             try {
-                const response = await fetch('/delete_notepost', {
+                const response = await fetch('https://sayit-api.onrender.com/delete_notepost', {
                     'method': 'POST',
                     'headers': {
                         'Content-Type': 'application/json',

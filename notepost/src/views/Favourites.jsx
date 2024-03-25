@@ -18,7 +18,7 @@ const Favourites = () => {
     const getFavourites = async () => {
         if (token) {
             try {
-                const response = await fetch("/favourites/", {
+                const response = await fetch("https://sayit-api.onrender.com/favourites/", {
                     'method': 'POST',
                     'headers': {
                         'Content-Type': 'application/json',

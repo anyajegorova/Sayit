@@ -27,7 +27,7 @@ const CreateNotepostArea = ({ getAllNoteposts, currentTopic }) => {
     const getAvatar = async () => {
         if (token) {
             try {
-                const avatarResponse = await fetch('/get_avatar', {
+                const avatarResponse = await fetch('https://sayit-api.onrender.com/get_avatar', {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },
@@ -45,7 +45,7 @@ const CreateNotepostArea = ({ getAllNoteposts, currentTopic }) => {
             }
         } else {
             console.error('No token found')
-            navigate('/login')
+            navigate('https://sayit-api.onrender.com/login')
         }
 
     }
@@ -56,7 +56,7 @@ const CreateNotepostArea = ({ getAllNoteposts, currentTopic }) => {
             return toast.error('Please, select a topic!')
         }
         try {
-            const response = await fetch('/create_notepost', {
+            const response = await fetch('https://sayit-api.onrender.com/create_notepost', {
                 'method': 'POST',
                 'headers': {
                     'Content-Type': 'application/json',

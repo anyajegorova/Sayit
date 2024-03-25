@@ -19,7 +19,7 @@ const UserPosts = ({ mode }) => {
     console.log('Getting noteposts')
     if (token) {
       try {
-        const response = await fetch('/all_noteposts', {
+        const response = await fetch('https://sayit-api.onrender.com/all_noteposts', {
           'method': 'POST',
           'headers': {
             'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ const UserPosts = ({ mode }) => {
         toast.error('Oops! Something went wrong. Please, try again.')
       }
     } else {
-      navigate('/login')
+      navigate('https://sayit-api.onrender.com/login')
       toast.error('Please, login!')
     }
   }

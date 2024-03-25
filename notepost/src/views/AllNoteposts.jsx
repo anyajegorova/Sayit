@@ -42,7 +42,7 @@ const AllNoteposts = ({ mode }) => {
     const getAllNoteposts = async () => {
         if (token) {
             try {
-                const response = await fetch('/public_noteposts', {
+                const response = await fetch('https://sayit-api.onrender.com/public_noteposts', {
                     'method': 'POST',
                     'headers': {
                         'Content-Type': 'application/json',

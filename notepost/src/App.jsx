@@ -29,7 +29,7 @@ function App() {
     setLoggedIn(false);
     setSaveUserId('');
     console.log('Logout ', saveUserId)
-    navigate('/login')
+    navigate('https://sayit-api.onrender.com/login')
   }
 
   const onMenuClick = () => {
