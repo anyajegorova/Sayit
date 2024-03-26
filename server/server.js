@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const router = require('./router');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 
 dotenv.config();
 const app = express();
@@ -14,7 +15,7 @@ const mongoURL = process.env.MONGO_URL;
 const path = require('path');
 
 const allowedOrigins = [
-    'https://sayit-el0l.onrender.com',
+    'https://sayit-el0l.onrender.com'
 ]
 const corsOptions = {
     origin: allowedOrigins,
@@ -26,6 +27,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(helmet());
 app.use('/', router);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

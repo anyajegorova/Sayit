@@ -52,7 +52,7 @@ const Favourites = () => {
             }
         } else {
             console.log('No token found')
-            navigate('/login')
+            navigate('https://sayit-api.onrender.com/login')
         }
     }
     return (

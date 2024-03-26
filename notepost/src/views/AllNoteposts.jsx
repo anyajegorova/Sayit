@@ -75,7 +75,7 @@ const AllNoteposts = ({ mode }) => {
 
             }
         } else {
-            navigate('/login');
+            navigate('https://sayit-api.onrender.com/login');
         }
 
     }
