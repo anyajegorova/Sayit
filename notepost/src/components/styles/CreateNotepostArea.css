@@ -26,7 +26,7 @@
     justify-content: space-between;
     width: 100%;
     max-width: 100%;
-    padding: 0px 40px;
+    padding-left: 40px;
     box-sizing: border-box;
 }
 
@@ -37,9 +37,9 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 6px;
     background-color: #dfdfdff6;
-    border-radius: 20px;
+    border-radius: 16px;
     box-sizing: border-box;
     position: relative;
     margin-bottom: 20px;
@@ -47,11 +47,11 @@
 }
 
 #create_notepost_form button {
-    height: 60px;
-    min-width: 60px;
+    height: 50px;
+    min-width: 50px;
     background-color: #00ff80;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    border-radius: 50%;
+    border-radius: 30%;
     border: none;
     cursor: pointer;
 
@@ -64,7 +64,7 @@
 
 
 #content_input {
-    border-radius: 10px;
+    border-radius: 12px;
     box-shadow: none;
     background-color: #ffffff8e;
     border: none;
@@ -72,7 +72,7 @@
     font-size: 1.1rem;
     margin: 10px;
     padding: 10px;
-    min-height: 40px;
+    min-height: 60px;
     resize: none;
 }
 
@@ -115,6 +115,9 @@ button svg {
 /*Media queries*/
 
 @media screen and (max-width: 768px) {
+    .create_notepost_area{
+        padding-right: 6px;
+    }
     .create_notepost h1 {
         font-size: 1.2rem;
     }
@@ -126,15 +129,18 @@ button svg {
     }
 
     #create_notepost_form {
-        padding: 5px;
+        padding: 4px;
     }
 
     #content_input {
         font-size: 1rem;
+        margin: 6px;
+        padding: 12px;
+        min-height: 40px;
     }
 
     .input_container {
-        padding-left: 25px;
+        padding-left: 16px;
         padding-right: 0px;
         margin: 0;
     }
@@ -142,7 +148,7 @@ button svg {
     #create_notepost_form button {
         height: 40px;
         min-width: 40px;
-        margin: 5px;
+        margin: 2px;
     }
 
 }
