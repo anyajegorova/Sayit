@@ -29,8 +29,9 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helmet());
-app.use('/', router);
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/', router);
 
 mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true });
 db.on('error', console.error.bind(console, 'Database connection error:'));
