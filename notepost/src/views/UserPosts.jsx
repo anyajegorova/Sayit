@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Notepost from '../components/Notepost';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import handleToggleLike from '../utils/toggleLikeUtils';
 
 const UserPosts = ({ mode }) => {
   const [noteposts, setNoteposts] = useState([])
@@ -13,6 +14,11 @@ const UserPosts = ({ mode }) => {
     getNoteposts()
   }, [])
   const token = localStorage.getItem('token');
+
+  const onToggleLike = async (notepostId) => {
+    handleToggleLike(notepostId, token, setNoteposts, toast);
+  };
+
 
   //Get all user noteposts
   const getNoteposts = async () => {
@@ -70,6 +76,7 @@ const UserPosts = ({ mode }) => {
               likeCount={notepost.likeCount}
               setNoteposts={setNoteposts}
               getNoteposts={getNoteposts}
+              handleToggleLike={onToggleLike}
             />))}
         </div>
       </section>

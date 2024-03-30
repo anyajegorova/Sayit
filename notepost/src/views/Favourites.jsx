@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Notepost from '../components/Notepost';
 import './styles/Favourites.css';
 import { toast } from 'react-toastify';
+import handleToggleLike from '../utils/toggleLikeUtils';
 
 const Favourites = () => {
     const [favourites, setFavourites] = useState([]);
@@ -12,6 +13,11 @@ const Favourites = () => {
     useEffect(() => {
         getFavourites()
     }, [])
+
+    const onToggleLike = async (notepostId) => {
+        handleToggleLike(notepostId, token, setFavourites, toast);
+    };
+
 
     const token = localStorage.getItem('token');
 
@@ -73,6 +79,7 @@ const Favourites = () => {
                             favourites={notepost.likedBy}
                             likeCount={notepost.likeCount}
                             setNoteposts={setFavourites}
+                            handleToggleLike={onToggleLike}
                         />
                     ))}
                 </div>

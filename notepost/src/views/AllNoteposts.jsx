@@ -4,6 +4,7 @@ import './styles/AllNoteposts.css'
 import Notepost from '../components/Notepost';
 import CreateNotepostArea from '../components/CreateNotepostArea';
 import Sidebar from '../components/Sidebar';
+import handleToggleLike from '../utils/toggleLikeUtils.js';
 import { toast } from 'react-toastify';
 
 const AllNoteposts = ({ mode }) => {
@@ -95,38 +96,8 @@ const AllNoteposts = ({ mode }) => {
 
 
     const onToggleLike = async (notepostId) => {
-        try {
-            const response = await fetch(`https://sayit-api.onrender.com/toggle_like/like`, {
-                'method': 'POST',
-                'headers': {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                'body': JSON.stringify({ notepostId }),
-                'credentials': 'include'
-            })
-            if (response.status === 200) {
-                const responseData = await response.json();
-                const { updatedNotepost } = responseData;
-
-                setNoteposts((noteposts) =>
-                    noteposts.map((notepost) =>
-                        notepost.notepostId === notepostId
-                            ? { ...notepost, likedBy: updatedNotepost.likedBy, likeCount: updatedNotepost.likeCount }
-                            : notepost
-                    )
-                );
-            } else {
-                console.log('Error updating like')
-                toast.error('Oops! Something went wrong. Please try again.')
-
-            }
-
-        } catch (error) {
-            console.error('Error updating like', error)
-            toast.error('Oops! Something went wrong. Please try again.')
-        }
-    }
+        handleToggleLike(notepostId, token, setNoteposts, toast);
+    };
 
     return (
         <div className="all_noteposts_section_container">
