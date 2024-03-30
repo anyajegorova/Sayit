@@ -7,7 +7,6 @@ import handleToggleLike from '../utils/toggleLikeUtils';
 
 const Favourites = () => {
     const [favourites, setFavourites] = useState([]);
-
     const navigate = useNavigate();
 
     useEffect(() => {
