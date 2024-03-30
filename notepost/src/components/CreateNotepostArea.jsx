@@ -3,7 +3,7 @@ import './styles/CreateNotepostArea.css';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const CreateNotepostArea = ({ getAllNoteposts, currentTopic }) => {
+const CreateNotepostArea = ({ getAllNoteposts, currentTopic, scrollToBottom }) => {
     const token = localStorage.getItem('token');
     const [avatar, setAvatar] = useState(null);
     const [newNotepost, setNewNotepost] = useState({
@@ -67,7 +67,8 @@ const CreateNotepostArea = ({ getAllNoteposts, currentTopic }) => {
             })
             if (response.ok) {
                 setNewNotepost({ content: '', topic: currentTopic })
-                getAllNoteposts()
+                getAllNoteposts();
+                scrollToBottom()
             }
 
             if (response.status === 500) {

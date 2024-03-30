@@ -3,11 +3,11 @@ import Topic from './Topic';
 import './styles/Sidebar.css';
 import { toast } from 'react-toastify';
 
-const Sidebar = ({ onClose, isSidebarOpen, onTopicChange, mode }) => {
+const Sidebar = ({ onClose, isSidebarOpen, onTopicChange, handleNewPostsLoaded }) => {
     const [newTopic, setNewTopic] = useState('')
     const [topics, setTopics] = useState([]);
     const [loading, setLoading] = useState(true);
-    // const [generalTopic, setGeneralTopic] = useState('')
+
 
     const handleClose = () => {
         onClose();
@@ -91,7 +91,7 @@ const Sidebar = ({ onClose, isSidebarOpen, onTopicChange, mode }) => {
                         <input onChange={(e) => { setNewTopic(e.target.value) }} id='topic_input' placeholder='Type here..'></input>
                         <button onClick={addTopic}>New Topic</button>
                         <div className="topics_list">
-                            <Topic topics={topics} onTopicChange={onTopicChange} onClose={onClose} />
+                            <Topic topics={topics} onTopicChange={onTopicChange} onClose={onClose} handleNewPostsLoaded={handleNewPostsLoaded} />
                         </div>
                     </>
                 )}

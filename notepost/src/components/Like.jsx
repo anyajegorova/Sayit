@@ -1,10 +1,12 @@
 
 import './styles/Like.css';
 
-const Like = ({ onToggleLike, isFavourite, likes }) => {
+const Like = ({ onToggleLike, likes }) => {
     return (
-        <div className='favourite' onClick={onToggleLike} id={`${isFavourite ? 'isFavourite' : ''}`}>
-           {likes > 0 ? likes : null} ❤ 
+        <div className='favourite' onClick={onToggleLike}
+        // id={`${isFavourite ? 'isFavourite' : ''}`}
+        >
+            {likes > 0 ? likes : null} ❤
         </div>
     );
 };

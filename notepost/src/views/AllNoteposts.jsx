@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles/AllNoteposts.css'
 import Notepost from '../components/Notepost';
@@ -11,24 +11,20 @@ const AllNoteposts = ({ mode }) => {
     const [loading, setLoading] = useState(true);
     const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768 ? true : false);
     const [currentTopic, setCurrentTopic] = useState(null);
+    const anchorRef = useRef(null);
+
+    const token = localStorage.getItem('token');
+
     const navigate = useNavigate();
-
-
 
     useEffect(() => {
         getAllNoteposts();
-        setLoading(false)
+        setLoading(false);
     }, [])
 
     useEffect(() => {
-        window.scrollTo(0, document.getElementById('anchor').offsetTop - 100)
-        console.log('notepost dependency useeffect')
-    }, [noteposts])
-
-    useEffect(() => {
         getAllNoteposts();
-        window.scrollTo(0, document.getElementById('anchor').offsetTop - 100)
-    }, [currentTopic, mode])
+    }, [currentTopic])
 
     const handleCloseSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -36,8 +32,14 @@ const AllNoteposts = ({ mode }) => {
 
     const handleTopicChange = (id) => {
         setCurrentTopic(id)
+        setNoteposts([]);
     }
-    const token = localStorage.getItem('token');
+
+    const handleScrollToBottom = () => {
+        if (anchorRef.current) {
+            anchorRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }
 
     const getAllNoteposts = async () => {
         if (token) {
@@ -64,6 +66,17 @@ const AllNoteposts = ({ mode }) => {
                         topic: notepost.topic
                     }))
                     setNoteposts(formattedNoteposts);
+
+
+                    new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve();
+                        }, 500)
+                    }).then(() => {
+                        handleScrollToBottom();
+                    })
+
+
                 } else if (response.status === 404) {
                     toast.error('No posts found!')
                 } else if (response.status === 500) {
@@ -80,13 +93,47 @@ const AllNoteposts = ({ mode }) => {
 
     }
 
+
+    const onToggleLike = async (notepostId) => {
+        try {
+            const response = await fetch(`https://sayit-api.onrender.com/toggle_like/like`, {
+                'method': 'POST',
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                'body': JSON.stringify({ notepostId }),
+                'credentials': 'include'
+            })
+            if (response.status === 200) {
+                const responseData = await response.json();
+                const { updatedNotepost } = responseData;
+
+                setNoteposts((noteposts) =>
+                    noteposts.map((notepost) =>
+                        notepost.notepostId === notepostId
+                            ? { ...notepost, likedBy: updatedNotepost.likedBy, likeCount: updatedNotepost.likeCount }
+                            : notepost
+                    )
+                );
+            } else {
+                console.log('Error updating like')
+                toast.error('Oops! Something went wrong. Please try again.')
+
+            }
+
+        } catch (error) {
+            console.error('Error updating like', error)
+            toast.error('Oops! Something went wrong. Please try again.')
+        }
+    }
+
     return (
         <div className="all_noteposts_section_container">
             <Sidebar
                 onClose={handleCloseSidebar}
                 isSidebarOpen={isSidebarOpen}
                 onTopicChange={handleTopicChange}
-                mode={mode}
             />
             <div className={`all_noteposts_container ${isSidebarOpen ? 'sidebar_open' : 'sidebar_closed'}`}>
                 <div className='all_noteposts'>
@@ -106,15 +153,20 @@ const AllNoteposts = ({ mode }) => {
                                 favourites={notepost.likedBy}
                                 likeCount={notepost.likeCount}
                                 setNoteposts={setNoteposts}
+                                handleToggleLike={onToggleLike}
                             />))
                     )
                     }
 
                 </div>
                 <div className='create_notepost_container'>
-                    <CreateNotepostArea getAllNoteposts={getAllNoteposts} currentTopic={currentTopic} />
+                    <CreateNotepostArea
+                        getAllNoteposts={getAllNoteposts}
+                        currentTopic={currentTopic}
+                        scrollToBottom={handleScrollToBottom}
+                    />
                 </div>
-                <div id='anchor'></div>
+                <div id='anchor' ref={anchorRef} style={{ width: 100 }}></div>
             </div>
 
         </div>

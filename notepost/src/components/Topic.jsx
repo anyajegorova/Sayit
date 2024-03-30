@@ -5,8 +5,8 @@ const Topic = ({ topics, onTopicChange, onClose }) => {
     const [activeTopic, setActiveTopic] = useState(null);
 
     const handleClick = (id) => {
-        onTopicChange(id);
         setActiveTopic(id);
+        onTopicChange(id);
         window.innerWidth < 768 && onClose();
     }
 
@@ -16,8 +16,9 @@ const Topic = ({ topics, onTopicChange, onClose }) => {
                 <button
                     className={`topic_button ${activeTopic === topic._id ? 'active' : ''}`}
                     key={topic.name + topic.date}
-                    onClick={() => handleClick(topic._id)}
-                >
+                    onClick={() =>
+                        handleClick(topic._id)
+                    }>
                     {topic.name}
                 </button>
             ))}
