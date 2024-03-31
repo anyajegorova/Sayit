@@ -39,6 +39,7 @@ const CreateNotepostArea = ({ getAllNoteposts, currentTopic, scrollToBottom }) =
                     const avatarBlob = await avatarResponse.blob();
                     const avatarUrl = URL.createObjectURL(avatarBlob);
                     setAvatar(avatarUrl);
+                    console.log(avatarUrl, 'avatarUrl FOR create notepost')
                 }
             } catch (error) {
                 toast.error('Oops! Something went wrong. Please, try again.')

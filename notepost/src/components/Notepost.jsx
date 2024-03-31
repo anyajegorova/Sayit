@@ -1,8 +1,10 @@
 import Like from './Like';
 import DeleteNotepost from './DeleteNotepost';
 import './styles/Notepost.css';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode';
+import { toast } from 'react-toastify';
 
 const Notepost = ({
     date,
@@ -17,6 +19,7 @@ const Notepost = ({
     favourites,
 
 }) => {
+    const [avatarUrl, setAvatarUrl] = useState('');
     const firstCharacter = username.charAt(0);
     const navigate = useNavigate();
 
@@ -28,12 +31,23 @@ const Notepost = ({
         navigate('https://sayit-api.onrender.com/profile')
     }
     const token = localStorage.getItem('token');
-    const decodedToken = jwtDecode(token)
+    const decodedToken = jwtDecode(token);
     const isFavourite = favourites.includes(decodedToken.id);
+
+    console.log(avatar, 'avatar in notepost')
+
+    useEffect(() => {
+        if (avatar) {
+            const baseUrl = 'https://sayit-api.onrender.com/';  
+            const imageUrl = `${baseUrl}${avatar}`;
+            setAvatarUrl(imageUrl);
+        }
+    }, [])
+
 
     return (
         <div className='notepost'>
-            {(currentMode == 'public' && avatar !== null) ? <img id='notepost_avatar' src={`https://sayit-api.onrender.com/uploads/${avatar}`} alt='avatar' /> : null}
+            {(currentMode == 'public' && avatar !== null) ? <img id='notepost_avatar' src={avatarUrl} alt='avatar' /> : null}
             {(currentMode == 'public' && avatar == null) ? <div id='notepost_avatar' onClick={handleClick}>{firstCharacter} </div> : null}
             {(currentMode == 'edit') ? <DeleteNotepost notepostId={notepostId} getNoteposts={getNoteposts} /> : null}
             {(currentMode == 'public') ? <div id='owner'>{username}</div> : null}

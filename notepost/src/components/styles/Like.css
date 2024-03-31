@@ -1,19 +1,28 @@
-.favourite{
+.favourite {
     position: absolute;
+
+    display: flex;
+    align-items: center;
     top: 0;
     right: 0;
+
     margin: 1rem;
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #dbdbdb;
 }
 
-#isFavourite{
+.favourite svg {
+    width: 1rem;
+    margin-left: 0.5rem;
+}
+
+#isFavourite {
     color: #b33147;
 }
 
 @media screen and (max-width: 768px) {
-    .favourite{
+    .favourite {
         font-size: 1rem;
     }
 }

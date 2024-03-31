@@ -83,6 +83,7 @@ const getUserAvatar = async (req, res) => {
     } catch (error) {
         console.error('Error fetching avatar', error);
         res.status(500).json({ message: 'Internal Server Error' });
+        console.log(req, 'req')
     }
 };
 

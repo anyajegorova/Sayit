@@ -16,6 +16,7 @@ const path = require('path');
 
 const allowedOrigins = [
     'https://sayit-el0l.onrender.com',
+    'https://sayit-api.onrender.com',
     'http://localhost:5173',
 ]
 const corsOptions = {

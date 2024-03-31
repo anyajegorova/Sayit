@@ -66,6 +66,7 @@ const AllNoteposts = ({ mode }) => {
                         likeCount: notepost.likeCount,
                         topic: notepost.topic
                     }))
+
                     setNoteposts(formattedNoteposts);
 
 
