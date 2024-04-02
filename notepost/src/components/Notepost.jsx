@@ -60,10 +60,12 @@ const Notepost = ({
                 const avatarBlob = await avatarResponse.blob();
                 const avatarUrl = URL.createObjectURL(avatarBlob);
                 setAvatarUrl(avatarUrl);
+            } else {
+                console.log('Error fetching data', avatarResponse.statusText)
             }
 
         } catch (error) {
-            console.error(error)
+            console.error('Error fetching data', error)
         }
     }
 

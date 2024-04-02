@@ -115,7 +115,7 @@ const deletePost = async (req, res) => {
 // Get user avatars for each post by username
 
 const getUserAvatar = async (req, res) => {
-    const username = req.body;
+    const { username } = req.body;
     try {
         const user = await User.findOne({ username: username });
 
