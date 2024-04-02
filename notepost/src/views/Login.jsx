@@ -32,7 +32,7 @@ const Login = ({ mode, setLoggedIn }) => {
                 Cookies.set('token', data.token, { expires: 7 });
                 localStorage.setItem('token', data.token)
                 localStorage.setItem('username', data.username);
-                navigate('https://sayit-api.onrender.com/public_noteposts')
+                navigate('/public_noteposts')
 
             } else {
                 if (response.status === 401) {

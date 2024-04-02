@@ -36,8 +36,10 @@ const MobileMenu = ({ isMenuOpen, onMenuClick, logout, loggedIn }) => {
                     </svg>
                 </h4>
                 <ul>
+                    <li onClick={handleClick}><NavLink to='/' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>Home</NavLink></li>
                     {loggedIn ? (
                         <>
+
                             <li onClick={handleClick}><NavLink to='/public_noteposts' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>All Noteposts</NavLink></li>
                             <li onClick={handleClick}><NavLink to='/all_noteposts' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>My Noteposts</NavLink></li>
                             <li onClick={handleClick}><NavLink to='/favourites' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>Likes</NavLink></li>

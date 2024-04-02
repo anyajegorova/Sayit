@@ -19,8 +19,10 @@ const Navbar = ({ loggedIn, logout, onMenuClick, isMenuOpen }) => {
             </div>
             <ul id='navbar_list'>
                 {loggedIn ? (
-                    <><li><NavLink to='/public_noteposts' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>All Noteposts</NavLink></li>
-                        <li><NavLink to='/all_noteposts' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}> My Noteposts</NavLink></li>
+                    <>
+                        <li><NavLink to='/' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>Home</NavLink></li>
+                        <li><NavLink to='/public_noteposts' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>All Posts</NavLink></li>
+                        <li><NavLink to='/all_noteposts' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}> My Posts</NavLink></li>
                         <li><NavLink to='/favourites' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>Likes</NavLink></li>
                         <li><NavLink to='/profile' id='link' className={({ isActive }) => (isActive ? "activeLink" : 'none')}>Profile</NavLink></li>
                         <li onClick={logout} className='logout' id='logout'>Logout</li>

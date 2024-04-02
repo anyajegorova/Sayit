@@ -1,0 +1,169 @@
+.home_page {
+    width: 100%;
+    max-width: 100dvw;
+    background: linear-gradient(90deg, rgba(29, 26, 57, 1) 0%, rgba(102, 37, 73, 1) 75%);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.slogan_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-wrap: balance;
+    width: 100%;
+    height: 30rem;
+    margin-top: 70px;
+
+    font-family: 'Termina', system-ui;
+
+    background-image: url(../../images/wave.png);
+    background-size: cover;
+    background-position: center;
+}
+
+.slogan_container span {
+    font-size: 3.2rem;
+    padding: 10px;
+    color: #ffff;
+    opacity: 0;
+    transition: opacity 3s ease;
+}
+
+.slogan_container span.show {
+    opacity: 1;
+}
+
+.button_container {
+    margin-top: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button_container button {
+    display: block;
+    height: 40px;
+    width: 200px;
+    font-size: 1rem;
+    color: #ffff;
+    background-color: transparent;
+    border: 1px solid #ffff;
+    margin: 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.button_container button:hover,
+.button_container button:active {
+    background-color: #ffffff1a;
+}
+
+.description_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-family: 'Epilogue', system-ui;
+    max-width: 100%;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+.description_container .description {
+    color: #ffff;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.description_container .description.one {
+    opacity: 0;
+    transition: opacity 6s ease;
+}
+
+.description_container .description.two {
+    opacity: 0;
+    transition: opacity 8s ease;
+}
+
+.description_container .description.three {
+    opacity: 0;
+    transition: opacity 10s ease;
+}
+
+.description_container .description.showOne {
+    opacity: 0.8;
+}
+
+.description_container .description.showTwo {
+    opacity: 0.8;
+}
+
+.description_container .description.showThree {
+    opacity: 0.8;
+}
+
+.description span {
+    text-align: center;
+    width: 15rem;
+    max-width: 15rem;
+}
+
+.description svg {
+    width: 4rem;
+    margin: 20px;
+}
+
+@media (max-width: 768px) {
+
+    .slogan_container {
+        height: 20rem;
+    }
+
+    .slogan_container span {
+        font-size: 1.8rem;
+    }
+
+    .description_container {
+        flex-direction: column;
+    }
+
+    .description_container .description {
+        padding: 10px;
+    }
+
+    .description svg {
+        width: 3rem;
+    }
+
+}
+
+@media (max-width: 430px) {
+
+    .slogan_container {
+        height: 15rem;
+    }
+
+    .slogan_container span {
+        line-height: 3rem;
+        padding: 0px 20px 0px 20px;
+    }
+
+    .description svg {
+        width: 2.5rem;
+    }
+
+    .description_container {
+        font-size: 1rem;
+    }
+}
