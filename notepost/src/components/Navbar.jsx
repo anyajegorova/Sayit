@@ -1,8 +1,7 @@
 import './styles/Navbar.css';
-import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-const Navbar = ({ loggedIn, logout, onMenuClick, isMenuOpen }) => {
+const Navbar = ({ loggedIn, logout, onMenuClick}) => {
     const username = localStorage.getItem('username');
     console.log(username, 'Username')
 

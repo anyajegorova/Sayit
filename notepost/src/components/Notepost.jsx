@@ -28,22 +28,44 @@ const Notepost = ({
     }
 
     const handleClick = () => {
-        navigate('https://sayit-api.onrender.com/profile')
+        navigate('/profile')
     }
     const token = localStorage.getItem('token');
     const decodedToken = jwtDecode(token);
     const isFavourite = favourites.includes(decodedToken.id);
-
-    console.log(avatar, 'avatar in notepost')
+    // useEffect(() => {
+    //     if (avatar) {
+    //         const baseUrl = 'https://sayit-api.onrender.com/';
+    //         const imageUrl = `${baseUrl}${avatar}`;
+    //         setAvatarUrl(imageUrl);
+    //     }
+    // }, [])
 
     useEffect(() => {
-        if (avatar) {
-            const baseUrl = 'https://sayit-api.onrender.com/';  
-            const imageUrl = `${baseUrl}${avatar}`;
-            setAvatarUrl(imageUrl);
-        }
-    }, [])
+        getPostAvatar();
+    })
 
+    const getPostAvatar = async () => {
+        try {
+            const avatarResponse = await fetch('https://sayit-api.onrender.com/get_user_avatar', {
+                'method': 'POST',
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                'credentials': 'include',
+                body: JSON.stringify({ username: username })
+            })
+            if (avatarResponse.ok) {
+                const avatarBlob = await avatarResponse.blob();
+                const avatarUrl = URL.createObjectURL(avatarBlob);
+                setAvatarUrl(avatarUrl);
+            }
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     return (
         <div className='notepost'>
