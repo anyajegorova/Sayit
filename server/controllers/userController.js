@@ -46,6 +46,7 @@ const setUserAvatar = async (req, res) => {
 
         const fileName = `avatar_${user.id}_${Date.now()}.png`;
         const filePath = path.join(__dirname, '..', 'uploads', fileName);
+        console.log(filePath)
 
         fs.writeFileSync(filePath, req.file.buffer);
 

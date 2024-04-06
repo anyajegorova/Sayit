@@ -30,17 +30,27 @@
 }
 
 .create_notepost_container {
-    width: 90%;
+    width: calc(100% - 400px);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: fixed;
     bottom: 0;
+    box-sizing: border-box;
+    transition: width 0.3s ease;
 }
 
 .all_noteposts_container.sidebar_closed {
     padding-left: 24px;
+}
+
+.all_notepost_container.create_notepost_container {
+    width: calc(100% - 600px);
+}
+
+.all_noteposts_container.sidebar_closed .create_notepost_container {
+    width: 100%;
 }
 
 #anchor {
@@ -54,11 +64,7 @@
 @media (max-width: 768px) {
 
     .all_noteposts {
-        padding-left: 16px;
+        padding-left: 15px;
     }
 
-    .create_notepost_container {
-        width: 100%;
-        padding-left: 10px;
-    }
 }
