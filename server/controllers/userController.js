@@ -45,7 +45,7 @@ const setUserAvatar = async (req, res) => {
         }
 
         const fileName = `avatar_${user.id}_${Date.now()}.png`;
-        const filePath = path.join(__dirname, '..', 'uploads', fileName);
+        const filePath = path.resolve(__dirname, '..', 'uploads', fileName);
         console.log(filePath)
 
         fs.writeFileSync(filePath, req.file.buffer);
@@ -75,7 +75,7 @@ const getUserAvatar = async (req, res) => {
         if (!user || !user.avatar.data) {
             res.send(user.avatar.data)
         } else {
-            const filePath = path.join(__dirname, '..', 'uploads', user.avatar.data);
+            const filePath = path.resolve(__dirname, '..', 'uploads', user.avatar.data);
             const avatarData = fs.readFileSync(filePath);
             res.setHeader('Content-Type', 'image/*');
             res.send(avatarData);
