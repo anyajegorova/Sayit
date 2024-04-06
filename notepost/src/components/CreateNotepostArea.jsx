@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './styles/CreateNotepostArea.css';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Skeleton from '@mui/material/Skeleton';
 
 const CreateNotepostArea = ({ getAllNoteposts, currentTopic, scrollToBottom }) => {
     const token = localStorage.getItem('token');
@@ -10,6 +11,7 @@ const CreateNotepostArea = ({ getAllNoteposts, currentTopic, scrollToBottom }) =
         content: '',
         topic: currentTopic
     });
+    const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
 
@@ -39,7 +41,7 @@ const CreateNotepostArea = ({ getAllNoteposts, currentTopic, scrollToBottom }) =
                     const avatarBlob = await avatarResponse.blob();
                     const avatarUrl = URL.createObjectURL(avatarBlob);
                     setAvatar(avatarUrl);
-                    console.log(avatarUrl, 'avatarUrl FOR create notepost')
+                    setLoading(false)
                 }
             } catch (error) {
                 toast.error('Oops! Something went wrong. Please, try again.')
@@ -86,12 +88,20 @@ const CreateNotepostArea = ({ getAllNoteposts, currentTopic, scrollToBottom }) =
 
                 <div className='create_notepost'>
                     <form id='create_notepost_form'>
-                        {avatar !== null ?
-                            <img src={avatar} alt='Avatar' className='create_notepost_avatar' onClick={handleClick} />
+                        {loading ?
+                            (<Skeleton variant='circular' width={80} height={80} overlay={true} sx={{ position: 'absolute', top: 25, left: -40 }} />)
+
                             :
-                            <div className='create_notepost_avatar' onClick={handleClick}>{firstCharacter}
-                            </div>
+                            (
+                                (avatar !== null ?
+                                    <img src={avatar} alt='Avatar' className='create_notepost_avatar' onClick={handleClick} />
+                                    :
+                                    <div className='create_notepost_avatar' onClick={handleClick}>{firstCharacter}
+                                    </div>
+                                )
+                            )
                         }
+
 
                         <div className='input_container'>
                             <textarea
