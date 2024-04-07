@@ -53,7 +53,7 @@ const setUserAvatar = async (req, res) => {
         user.avatar = { data: fileName };
         await user.save();
 
-
+        console.log('File path:', filePath);
         res.status(200).json({ message: 'Avatar uploaded successfully' });
 
     } catch (error) {
