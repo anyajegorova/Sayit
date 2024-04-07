@@ -41,6 +41,11 @@ db.once('open', () => {
     console.log('Database connection successful');
 });
 
+// Catch-all route for handling client-side routing
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../notepost/dist/index.html'));
+});
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

@@ -17,6 +17,7 @@ const CreateNotepostArea = ({ getAllNoteposts, currentTopic, scrollToBottom }) =
 
     useEffect(() => {
         getAvatar()
+        setLoading(false)
     }, [])
 
     const username = localStorage.getItem('username');
@@ -89,7 +90,7 @@ const CreateNotepostArea = ({ getAllNoteposts, currentTopic, scrollToBottom }) =
                 <div className='create_notepost'>
                     <form id='create_notepost_form'>
                         {loading ?
-                            (<Skeleton variant='circular' width={80} height={80} overlay={true} sx={{ position: 'absolute', top: 25, left: -40 }} />)
+                            (<Skeleton variant='circular' width={80} height={80} overlay={true} sx={{ position: 'absolute', left: -40 }} />)
 
                             :
                             (
