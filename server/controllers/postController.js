@@ -124,7 +124,7 @@ const getUserAvatar = async (req, res) => {
         if (!user || !user.avatar.data) {
             res.send(user.avatar.data)
         } else {
-            const filePath = path.resolve(__dirname, '..', 'uploads', user.avatar.data);
+            const filePath = path.resolve(__dirname, '..', '..', '/var/uploads', user.avatar.data);
             const avatarData = fs.readFileSync(filePath);
             res.setHeader('Content-Type', 'image/*');
             res.send(avatarData);
