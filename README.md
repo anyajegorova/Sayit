@@ -47,17 +47,17 @@ Keep in mind that you will need to also configure your own environmental variabl
     npm install
 
 2. Install dependencies for back-end
-    ``bash
+    ```bash
     cd ..
     cd server
     npm install
 
 3. Start the development server
-    ``bash
+    ```bash
     npm run dev
 
 4. Start the front end
-    ``bash
+    ```bash
     cd ..
     cd notepost
     npm run dev
