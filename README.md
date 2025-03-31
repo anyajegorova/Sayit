@@ -69,6 +69,9 @@ Keep in mind that you will need to also configure your own environmental variabl
 Both username and password must be unique. Password lenght and content is not restricted.
 - Users can login using their credentials such as email and password.
 
+  ![SayitRegistration](https://github.com/user-attachments/assets/943c1789-f3c4-461c-89d5-c4d10c8d274f)
+
+
 2. Profile Management
 - After logging in, users can change their password in Profile section. 
 - Users can also add and update the profile image. Avatar image is not compulsory and in case if no image is uploaded, first letter of username is set as avatar by default.
