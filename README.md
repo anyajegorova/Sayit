@@ -94,10 +94,14 @@ Both username and password must be unique. Password lenght and content is not re
 - Users can like and unlike posts created by users as well as their own posts
 - Users can see all the liked posts in Likes section
 
+![SayitLiking](https://github.com/user-attachments/assets/6b45632d-5b47-4b8c-a2c9-d602477b1d0e)
 
 
 5. Responsive design
 - The application is designed to be responsive, ensuring a seamless experience across various devices and screen sizes.
+
+![SayitMobile](https://github.com/user-attachments/assets/a7a3a2b9-570b-4471-83a8-12a030980289)
+
 
 6. Security
 - User authentication and authorization are implemented securely using JWT (JSON Web Tokens).
