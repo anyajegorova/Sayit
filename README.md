@@ -76,12 +76,25 @@ Both username and password must be unique. Password lenght and content is not re
 - After logging in, users can change their password in Profile section. 
 - Users can also add and update the profile image. Avatar image is not compulsory and in case if no image is uploaded, first letter of username is set as avatar by default.
 
+![SayitProfile](https://github.com/user-attachments/assets/bb830342-7856-4dea-81b9-630a77541d73)
+
+
+
+
+
 3. Creating and editing content
-- Authenticated users can create new content, such as topics and posts. Users can delete their own posts in profile section
+- Authenticated users can create new content, such as topics and posts. Users can delete their own posts in My Posts.
+
+![SayitTopicAndMessage](https://github.com/user-attachments/assets/eb416759-a6d1-4992-86a5-26942c8dd61a)
+
+![SayitDeletingMessage](https://github.com/user-attachments/assets/aa59638d-056a-4de9-b251-99bcdc0ac866)
+
 
 4. Interacting with content
 - Users can like and unlike posts created by users as well as their own posts
 - Users can see all the liked posts in Likes section
+
+
 
 5. Responsive design
 - The application is designed to be responsive, ensuring a seamless experience across various devices and screen sizes.
